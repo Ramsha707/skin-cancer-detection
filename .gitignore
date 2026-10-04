@@ -1,0 +1,59 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.venv-ov/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Model caches / binaries
+.cache_openvino/
+*.onnx
+*.xml
+*.bin
+checkpoints/
+artifacts/
+*.pt
+*.pth
+*.safetensors
+
+# Datasets (never commit patient data)
+data/*
+!data/sample1.png
+!data/sample2.png
+data/**/*.jpg
+data/**/*.jpeg
+data/**/*.png
+datasets/
+*.zip
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+dist/
+dist-ssr/
+.vite/
+*.local
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editors / OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
