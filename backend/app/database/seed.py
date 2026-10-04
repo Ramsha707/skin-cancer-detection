@@ -104,10 +104,11 @@ def seed_agents(db: Session) -> None:
         sizes = [len(p) for p in partitions]
         histograms = [dataset_service.class_histogram(manifest, p) for p in partitions]
         log.info(
-            "seeding %d agents from %s (%d train images)",
+            "seeding %d agents from %s (%d train images, sizes %s)",
             settings.num_agents,
             manifest.name,
             len(train_idx),
+            sizes,
         )
     else:
         # No dataset: sizes stay 0 and are filled in by the federated engine's
