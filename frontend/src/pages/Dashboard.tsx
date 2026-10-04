@@ -144,7 +144,7 @@ export default function Dashboard() {
         <StatCard
           label="Cancer classes"
           value={data.cancer_classes}
-          hint="melanoma · BCC · SCC · benign"
+          hint="melanoma · BCC · actinic keratosis · benign"
           icon={Target}
           tone="slate"
         />
@@ -395,17 +395,19 @@ export default function Dashboard() {
         <Section title="Delivery progress" description={`Week ${CURRENT_IMPLEMENTED_WEEK} of 12 implemented`}>
           <div className="space-y-2">
             {[
-              { w: 1, t: "UI/UX + foundation", done: true },
-              { w: 2, t: "Backend + database", done: true },
-              { w: 3, t: "Hospital agents", done: true },
-              { w: 4, t: "Cancer detection", done: true },
-              { w: 5, t: "Pre-trained model", done: true },
-              { w: 6, t: "Experiments", done: true },
-              { w: 7, t: "FedAvg engine", done: true },
-              { w: 8, t: "Federated dashboard", done: true },
-              { w: 9, t: "Evaluation", done: false },
-              { w: 10, t: "XAI + privacy", done: false },
-            ].map((r) => (
+              { w: 1, t: "UI/UX + foundation" },
+              { w: 2, t: "Backend + database" },
+              { w: 3, t: "Hospital agents" },
+              { w: 4, t: "Cancer detection" },
+              { w: 5, t: "Pre-trained model" },
+              { w: 6, t: "Experiments" },
+              { w: 7, t: "FedAvg engine" },
+              { w: 8, t: "Federated dashboard" },
+              { w: 9, t: "Evaluation" },
+              { w: 10, t: "XAI + privacy" },
+            ].map((r) => {
+              const done = r.w <= CURRENT_IMPLEMENTED_WEEK;
+              return (
               <motion.div
                 key={r.w}
                 initial={{ opacity: 0, x: -6 }}
@@ -413,25 +415,26 @@ export default function Dashboard() {
                 transition={{ delay: r.w * 0.03 }}
                 className={cn(
                   "flex items-center gap-3 rounded-lg border px-3 py-2",
-                  r.done ? "border-accent-500/20 bg-accent-500/5" : "border-slate-200",
+                  done ? "border-accent-500/20 bg-accent-500/5" : "border-slate-200",
                 )}
               >
                 <span
                   className={cn(
                     "flex h-5 w-5 items-center justify-center rounded font-mono text-[9px] font-bold",
-                    r.done ? "bg-accent-500 text-navy-950" : "bg-slate-200 text-slate-500",
+                    done ? "bg-accent-500 text-navy-950" : "bg-slate-200 text-slate-500",
                   )}
                 >
                   {r.w}
                 </span>
-                <span className={cn("flex-1 text-xs", r.done ? "text-slate-900" : "text-slate-500")}>
+                <span className={cn("flex-1 text-xs", done ? "text-slate-900" : "text-slate-500")}>
                   {r.t}
                 </span>
-                <span className={cn("text-[9px] font-medium", r.done ? "text-emerald-600" : "text-slate-400")}>
-                  {r.done ? "done" : "planned"}
+                <span className={cn("text-[9px] font-medium", done ? "text-emerald-600" : "text-slate-400")}>
+                  {done ? "done" : "planned"}
                 </span>
               </motion.div>
-            ))}
+              );
+            })}
           </div>
 
           <Button asChild variant="outline" size="sm" className="mt-4 w-full">
