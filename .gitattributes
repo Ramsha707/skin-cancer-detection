@@ -1,0 +1,16 @@
+* text=auto eol=lf
+
+*.py   text diff=python
+*.ts   text
+*.tsx  text
+*.js   text
+*.json text
+*.css  text
+*.md   text
+*.yml  text
+*.yaml text
+
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.ico  binary
