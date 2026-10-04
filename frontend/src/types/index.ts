@@ -9,10 +9,19 @@
 /* Cancer classes                                                      */
 /* ------------------------------------------------------------------ */
 
+/**
+ * Four-class taxonomy over HAM10000.
+ *
+ * HAM10000 ships **no** squamous cell carcinoma images. Its seven `dx` values are
+ * nv, mel, bkl, bcc, akiec, vasc, df - it contains actinic keratosis (`akiec`,
+ * 327 images), a UV-damage precursor that is clinically distinct from SCC. It is
+ * labelled as its own class rather than being relabelled `scc`, because doing so
+ * would fabricate ground truth on those images.
+ */
 export const CANCER_CLASSES = [
   "melanoma",
   "basal_cell_carcinoma",
-  "squamous_cell_carcinoma",
+  "actinic_keratosis",
   "benign_lesion",
 ] as const;
 
@@ -51,25 +60,25 @@ export const CANCER_CLASS_INFO: Record<CancerClass, CancerClassInfo> = {
     description:
       "Most common malignant epidermal tumour. Slow-growing but locally invasive; must not be missed.",
   },
-  squamous_cell_carcinoma: {
-    key: "squamous_cell_carcinoma",
-    label: "Squamous Cell Carcinoma",
-    shortLabel: "SCC",
-    hamDx: "scc",
+  actinic_keratosis: {
+    key: "actinic_keratosis",
+    label: "Actinic Keratosis",
+    shortLabel: "AKIEC",
+    hamDx: "akiec",
     malignant: true,
     color: "#8b5cf6",
     description:
-      "Second-most common malignant epidermal tumour, frequently co-occurring with actinic keratosis.",
+      "UV-induced keratinocyte intraepithelial neoplasia and the precursor to SCC. The rarest class here (327 images), so it is the hardest to learn and the main driver of low macro-F1.",
   },
   benign_lesion: {
     key: "benign_lesion",
     label: "Benign Lesion",
     shortLabel: "BENIGN",
-    hamDx: "nv",
+    hamDx: "nv, bkl, df",
     malignant: false,
     color: "#22d3ee",
     description:
-      "Melanocytic nevus and other non-malignant lesions. Roughly 67% of HAM10000, which makes this the majority / hard-negative class.",
+      "Melanocytic nevi, benign keratosis-like lesions and dermatofibromas. About 80% of the four-class set, which makes this the majority / hard-negative class.",
   },
 };
 
@@ -393,20 +402,26 @@ export interface WeekMilestone {
 export const ROADMAP: WeekMilestone[] = [
   { week: 1, title: "UI/UX + Project Foundation", summary: "Design system, routing, landing page", status: "complete", route: "/" },
   { week: 2, title: "Backend + Database", summary: "FastAPI, SQLAlchemy, SQLite schema", status: "complete" },
-  { week: 3, title: "Hospital Agents", summary: "Four isolated hospital agents with local data", status: "complete", route: "/agents" },
-  { week: 4, title: "Cancer Detection Interface", summary: "Upload, preprocess, predict, explain", status: "complete", route: "/detection" },
-  { week: 5, title: "Pre-trained Model Integration", summary: "MedSigLIP-448 analysis + cancer adaptation", status: "complete", route: "/models/pretrained" },
-  { week: 6, title: "Fine-Tuning + Experiments", summary: "Frozen vs selective vs full comparison", status: "complete", route: "/experiments" },
-  { week: 7, title: "Federated Learning Engine", summary: "FedAvg local train / aggregate / broadcast", status: "complete", route: "/federated-training" },
-  { week: 8, title: "Federated Dashboard", summary: "Interactive topology, controls, live rounds", status: "complete", route: "/federated-training" },
+  { week: 3, title: "Hospital Agents", summary: "Four isolated hospital agents with local data", status: "planned", route: "/agents" },
+  { week: 4, title: "Cancer Detection Interface", summary: "Upload, preprocess, predict, explain", status: "planned", route: "/detection" },
+  { week: 5, title: "Pre-trained Model Integration", summary: "MedSigLIP-448 analysis + cancer adaptation", status: "planned", route: "/models/pretrained" },
+  { week: 6, title: "Fine-Tuning + Experiments", summary: "Frozen vs selective vs full comparison", status: "planned", route: "/experiments" },
+  { week: 7, title: "Federated Learning Engine", summary: "FedAvg local train / aggregate / broadcast", status: "planned", route: "/federated-training" },
+  { week: 8, title: "Federated Dashboard", summary: "Interactive topology, controls, live rounds", status: "planned", route: "/federated-training" },
   { week: 9, title: "Evaluation", summary: "Full metric suite + ROC + confusion matrix", status: "planned", route: "/performance" },
   { week: 10, title: "Explainability + Privacy", summary: "Grad-CAM heatmaps and privacy centre", status: "planned", route: "/explainability" },
   { week: 11, title: "Full-System Integration", summary: "WebSocket event bus across all modules", status: "planned" },
   { week: 12, title: "Testing + Final Demo", summary: "Run Judge Demo and presentation polish", status: "planned" },
 ];
 
-/** Highest roadmap week actually implemented in this build. */
-export const CURRENT_IMPLEMENTED_WEEK = 8;
+/**
+ * Highest roadmap week actually implemented in this build.
+ *
+ * This must be bumped as weeks land. It is deliberately 2 right now: the routes
+ * for weeks 3-8 exist as navigation shells, but their backing functionality is
+ * not implemented, so marking them `complete` would overstate the build.
+ */
+export const CURRENT_IMPLEMENTED_WEEK = 2;
 
 export const RESEARCH_DISCLAIMER =
   "RESEARCH PROTOTYPE — NOT A MEDICAL DIAGNOSIS. This system is intended for academic and research demonstration only. It has not been clinically validated and must not be used to make medical decisions.";

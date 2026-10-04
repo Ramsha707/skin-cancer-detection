@@ -5,9 +5,16 @@ __pycache__/
 .venv/
 .venv-ov/
 venv/
+# any venv regardless of name (backend-venv, env, .env-venv, ...)
+*venv*/
+.env/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+*.pdm.lock
 
 # Model caches / binaries
 .cache_openvino/
@@ -32,6 +39,8 @@ datasets/
 
 # Database
 *.db
+*.db-shm
+*.db-wal
 *.sqlite
 *.sqlite3
 

@@ -1,0 +1,20 @@
+[project]
+name = "major-project-backend"
+version = "0.2.0"
+description = "Multi-agent federated skin-lesion classification research prototype"
+requires-python = ">=3.10"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "BLE", "PERF", "PIE", "RUF"]
+ignore = [
+    # FastAPI's dependency-injection idiom is `Depends()` in a default argument.
+    # Rewriting it to Annotated[...] everywhere would fight the framework.
+    "B008",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"backend/tests/*" = ["E501"]
