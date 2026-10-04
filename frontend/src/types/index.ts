@@ -402,7 +402,7 @@ export interface WeekMilestone {
 export const ROADMAP: WeekMilestone[] = [
   { week: 1, title: "UI/UX + Project Foundation", summary: "Design system, routing, landing page", status: "complete", route: "/" },
   { week: 2, title: "Backend + Database", summary: "FastAPI, SQLAlchemy, SQLite schema", status: "complete" },
-  { week: 3, title: "Hospital Agents", summary: "Four isolated hospital agents with local data", status: "planned", route: "/agents" },
+  { week: 3, title: "Hospital Agents", summary: "Four isolated hospital agents with local data", status: "complete", route: "/agents" },
   { week: 4, title: "Cancer Detection Interface", summary: "Upload, preprocess, predict, explain", status: "planned", route: "/detection" },
   { week: 5, title: "Pre-trained Model Integration", summary: "MedSigLIP-448 analysis + cancer adaptation", status: "planned", route: "/models/pretrained" },
   { week: 6, title: "Fine-Tuning + Experiments", summary: "Frozen vs selective vs full comparison", status: "planned", route: "/experiments" },
@@ -417,11 +417,11 @@ export const ROADMAP: WeekMilestone[] = [
 /**
  * Highest roadmap week actually implemented in this build.
  *
- * This must be bumped as weeks land. It is deliberately 2 right now: the routes
- * for weeks 3-8 exist as navigation shells, but their backing functionality is
- * not implemented, so marking them `complete` would overstate the build.
+ * This must be bumped as weeks land. It is 3 right now: week 3's agent roster,
+ * class-mix view and per-site controls read live from the backend, while the
+ * routes for weeks 4-8 exist as navigation shells and must stay `planned`.
  */
-export const CURRENT_IMPLEMENTED_WEEK = 2;
+export const CURRENT_IMPLEMENTED_WEEK = 3;
 
 export const RESEARCH_DISCLAIMER =
   "RESEARCH PROTOTYPE — NOT A MEDICAL DIAGNOSIS. This system is intended for academic and research demonstration only. It has not been clinically validated and must not be used to make medical decisions.";
