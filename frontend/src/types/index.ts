@@ -241,6 +241,26 @@ export interface DetectionResult {
   note: string | null;
 }
 
+export interface DetectionStatus {
+  ready: boolean;
+  model_version: string;
+  is_real_inference: boolean;
+  caches_ready: Record<string, boolean>;
+  instructions: string | null;
+}
+
+export interface CancerHeadInfo {
+  type: string;
+  embedding_dim: number;
+  trainable_params: number;
+}
+
+export interface DetectionClasses {
+  classes: CancerClassInfo[];
+  head: CancerHeadInfo;
+  caches_ready: Record<string, boolean>;
+}
+
 /* ------------------------------------------------------------------ */
 /* Audit                                                               */
 /* ------------------------------------------------------------------ */

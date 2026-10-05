@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Thin typed fetch wrapper around the FastAPI backend.
  *
  * Every method returns the same shape as `backend/app/schemas/`, so the UI can
@@ -10,7 +10,9 @@ import type {
   AgentRoundState,
   AuditLog,
   DashboardSummary,
+  DetectionClasses,
   DetectionResult,
+  DetectionStatus,
   Experiment,
   HospitalAgent,
   ModelVersion,
@@ -131,6 +133,9 @@ export const api = {
   deleteExperiment: (id: number) => del<{ ok: boolean }>(`/api/experiments/${id}`),
 
   /* ---------------- detection ---------------- */
+  detectionStatus: () => request<DetectionStatus>("/api/detection/status"),
+  detectionClasses: () => request<DetectionClasses>("/api/detection/classes"),
+  listDetections: () => request<DetectionResult[]>("/api/detection"),
   detect: (file: File) => {
     const fd = new FormData();
     fd.append("file", file);
@@ -153,7 +158,9 @@ export type {
   AgentRoundState,
   AuditLog,
   DashboardSummary,
+  DetectionClasses,
   DetectionResult,
+  DetectionStatus,
   Experiment,
   HospitalAgent,
   ModelVersion,
