@@ -257,9 +257,9 @@ class DetectionResultOut(ORMModel):
     id: int
     image_name: str
     predicted_class: str
-    predicted_label: str
+    predicted_label: str = ""
     confidence: float
-    is_malignant: bool
+    is_malignant: bool = False
     model_version: str
     inference_time: float | None = None
     strategy: str | None = None
@@ -268,6 +268,43 @@ class DetectionResultOut(ORMModel):
     created_at: datetime
     probabilities: list[ClassProbability] = Field(default_factory=list)
     note: str | None = None
+
+
+class DetectionStatusOut(BaseModel):
+    """What the detection endpoint can actually do right now.
+
+    The frontend reads `ready` to choose between a working upload panel and an
+    explicit run-the-script instruction, so an un-extracted checkout never
+    presents an upload box that would fail.
+    """
+
+    ready: bool
+    model_version: str
+    is_real_inference: bool
+    caches_ready: dict[str, bool] = Field(default_factory=dict)
+    instructions: str | None = None
+
+
+class CancerClassOut(BaseModel):
+    name: CancerClass
+    prompt: str
+    malignant: bool
+
+
+class CancerHeadOut(BaseModel):
+    """Shape of the trainable head. Shared by Week 4 and Week 7 pages."""
+
+    type: str = "linear-probe"
+    embedding_dim: int
+    trainable_params: int
+
+
+class DetectionClassesOut(BaseModel):
+    """The taxonomy, the prompts behind it, and the head that consumes both."""
+
+    classes: list[CancerClassOut]
+    head: CancerHeadOut
+    caches_ready: dict[str, bool] = Field(default_factory=dict)
 
 
 # -------------------------------------------------------------------- audit --

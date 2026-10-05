@@ -42,16 +42,21 @@ export function ProgressDark({
   max = 100,
   className,
   indicatorClassName,
-}: ProgressProps) {
+}: ProgressProps & {
+  /** Solid fill colour, e.g. a per-class hex from the taxonomy. */
+  color?: string;
+}) {
   const pct = value === null || value === undefined ? 0 : Math.min(100, Math.max(0, (value / max) * 100));
   return (
     <div className={cn("relative h-1.5 w-full overflow-hidden rounded-full bg-white/10", className)}>
       <div
         className={cn(
-          "h-full rounded-full bg-gradient-to-r from-accent-400 to-accent-300 transition-all duration-500",
+          "h-full rounded-full transition-all duration-500",
+          !color && "bg-gradient-to-r from-accent-400 to-accent-300",
+          color && "bg-none",
           indicatorClassName,
         )}
-        style={{ width: `${pct}%` }}
+        style={{ width: `${pct}%`, ...(color ? { backgroundColor: color } : {}) }}
       />
     </div>
   );
