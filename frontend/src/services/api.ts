@@ -7,11 +7,14 @@
  */
 
 import type {
-  AgentRoundState,
   AuditLog,
   DashboardSummary,
+  DetectionClasses,
   DetectionResult,
-  Experiment,
+  DetectionStatus,
+  ExperimentComparison,
+  ExperimentRunResult,
+  FederatedStatus,
   HospitalAgent,
   ModelVersion,
   PretrainedModelInfo,
@@ -72,8 +75,6 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 const post = <T>(path: string, body?: unknown) =>
   request<T>(path, { method: "POST", body: body === undefined ? undefined : JSON.stringify(body) });
 
-const del = <T>(path: string) => request<T>(path, { method: "DELETE" });
-
 function qs(params: Record<string, unknown>): string {
   const sp = new URLSearchParams();
   Object.entries(params).forEach(([k, v]) => {
@@ -99,62 +100,44 @@ export const api = {
 
   /* ---------------- federated ---------------- */
   listRounds: () => request<TrainingRound[]>("/api/federated/rounds"),
-  currentRoundState: () =>
-    request<{
-      status: string;
-      current_round: number;
-      global_model_version: string | null;
-      aggregation_status: string;
-      agents: AgentRoundState[];
-      training_status: string;
-    }>("/api/federated/state"),
-  startTraining: () => post<{ ok: boolean; round: number }>("/api/federated/start"),
-  pauseTraining: () => post<{ ok: boolean }>("/api/federated/pause"),
-  nextRound: () => post<{ ok: boolean; round: number }>("/api/federated/next-round"),
-  runRounds: (rounds: number) =>
-    post<{ ok: boolean; rounds: number }>("/api/federated/run", { rounds }),
-  resetFederated: () => post<{ ok: boolean }>("/api/federated/reset"),
-  roundDetail: (round: number) =>
-    request<{ round: TrainingRound; agents: AgentRoundState[] }>(
-      `/api/federated/rounds/${round}`,
-    ),
+  runRound: () => post<TrainingRound>("/api/federated/rounds"),
+  federatedStatus: () => request<FederatedStatus>("/api/federated/status"),
+  getRound: (round: number) => request<TrainingRound>(`/api/federated/rounds/${round}`),
 
   /* ---------------- models ---------------- */
   pretrainedInfo: () => request<PretrainedModelInfo>("/api/models/pretrained"),
   listModels: () => request<ModelVersion[]>("/api/models"),
+  activeModel: () => request<ModelVersion>("/api/models/active"),
   getModel: (id: number) => request<ModelVersion>(`/api/models/${id}`),
-  recommendModel: () => post<ModelVersion>("/api/models/recommend"),
+  recommendModel: (id: number) => post<ModelVersion>(`/api/models/${id}/recommend`),
 
   /* ---------------- experiments ---------------- */
-  listExperiments: () => request<Experiment[]>("/api/experiments"),
-  runExperiment: (name: string) => post<Experiment>("/api/experiments/run", { name }),
-  deleteExperiment: (id: number) => del<{ ok: boolean }>(`/api/experiments/${id}`),
+  experiments: () => request<ExperimentComparison>("/api/experiments"),
+  runExperiments: () => post<ExperimentRunResult>("/api/experiments/run"),
 
   /* ---------------- detection ---------------- */
+  detectionStatus: () => request<DetectionStatus>("/api/detection/status"),
+  detectionClasses: () => request<DetectionClasses>("/api/detection/classes"),
+  listDetections: () => request<DetectionResult[]>("/api/detection"),
   detect: (file: File) => {
     const fd = new FormData();
     fd.append("file", file);
     return request<DetectionResult>("/api/detection/predict", { method: "POST", body: fd });
   },
-  recentDetections: (limit = 20) =>
-    request<DetectionResult[]>(`/api/detection/recent${qs({ limit })}`),
 
   /* ---------------- audit ---------------- */
   listAuditLogs: (limit = 100) => request<AuditLog[]>(`/api/audit${qs({ limit })}`),
 };
 
-/** WebSocket URL for the live training event bus. */
-export function trainingSocketUrl(): string {
-  const base = API_BASE.replace(/^http/, "ws");
-  return `${base}/ws/training`;
-}
-
 export type {
-  AgentRoundState,
   AuditLog,
   DashboardSummary,
+  DetectionClasses,
   DetectionResult,
-  Experiment,
+  DetectionStatus,
+  ExperimentComparison,
+  ExperimentRunResult,
+  FederatedStatus,
   HospitalAgent,
   ModelVersion,
   PretrainedModelInfo,

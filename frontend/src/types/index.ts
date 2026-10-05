@@ -137,11 +137,25 @@ export interface TrainingRound {
   participating_agents: number;
   global_model_version: string | null;
   global_accuracy: number | null;
-  global_loss: number | null;
-  global_f1: number | null;
+  global_precision: number | null;
   global_recall: number | null;
+  global_f1: number | null;
+  global_auc: number | null;
+  global_loss: number | null;
   duration_seconds: number | null;
   samples_processed: number | null;
+}
+
+/** `GET /api/federated/status`. */
+export interface FederatedStatus {
+  /** True only when every agent train cache exists. */
+  ready: boolean;
+  caches_ready: Record<string, boolean>;
+  /** Floats crossing the boundary per agent per round. */
+  param_count: number;
+  param_kb: number;
+  aggregation: string;
+  instructions: string | null;
 }
 
 export interface AgentRoundState {
@@ -176,6 +190,8 @@ export interface ModelVersion {
   specificity: number | null;
   f1: number | null;
   auc: number | null;
+  /** Final training loss recorded for this version. */
+  loss: number | null;
   trainable_params: number | null;
   total_params: number | null;
   agents: number | null;
@@ -189,7 +205,11 @@ export interface ModelVersion {
 /* Experiments                                                         */
 /* ------------------------------------------------------------------ */
 
-export type ExperimentStatus = "awaiting" | "running" | "completed" | "failed";
+/**
+ * `skipped` is a real outcome: an arm the host's compute budget refused. It must
+ * render as skipped, never as a failure and never as a completed run.
+ */
+export type ExperimentStatus = "awaiting" | "running" | "completed" | "failed" | "skipped";
 
 export interface Experiment {
   id: number;
@@ -213,6 +233,43 @@ export interface Experiment {
   created_at: string;
 }
 
+/** What this host can actually afford. Explains a skipped `full` arm. */
+export interface ComputeBudget {
+  cuda_available: boolean;
+  total_ram_gb: number;
+  supports_full_finetune: boolean;
+}
+
+/** An arm that has not run yet, with the reason it has not run. */
+export interface PlannedExperiment {
+  name: string;
+  strategy: StrategyKind;
+  status: string;
+  note: string;
+}
+
+/**
+ * `GET /api/experiments`.
+ *
+ * `status === "not_run"` means `experiments` is empty and `planned` describes
+ * what will run. Once a run is persisted, `planned` is empty and `experiments`
+ * holds the results. The two are mutually exclusive by construction.
+ */
+export interface ExperimentComparison {
+  status: "not_run" | "complete";
+  budget: ComputeBudget;
+  caches_ready: Record<string, boolean>;
+  experiments: Experiment[];
+  planned: PlannedExperiment[];
+  source: "database" | "disk" | null;
+}
+
+/** `POST /api/experiments/run`. `status === "partial"` when an arm was skipped. */
+export interface ExperimentRunResult {
+  status: "complete" | "partial";
+  experiments: Experiment[];
+}
+
 /* ------------------------------------------------------------------ */
 /* Detection                                                           */
 /* ------------------------------------------------------------------ */
@@ -222,6 +279,34 @@ export interface ClassProbability {
   label: string;
   probability: number;
   malignant: boolean;
+}
+
+export interface CancerHead {
+  type: string;
+  embedding_dim: number;
+  trainable_params: number;
+}
+
+/** `GET /api/detection/classes`. */
+export interface DetectionClasses {
+  classes: { name: CancerClass; prompt: string; malignant: boolean }[];
+  head: CancerHead;
+  caches_ready: Record<string, boolean>;
+}
+
+/**
+ * `GET /api/detection/status`.
+ *
+ * `ready` is deliberately conservative: a trained checkpoint *and* the
+ * validation cache. The upload panel is only enabled when this is true, so the
+ * UI never offers an action that would fail.
+ */
+export interface DetectionStatus {
+  ready: boolean;
+  model_version: string;
+  is_real_inference: boolean;
+  caches_ready: Record<string, boolean>;
+  instructions: string | null;
 }
 
 export interface DetectionResult {
@@ -403,11 +488,11 @@ export const ROADMAP: WeekMilestone[] = [
   { week: 1, title: "UI/UX + Project Foundation", summary: "Design system, routing, landing page", status: "complete", route: "/" },
   { week: 2, title: "Backend + Database", summary: "FastAPI, SQLAlchemy, SQLite schema", status: "complete" },
   { week: 3, title: "Hospital Agents", summary: "Four isolated hospital agents with local data", status: "complete", route: "/agents" },
-  { week: 4, title: "Cancer Detection Interface", summary: "Upload, preprocess, predict, explain", status: "planned", route: "/detection" },
-  { week: 5, title: "Pre-trained Model Integration", summary: "MedSigLIP-448 analysis + cancer adaptation", status: "planned", route: "/models/pretrained" },
-  { week: 6, title: "Fine-Tuning + Experiments", summary: "Frozen vs selective vs full comparison", status: "planned", route: "/experiments" },
-  { week: 7, title: "Federated Learning Engine", summary: "FedAvg local train / aggregate / broadcast", status: "planned", route: "/federated-training" },
-  { week: 8, title: "Federated Dashboard", summary: "Interactive topology, controls, live rounds", status: "planned", route: "/federated-training" },
+  { week: 4, title: "Cancer Detection Interface", summary: "Upload, preprocess, predict, explain", status: "complete", route: "/detection" },
+  { week: 5, title: "Pre-trained Model Integration", summary: "MedSigLIP-448 analysis + cancer adaptation", status: "complete", route: "/models/pretrained" },
+  { week: 6, title: "Fine-Tuning + Experiments", summary: "Frozen vs selective vs full comparison", status: "complete", route: "/experiments" },
+  { week: 7, title: "Federated Learning Engine", summary: "FedAvg local train / aggregate / broadcast", status: "complete", route: "/federated-training" },
+  { week: 8, title: "Federated Dashboard", summary: "Interactive topology, controls, live rounds", status: "complete", route: "/federated-training" },
   { week: 9, title: "Evaluation", summary: "Full metric suite + ROC + confusion matrix", status: "planned", route: "/performance" },
   { week: 10, title: "Explainability + Privacy", summary: "Grad-CAM heatmaps and privacy centre", status: "planned", route: "/explainability" },
   { week: 11, title: "Full-System Integration", summary: "WebSocket event bus across all modules", status: "planned" },
@@ -417,11 +502,12 @@ export const ROADMAP: WeekMilestone[] = [
 /**
  * Highest roadmap week actually implemented in this build.
  *
- * This must be bumped as weeks land. It is 3 right now: week 3's agent roster,
- * class-mix view and per-site controls read live from the backend, while the
- * routes for weeks 4-8 exist as navigation shells and must stay `planned`.
+ * Weeks 4-8 all read live from the backend now. Their "complete" status means
+ * the screen is wired end to end, not that the metrics are populated: with
+ * caches partially extracted, pages render explicit awaiting states rather than
+ * numbers. `demo_mode` and the per-value `is_real` flags carry that distinction.
  */
-export const CURRENT_IMPLEMENTED_WEEK = 3;
+export const CURRENT_IMPLEMENTED_WEEK = 8;
 
 export const RESEARCH_DISCLAIMER =
   "RESEARCH PROTOTYPE — NOT A MEDICAL DIAGNOSIS. This system is intended for academic and research demonstration only. It has not been clinically validated and must not be used to make medical decisions.";

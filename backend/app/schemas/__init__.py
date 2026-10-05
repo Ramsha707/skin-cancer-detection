@@ -20,7 +20,10 @@ RoundStatus = Literal["pending", "running", "aggregating", "completed", "failed"
 TrainingStatus = Literal["idle", "running", "paused", "completed", "error"]
 StrategyKind = Literal["frozen", "selective", "full"]
 ModelStatus = Literal["candidate", "active", "archived", "training"]
-ExperimentStatus = Literal["awaiting", "running", "completed", "failed"]
+# `skipped` is a real outcome, not an error: an arm can be refused by the host's
+# compute budget (see `ComputeBudgetOut`) and must be reported as skipped rather
+# than silently dropped or reported as completed.
+ExperimentStatus = Literal["awaiting", "running", "completed", "failed", "skipped"]
 # Mirrors `app.services.dataset.CANCER_CLASSES`. HAM10000 has no squamous cell
 # carcinoma images, so actinic keratosis is reported under its own name rather
 # than being relabelled as SCC.
@@ -257,9 +260,9 @@ class DetectionResultOut(ORMModel):
     id: int
     image_name: str
     predicted_class: str
-    predicted_label: str
+    predicted_label: str = ""
     confidence: float
-    is_malignant: bool
+    is_malignant: bool = False
     model_version: str
     inference_time: float | None = None
     strategy: str | None = None
@@ -268,6 +271,107 @@ class DetectionResultOut(ORMModel):
     created_at: datetime
     probabilities: list[ClassProbability] = Field(default_factory=list)
     note: str | None = None
+
+
+# ---------------------------------------------------------------- detection --
+
+
+class DetectionStatusOut(BaseModel):
+    """What the detection endpoint can actually do right now.
+
+    The frontend reads `ready` to choose between a working upload panel and an
+    explicit run-the-script instruction, so an un-extracted checkout never
+    presents an upload box that would fail.
+    """
+
+    ready: bool
+    model_version: str
+    is_real_inference: bool
+    caches_ready: dict[str, bool] = Field(default_factory=dict)
+    instructions: str | None = None
+
+
+class CancerClassOut(BaseModel):
+    name: CancerClass
+    prompt: str
+    malignant: bool
+
+
+class CancerHeadOut(BaseModel):
+    """Shape of the trainable head. Shared by Week 4 and Week 7 pages."""
+
+    type: str = "linear-probe"
+    embedding_dim: int
+    trainable_params: int
+
+
+class DetectionClassesOut(BaseModel):
+    """The taxonomy, the prompts behind it, and the head that consumes both."""
+
+    classes: list[CancerClassOut]
+    head: CancerHeadOut
+    caches_ready: dict[str, bool] = Field(default_factory=dict)
+
+
+# ---------------------------------------------------------------- federated --
+
+
+class FederatedStatusOut(BaseModel):
+    """Whether a round can run, and what crosses the boundary when it does.
+
+    `param_count` / `param_kb` are the whole privacy story in two numbers: the
+    aggregator receives this many floats per agent, and never an image.
+    """
+
+    ready: bool
+    caches_ready: dict[str, bool] = Field(default_factory=dict)
+    param_count: int
+    param_kb: float
+    aggregation: str
+    instructions: str | None = None
+
+
+# --------------------------------------------------------------- experiments --
+
+
+class ComputeBudgetOut(BaseModel):
+    """What this host can actually afford. Explains a skipped `full` arm."""
+
+    cuda_available: bool
+    total_ram_gb: float
+    supports_full_finetune: bool
+
+
+class PlannedExperimentOut(BaseModel):
+    """An arm that has not run yet, with the reason it has not run."""
+
+    name: str
+    strategy: StrategyKind
+    status: str
+    note: str
+
+
+class ExperimentComparisonOut(BaseModel):
+    """`GET /api/experiments`.
+
+    `status` is `not_run` until a run is persisted, at which point `experiments`
+    is populated. `planned` is only present while `not_run`, so the UI can never
+    render a planned arm as if it were a measurement.
+    """
+
+    status: Literal["not_run", "complete"]
+    budget: ComputeBudgetOut
+    caches_ready: dict[str, bool] = Field(default_factory=dict)
+    experiments: list[ExperimentOut] = Field(default_factory=list)
+    planned: list[PlannedExperimentOut] = Field(default_factory=list)
+    source: Literal["database", "disk"] | None = None
+
+
+class ExperimentRunOut(BaseModel):
+    """`POST /api/experiments/run`. `status` is `partial` when an arm was skipped."""
+
+    status: Literal["complete", "partial"]
+    experiments: list[ExperimentOut]
 
 
 # -------------------------------------------------------------------- audit --

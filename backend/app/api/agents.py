@@ -78,13 +78,17 @@ def sync_agent(agent_id: int, db: Session = Depends(get_db)) -> HospitalAgent:
     from app.models import utcnow
 
     agent = _require(db, agent_id)
+
     # The engine is registered in Week 7; guard so Week 2 runs standalone.
+    # "unassigned" is the honest value both before the engine exists and before
+    # any round has produced a global version.
+    version = "unassigned"
     try:
         from app.federated.engine import get_engine
 
-        version = get_engine().current_global_version or "none"
+        version = get_engine().current_global_version or version
     except (ImportError, AttributeError):
-        version = "unassigned"
+        pass
     agent.model_version = version
     agent.last_sync = utcnow()
     agent.status = "synced"
