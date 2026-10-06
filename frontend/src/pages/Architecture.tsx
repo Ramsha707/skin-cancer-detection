@@ -73,11 +73,11 @@ const LAYERS: {
 ];
 
 const TONES: Record<string, { bg: string; text: string; border: string }> = {
-  accent: { bg: "bg-accent-100", text: "text-accent-700", border: "border-accent-200" },
-  emerald: { bg: "bg-emerald-100", text: "text-emerald-700", border: "border-emerald-200" },
-  violet: { bg: "bg-violet-100", text: "text-violet-700", border: "border-violet-200" },
-  amber: { bg: "bg-amber-100", text: "text-amber-700", border: "border-amber-200" },
-  slate: { bg: "bg-slate-100", text: "text-slate-700", border: "border-slate-200" },
+  accent: { bg: "bg-accent-200", text: "text-accent-800", border: "border-accent-300" },
+  emerald: { bg: "bg-emerald-200", text: "text-emerald-800", border: "border-emerald-300" },
+  violet: { bg: "bg-violet-200", text: "text-violet-800", border: "border-violet-300" },
+  amber: { bg: "bg-amber-200", text: "text-amber-800", border: "border-amber-300" },
+  slate: { bg: "bg-ink-950/10", text: "text-ink-800", border: "border-ink-950/10" },
 };
 
 export default function Architecture() {
@@ -94,7 +94,7 @@ export default function Architecture() {
           {["Hospital Agents", "Local Data", "Preprocessing", "Cancer Model", "FedAvg", "Global Model", "Broadcast", "Explainability"].map(
             (s, i, arr) => (
               <div key={s} className="flex items-center gap-2">
-                <span className="rounded-lg border border-ink-950/10 bg-white/70 px-2.5 py-1.5 font-medium text-ink-900">
+                <span className="rounded-lg border border-ink-950/10 bg-ink-950/5 px-2.5 py-1.5 font-medium text-ink-900">
                   {s}
                 </span>
                 {i < arr.length - 1 && <span className="text-accent-400">→</span>}
@@ -113,7 +113,7 @@ export default function Architecture() {
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.06, duration: 0.35 }}
-              className={`relative rounded-2xl border bg-white/80 p-5 shadow-soft ${t.border}`}
+              className={`relative rounded-2xl border bg-white p-5 shadow-soft ${t.border}`}
             >
               <div className="flex items-start gap-4">
                 <div className={`rounded-xl p-2.5 ${t.bg} ${t.text}`}>
@@ -171,7 +171,7 @@ export default function Architecture() {
       </div>
 
       {/* Model adaptation chain */}
-      <div className="mt-5 rounded-2xl border border-ink-950/10 bg-white/80 p-5 shadow-soft">
+      <div className="mt-5 rounded-2xl border border-ink-950/10 bg-white p-5 shadow-soft">
         <div className="mb-3 flex items-center gap-2">
           <Server className="h-4 w-4 text-accent-600" />
           <h3 className="text-sm font-semibold text-ink-950">Model adaptation chain</h3>
@@ -187,7 +187,7 @@ export default function Architecture() {
             const [title, sub] = s.split("\n");
             return (
               <div key={title} className="flex items-center gap-2">
-                <div className="rounded-xl border border-ink-950/10 bg-white/80 px-3 py-2 text-center shadow-soft">
+                <div className="rounded-xl border border-ink-950/10 bg-white px-3 py-2 text-center shadow-soft">
                   <p className="text-[11px] font-semibold text-ink-950">{title}</p>
                   <p className="text-[10px] text-ink-600">{sub}</p>
                 </div>

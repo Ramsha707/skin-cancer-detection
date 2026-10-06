@@ -28,7 +28,7 @@ function LiveStatusPill() {
         <span
           className={cn(
             "h-1.5 w-1.5 rounded-full",
-            online ? "animate-pulse bg-emerald-400" : "bg-slate-500",
+            online ? "animate-pulse bg-emerald-400" : "bg-lilac-500",
           )}
         />
         {data.active_agents}/{data.total_agents} agents

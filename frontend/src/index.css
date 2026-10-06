@@ -36,8 +36,7 @@
 
   body {
     min-height: 100vh;
-    background:
-      linear-gradient(135deg, #fdf2f7 0%, #f7f4ff 45%, #f0f6ff 100%) fixed;
+    background: #ffffff;
     @apply text-ink-900 antialiased;
     font-feature-settings: "cv11", "ss01";
   }
@@ -46,21 +45,21 @@
 @layer components {
   /* Frosted white panel used across the console */
   .glass-panel {
-    @apply rounded-2xl border border-white/70 bg-white/70 shadow-soft backdrop-blur-xl;
+    @apply rounded-2xl border border-lilac-200/80 bg-white/85 shadow-soft backdrop-blur-xl;
   }
 
   /* Opaque light data card */
   .data-card {
-    @apply rounded-2xl border border-lilac-100 bg-white text-ink-950 shadow-soft;
+    @apply rounded-2xl border border-lilac-200 bg-white text-ink-950 shadow-soft;
   }
 
   .data-card-dark {
-    @apply rounded-2xl border border-white/70 bg-white/75 text-ink-950 backdrop-blur-xl;
+    @apply rounded-2xl border border-lilac-200/80 bg-white/85 text-ink-950 backdrop-blur-xl;
   }
 
   /* Gradient text for hero + section titles */
   .text-gradient {
-    @apply bg-gradient-to-r from-blush-400 via-lilac-400 to-periwinkle-400 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-blush-500 via-lilac-500 to-periwinkle-500 bg-clip-text text-transparent;
   }
 
   /* Animated dashed link between federated nodes */
@@ -71,8 +70,8 @@
 
   .grid-backdrop {
     background-image:
-      linear-gradient(to right, rgb(167 139 250 / 0.1) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(167 139 250 / 0.1) 1px, transparent 1px);
+      linear-gradient(to right, rgb(139 92 246 / 0.14) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(139 92 246 / 0.14) 1px, transparent 1px);
     background-size: 44px 44px;
   }
 }

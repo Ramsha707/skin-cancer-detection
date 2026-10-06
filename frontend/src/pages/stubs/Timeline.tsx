@@ -25,7 +25,7 @@ export default function Timeline() {
               className={`rounded-xl border p-4 ${
                 w.status === "complete"
                   ? "border-accent-300 bg-accent-100"
-                  : "border-ink-950/10 bg-white/70"
+                  : "border-ink-950/10 bg-ink-950/5"
               }`}
             >
               <div className="flex items-center gap-3">

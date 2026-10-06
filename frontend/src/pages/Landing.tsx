@@ -55,11 +55,11 @@ export default function Landing() {
       <section className="relative overflow-hidden border-b border-ink-950/10">
         <div className="grid-backdrop absolute inset-0 opacity-60" aria-hidden />
         <div
-          className="pointer-events-none absolute -left-32 top-0 h-[420px] w-[420px] rounded-full bg-blush-300/50 blur-[120px]"
+          className="pointer-events-none absolute -left-32 top-0 h-[420px] w-[420px] rounded-full bg-blush-500/30 blur-[120px]"
           aria-hidden
         />
         <div
-          className="pointer-events-none absolute -right-24 bottom-0 h-[380px] w-[380px] rounded-full bg-periwinkle-300/50 blur-[120px]"
+          className="pointer-events-none absolute -right-24 bottom-0 h-[380px] w-[380px] rounded-full bg-periwinkle-500/30 blur-[120px]"
           aria-hidden
         />
 
@@ -143,7 +143,7 @@ export default function Landing() {
                       initial={{ opacity: 0, x: 14 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.3 + i * 0.1, duration: 0.4 }}
-                      className="group flex items-center gap-3 rounded-xl border border-ink-950/10 bg-white/70 px-3.5 py-3 transition-colors hover:border-accent-400/40 hover:bg-white"
+                      className="group flex items-center gap-3 rounded-xl border border-ink-950/10 bg-ink-950/5 px-3.5 py-3 transition-colors hover:border-lilac-300 hover:bg-lilac-50"
                     >
                       <span className="font-mono text-[10px] text-accent-500">{p.step}</span>
                       <div className="min-w-0 flex-1">
@@ -159,7 +159,7 @@ export default function Landing() {
                   {CANCER_CLASSES.map((c) => (
                     <div
                       key={c}
-                      className="rounded-lg border border-ink-950/10 bg-white/70 px-2 py-2 text-center"
+                      className="rounded-lg border border-ink-950/10 bg-ink-950/5 px-2 py-2 text-center"
                     >
                       <span
                         className="block h-1 w-full rounded-full"
@@ -178,7 +178,7 @@ export default function Landing() {
       </section>
 
       {/* ── Four key concepts ───────────────────────────────────────── */}
-      <section className="border-b border-ink-950/10 bg-white/60">
+      <section className="border-b border-ink-950/10 bg-white">
         <div className="mx-auto max-w-[1400px] px-4 py-16 md:px-6">
           <div className="mb-10 text-center">
             <h2 className="text-2xl font-semibold tracking-tight text-ink-950 md:text-3xl">
@@ -198,9 +198,9 @@ export default function Landing() {
                 viewport={{ once: true, margin: "-80px" }}
                 transition={{ delay: i * 0.08, duration: 0.4 }}
               >
-                <div className="group h-full rounded-2xl border border-ink-950/10 bg-white/80 p-5 transition-all hover:-translate-y-1 hover:border-lilac-300 hover:shadow-glow">
-                  <div className="rounded-xl bg-gradient-to-br from-blush-200 via-lilac-200 to-periwinkle-200 p-2.5 transition-transform group-hover:scale-110">
-                    <c.icon className="h-5 w-5 text-accent-700" />
+                <div className="group h-full rounded-2xl border border-ink-950/10 bg-white p-5 transition-all hover:-translate-y-1 hover:border-lilac-300 hover:shadow-glow">
+                  <div className="rounded-xl bg-gradient-to-br from-pink-500 via-violet-500 to-blue-500 p-2.5 transition-transform group-hover:scale-110">
+                    <c.icon className="h-5 w-5 text-white" />
                   </div>
                   <h3 className="mt-4 text-sm font-semibold text-ink-950">{c.title}</h3>
                   <p className="mt-1.5 text-xs leading-relaxed text-ink-600">{c.body}</p>
@@ -273,7 +273,7 @@ export default function Landing() {
               ].map((row) => (
                 <div
                   key={row.w}
-                  className="flex items-center gap-3 rounded-lg border border-ink-950/10 bg-white/70 px-3 py-2.5"
+                  className="flex items-center gap-3 rounded-lg border border-ink-950/10 bg-ink-950/5 px-3 py-2.5"
                 >
                   <span
                     className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md font-mono text-[10px] font-semibold ${
@@ -301,7 +301,7 @@ export default function Landing() {
       </section>
 
       {/* ── CTA ─────────────────────────────────────────────────────── */}
-      <section className="border-t border-ink-950/10 bg-gradient-to-b from-blush-100 via-lilac-100 to-periwinkle-100">
+      <section className="border-t border-ink-950/10 bg-gradient-to-b from-blush-200 via-lilac-200 to-periwinkle-200">
         <div className="mx-auto max-w-[1400px] px-4 py-16 text-center md:px-6">
           <h2 className="text-2xl font-semibold tracking-tight text-ink-950 md:text-3xl">
             Ready to watch four hospitals train one model?

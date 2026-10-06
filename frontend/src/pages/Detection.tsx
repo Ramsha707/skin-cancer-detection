@@ -157,11 +157,11 @@ export default function Detection() {
           className="xl:col-span-2"
         >
           {!ready && st?.instructions && (
-            <div className="mb-4 rounded-xl border border-amber-500/25 bg-amber-500/10 p-3">
-              <p className="text-xs font-medium text-amber-200">
+            <div className="mb-4 rounded-xl border border-amber-400/40 bg-amber-100 p-3">
+              <p className="text-xs font-medium text-amber-900">
                 Detection is not available on this checkout yet
               </p>
-              <p className="mt-1 break-words text-[11px] leading-relaxed text-amber-200/70">
+              <p className="mt-1 break-words text-[11px] leading-relaxed text-amber-800/80">
                 {st.instructions}
               </p>
             </div>
@@ -183,7 +183,7 @@ export default function Detection() {
               "relative flex min-h-[240px] cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed p-6 text-center transition-colors",
               dragging
                 ? "border-accent-400 bg-accent-100"
-                : "border-ink-950/15 bg-white/70 hover:border-accent-400/50 hover:bg-accent-50",
+                : "border-ink-950/15 bg-ink-950/5 hover:border-accent-400/50 hover:bg-accent-50",
               !ready && "pointer-events-none opacity-50",
             )}
             onClick={() => inputRef.current?.click()}
@@ -258,9 +258,9 @@ export default function Detection() {
           )}
 
           {predict.isError && (
-            <div className="mt-3 flex items-start gap-2 rounded-lg border border-red-500/30 bg-red-500/10 p-3">
-              <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-red-400" />
-              <p className="text-[11px] leading-relaxed text-red-200">
+            <div className="mt-3 flex items-start gap-2 rounded-lg border border-red-400/40 bg-red-100 p-3">
+              <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-red-600" />
+              <p className="text-[11px] leading-relaxed text-red-800">
                 {predict.error instanceof ApiError
                   ? predict.error.message
                   : "Inference failed unexpectedly."}
@@ -307,7 +307,7 @@ export default function Detection() {
                 return (
                   <li
                     key={c.name}
-                    className="flex items-start gap-3 rounded-lg border border-ink-950/10 bg-white/70 p-3"
+                    className="flex items-start gap-3 rounded-lg border border-ink-950/10 bg-ink-950/5 p-3"
                   >
                     <span
                       className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full"
@@ -373,7 +373,7 @@ export default function Detection() {
                 return (
                   <li
                     key={d.id}
-                    className="flex items-center gap-3 rounded-lg border border-ink-950/10 bg-white/70 px-3 py-2"
+                    className="flex items-center gap-3 rounded-lg border border-ink-950/10 bg-ink-950/5 px-3 py-2"
                   >
                     <span
                       className="h-2 w-2 shrink-0 rounded-full"
@@ -484,7 +484,7 @@ style={{
       </div>
 
       {result.note && (
-        <div className="flex items-start gap-2 rounded-lg border border-ink-950/10 bg-white/70 p-3">
+        <div className="flex items-start gap-2 rounded-lg border border-ink-950/10 bg-ink-950/5 p-3">
           <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-500" />
           <p className="text-[11px] leading-relaxed text-ink-600">{result.note}</p>
         </div>

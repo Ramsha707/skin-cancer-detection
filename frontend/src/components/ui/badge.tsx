@@ -7,13 +7,13 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
-        default: "border-transparent bg-accent-100 text-accent-700",
-        success: "border-transparent bg-emerald-100 text-emerald-700",
-        warning: "border-transparent bg-amber-100 text-amber-700",
-        destructive: "border-transparent bg-red-100 text-red-700",
-        info: "border-transparent bg-sky-100 text-sky-700",
+        default: "border-transparent bg-violet-200 text-violet-900",
+        success: "border-transparent bg-emerald-200 text-emerald-800",
+        warning: "border-transparent bg-amber-200 text-amber-800",
+        destructive: "border-transparent bg-red-200 text-red-800",
+        info: "border-transparent bg-sky-200 text-sky-800",
         neutral: "border-ink-950/15 bg-ink-950/5 text-ink-700",
-        outline: "border-slate-300 bg-white text-slate-700",
+        outline: "border-lilac-300 bg-white text-ink-700",
       },
     },
     defaultVariants: { variant: "default" },
@@ -31,12 +31,12 @@ function Badge({ className, variant, ...props }: BadgeProps) {
 /** Small animated dot used inside status badges. */
 function StatusDot({ tone = "emerald", pulse }: { tone?: string; pulse?: boolean }) {
   const colors: Record<string, string> = {
-    emerald: "bg-emerald-400",
-    amber: "bg-amber-400",
-    red: "bg-red-400",
-    sky: "bg-sky-400",
-    slate: "bg-slate-400",
-    accent: "bg-accent-400",
+    emerald: "bg-emerald-500",
+    amber: "bg-amber-500",
+    red: "bg-red-500",
+    sky: "bg-sky-500",
+    slate: "bg-ink-500",
+    accent: "bg-accent-500",
   };
   return (
     <span className="relative flex h-2 w-2">

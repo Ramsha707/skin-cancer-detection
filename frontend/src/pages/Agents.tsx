@@ -57,12 +57,12 @@ function ClassMix({ agent }: { agent: HospitalAgent }) {
   const total = Object.values(dist).reduce((s, n) => s + n, 0);
 
   if (!total) {
-    return <p className="text-[11px] text-slate-400">No class distribution recorded.</p>;
+    return <p className="text-[11px] text-ink-500">No class distribution recorded.</p>;
   }
 
   return (
     <div>
-      <div className="flex h-2.5 w-full overflow-hidden rounded-full bg-slate-100">
+      <div className="flex h-2.5 w-full overflow-hidden rounded-full bg-ink-950/10">
         {CANCER_CLASSES.map((c) => {
           const n = dist[c] ?? 0;
           if (!n) return null;
@@ -77,7 +77,7 @@ function ClassMix({ agent }: { agent: HospitalAgent }) {
       </div>
       <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1">
         {CANCER_CLASSES.map((c) => (
-          <span key={c} className="flex items-center gap-1 text-[10px] text-slate-500">
+          <span key={c} className="flex items-center gap-1 text-[10px] text-ink-600">
             <span
               className="h-1.5 w-1.5 rounded-full"
               style={{ background: CANCER_CLASS_INFO[c].color }}
@@ -181,7 +181,7 @@ export default function Agents() {
       </div>
 
       {skew !== null && (
-        <p className="mt-4 rounded-xl border border-slate-200 bg-white p-3 text-[11px] leading-relaxed text-slate-500">
+        <p className="mt-4 rounded-xl border border-ink-950/10 bg-white p-3 text-[11px] leading-relaxed text-ink-600">
           Partition sizes are capped at 1.5× the mean so no site is starved of data.
           Unconstrained Dirichlet sampling produced a 16.9× spread (205 vs 3,462 images);
           the current split keeps sizes near 1,413–2,050 while the <strong>class mix</strong>{" "}
@@ -204,7 +204,7 @@ export default function Agents() {
               actions={<Badge variant={STATUS_VARIANT[a.status]}>{a.status}</Badge>}
             >
               <div className="space-y-4">
-                <div className="flex items-center gap-2 text-[11px] text-slate-400">
+                <div className="flex items-center gap-2 text-[11px] text-ink-500">
                   <span className="font-mono">{a.agent_id}</span>
                   <span>·</span>
                   <span>{formatNumber(a.dataset_size)} images</span>
@@ -213,28 +213,28 @@ export default function Agents() {
                 </div>
 
                 <div>
-                  <p className="mb-1.5 text-[10px] font-medium uppercase tracking-widest text-slate-400">
+                  <p className="mb-1.5 text-[10px] font-medium uppercase tracking-widest text-ink-500">
                     Local class mix
                   </p>
                   <ClassMix agent={a} />
-                  <p className="mt-1.5 text-[10px] text-slate-400">
+                  <p className="mt-1.5 text-[10px] text-ink-500">
                     {formatPercent(dominantShare(a))} of this site&apos;s images are{" "}
                     {CANCER_CLASS_INFO[dominantClass(a)].label.toLowerCase()}.
                   </p>
                 </div>
 
                 <div className="grid grid-cols-3 gap-2 text-center">
-                  <div className="rounded-lg border border-slate-200 p-2">
-                    <p className="text-[9px] uppercase tracking-wider text-slate-400">Model</p>
-                    <p className="truncate font-mono text-[11px] text-slate-700">{a.model_version}</p>
+                  <div className="rounded-lg border border-ink-950/10 p-2">
+                    <p className="text-[9px] uppercase tracking-wider text-ink-500">Model</p>
+                    <p className="truncate font-mono text-[11px] text-ink-800">{a.model_version}</p>
                   </div>
-                  <div className="rounded-lg border border-slate-200 p-2">
-                    <p className="text-[9px] uppercase tracking-wider text-slate-400">Privacy</p>
+                  <div className="rounded-lg border border-ink-950/10 p-2">
+                    <p className="text-[9px] uppercase tracking-wider text-ink-500">Privacy</p>
                     <p className="text-[11px] text-emerald-600">{a.privacy_status}</p>
                   </div>
-                  <div className="rounded-lg border border-slate-200 p-2">
-                    <p className="text-[9px] uppercase tracking-wider text-slate-400">Last sync</p>
-                    <p className="text-[11px] text-slate-600">
+                  <div className="rounded-lg border border-ink-950/10 p-2">
+                    <p className="text-[9px] uppercase tracking-wider text-ink-500">Last sync</p>
+                    <p className="text-[11px] text-ink-700">
                       {a.last_sync ? new Date(a.last_sync).toLocaleDateString() : "never"}
                     </p>
                   </div>

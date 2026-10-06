@@ -27,12 +27,16 @@ export function StatCard({
   isReal?: boolean;
 }) {
   const tones: Record<string, { bg: string; text: string; bar: string }> = {
-    accent: { bg: "bg-accent-100", text: "text-accent-600", bar: "from-lilac-300 to-periwinkle-400" },
-    emerald: { bg: "bg-emerald-100", text: "text-emerald-600", bar: "from-emerald-300 to-emerald-500" },
-    amber: { bg: "bg-amber-100", text: "text-amber-600", bar: "from-amber-300 to-amber-500" },
-    red: { bg: "bg-red-100", text: "text-red-600", bar: "from-red-300 to-red-500" },
-    violet: { bg: "bg-violet-100", text: "text-violet-600", bar: "from-violet-300 to-violet-500" },
-    slate: { bg: "bg-slate-100", text: "text-slate-600", bar: "from-slate-300 to-slate-500" },
+    accent: {
+      bg: "bg-gradient-to-br from-pink-500 to-violet-500",
+      text: "text-white",
+      bar: "from-blush-500 via-lilac-500 to-periwinkle-500",
+    },
+    emerald: { bg: "bg-gradient-to-br from-emerald-400 to-emerald-600", text: "text-white", bar: "from-emerald-400 to-emerald-600" },
+    amber: { bg: "bg-gradient-to-br from-amber-400 to-amber-600", text: "text-white", bar: "from-amber-400 to-amber-600" },
+    red: { bg: "bg-gradient-to-br from-red-400 to-red-600", text: "text-white", bar: "from-red-400 to-red-600" },
+    violet: { bg: "bg-gradient-to-br from-violet-400 to-violet-600", text: "text-white", bar: "from-violet-400 to-violet-600" },
+    slate: { bg: "bg-gradient-to-br from-slate-400 to-slate-600", text: "text-white", bar: "from-slate-400 to-slate-600" },
   };
   const t = tones[tone];
 
@@ -106,29 +110,15 @@ export function Section({
         "rounded-2xl border p-5",
         tone === "light"
           ? "border-lilac-100 bg-white shadow-soft"
-          : "border-white/80 bg-white/75 backdrop-blur-xl",
+          : "border-lilac-200/80 bg-white/85 backdrop-blur-xl",
         className,
       )}
     >
       <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h2
-            className={cn(
-              "text-sm font-semibold tracking-tight",
-              tone === "light" ? "text-slate-900" : "text-ink-950",
-            )}
-          >
-            {title}
-          </h2>
+          <h2 className="text-sm font-semibold tracking-tight text-ink-950">{title}</h2>
           {description && (
-            <p
-              className={cn(
-                "mt-0.5 text-xs",
-                tone === "light" ? "text-slate-500" : "text-ink-600",
-              )}
-            >
-              {description}
-            </p>
+            <p className="mt-0.5 text-xs text-ink-600">{description}</p>
           )}
         </div>
         {actions}
@@ -144,10 +134,8 @@ export function Section({
 
 export function MetricRow({
   items,
-  tone = "light",
 }: {
   items: { label: string; value: number | null | undefined; format?: "pct" | "raw"; digits?: number; emphasise?: boolean }[];
-  tone?: "light" | "dark";
 }) {
   return (
     <dl
@@ -161,7 +149,7 @@ export function MetricRow({
           <dt
             className={cn(
               "truncate text-[10px] font-medium uppercase tracking-wider",
-              tone === "light" ? "text-slate-400" : "text-ink-500",
+              "text-ink-500",
             )}
           >
             {it.label}
@@ -169,11 +157,7 @@ export function MetricRow({
           <dd
             className={cn(
               "mt-0.5 text-lg font-semibold tabular-nums",
-              it.emphasise
-                ? "text-accent-600"
-                : tone === "light"
-                  ? "text-slate-900"
-                  : "text-ink-950",
+              it.emphasise ? "text-accent-700" : "text-ink-950",
             )}
           >
             {it.format === "pct"
@@ -244,7 +228,7 @@ export function ScheduledPage({
   return (
     <div className="mx-auto max-w-3xl py-10">
       <div className="glass-panel overflow-hidden">
-        <div className="border-b border-ink-950/10 bg-gradient-to-r from-lilac-200/70 via-blush-200/50 to-transparent px-6 py-5">
+        <div className="border-b border-ink-950/10 bg-gradient-to-r from-blush-300/60 via-lilac-300/40 to-transparent px-6 py-5">
           <Badge variant="warning" className="mb-2">
             <Clock className="h-3 w-3" /> Scheduled · Week {week}
           </Badge>
@@ -268,7 +252,7 @@ export function ScheduledPage({
             </div>
           </div>
 
-          <div className="rounded-xl border border-ink-950/10 bg-white/70 p-4">
+          <div className="rounded-xl border border-ink-950/10 bg-ink-950/5 p-4">
             <p className="text-xs font-medium uppercase tracking-wider text-ink-500">
               What lands here in week {week}
             </p>
