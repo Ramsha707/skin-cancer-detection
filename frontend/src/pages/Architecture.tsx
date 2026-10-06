@@ -73,11 +73,11 @@ const LAYERS: {
 ];
 
 const TONES: Record<string, { bg: string; text: string; border: string }> = {
-  accent: { bg: "bg-accent-500/15", text: "text-accent-300", border: "border-accent-400/30" },
-  emerald: { bg: "bg-emerald-500/15", text: "text-emerald-300", border: "border-emerald-400/30" },
-  violet: { bg: "bg-violet-500/15", text: "text-violet-300", border: "border-violet-400/30" },
-  amber: { bg: "bg-amber-500/15", text: "text-amber-300", border: "border-amber-400/30" },
-  slate: { bg: "bg-slate-500/15", text: "text-slate-300", border: "border-slate-400/30" },
+  accent: { bg: "bg-accent-200", text: "text-accent-800", border: "border-accent-300" },
+  emerald: { bg: "bg-emerald-200", text: "text-emerald-800", border: "border-emerald-300" },
+  violet: { bg: "bg-violet-200", text: "text-violet-800", border: "border-violet-300" },
+  amber: { bg: "bg-amber-200", text: "text-amber-800", border: "border-amber-300" },
+  slate: { bg: "bg-ink-950/10", text: "text-ink-800", border: "border-ink-950/10" },
 };
 
 export default function Architecture() {
@@ -86,6 +86,7 @@ export default function Architecture() {
       <PageHeader
         title="System Architecture"
         description="Six layers, from four hospital agents to explainable prediction. This is the design that the running code implements."
+        icon={Network}
       />
 
       {/* Chain header */}
@@ -94,7 +95,7 @@ export default function Architecture() {
           {["Hospital Agents", "Local Data", "Preprocessing", "Cancer Model", "FedAvg", "Global Model", "Broadcast", "Explainability"].map(
             (s, i, arr) => (
               <div key={s} className="flex items-center gap-2">
-                <span className="rounded-lg border border-white/10 bg-white/5 px-2.5 py-1.5 font-medium text-navy-100">
+                <span className="rounded-lg border border-ink-950/10 bg-ink-950/5 px-2.5 py-1.5 font-medium text-ink-900">
                   {s}
                 </span>
                 {i < arr.length - 1 && <span className="text-accent-400">→</span>}
@@ -113,7 +114,7 @@ export default function Architecture() {
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.06, duration: 0.35 }}
-              className={`relative rounded-2xl border bg-navy-900/60 p-5 backdrop-blur-xl ${t.border}`}
+              className={`relative rounded-2xl border bg-white p-5 shadow-soft ${t.border}`}
             >
               <div className="flex items-start gap-4">
                 <div className={`rounded-xl p-2.5 ${t.bg} ${t.text}`}>
@@ -121,18 +122,18 @@ export default function Architecture() {
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <span className="font-mono text-[10px] text-navy-500">
+                    <span className="font-mono text-[10px] text-ink-500">
                       LAYER {String(layer.n).padStart(2, "0")}
                     </span>
                   </div>
-                  <h2 className="mt-0.5 text-base font-semibold text-white">{layer.title}</h2>
-                  <p className="mt-1 text-xs leading-relaxed text-navy-400">{layer.body}</p>
+                  <h2 className="mt-0.5 text-base font-semibold text-ink-950">{layer.title}</h2>
+                  <p className="mt-1 text-xs leading-relaxed text-ink-600">{layer.body}</p>
 
                   <ul className="mt-3 flex flex-wrap gap-1.5">
                     {layer.detail.map((d) => (
                       <li
                         key={d}
-                        className="rounded-md border border-white/10 bg-navy-950/50 px-2 py-1 text-[10px] text-navy-300"
+                        className="rounded-md border border-ink-950/10 bg-ink-950/5 px-2 py-1 text-[10px] text-ink-700"
                       >
                         {d}
                       </li>
@@ -142,7 +143,7 @@ export default function Architecture() {
               </div>
 
               {i < LAYERS.length - 1 && (
-                <div className="absolute -bottom-3 left-8 z-10 flex h-6 w-6 items-center justify-center rounded-full border border-white/10 bg-navy-950 text-accent-400">
+                <div className="absolute -bottom-3 left-8 z-10 flex h-6 w-6 items-center justify-center rounded-full border border-ink-950/10 bg-white text-accent-600 shadow-soft">
                   <span className="text-[10px]">↓</span>
                 </div>
               )}
@@ -152,16 +153,16 @@ export default function Architecture() {
       </div>
 
       {/* Privacy invariant */}
-      <div className="mt-6 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+      <div className="mt-6 rounded-2xl border border-emerald-300/70 bg-emerald-100 p-5">
         <div className="flex items-start gap-3">
-          <Lock className="mt-0.5 h-5 w-5 shrink-0 text-emerald-400" />
+          <Lock className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" />
           <div>
-            <h3 className="text-sm font-semibold text-emerald-200">The privacy invariant</h3>
-            <p className="mt-1 text-xs leading-relaxed text-emerald-100/70">
+            <h3 className="text-sm font-semibold text-emerald-900">The privacy invariant</h3>
+            <p className="mt-1 text-xs leading-relaxed text-emerald-800/90">
               Layer 2 and layer 5 never connect. A hospital agent exposes exactly three operations to
-              the aggregator — <code className="rounded bg-black/20 px-1 font-mono">fit()</code>,{" "}
-              <code className="rounded bg-black/20 px-1 font-mono">update()</code> and{" "}
-              <code className="rounded bg-black/20 px-1 font-mono">load()</code> — all of which accept
+              the aggregator — <code className="rounded bg-emerald-900/10 px-1 font-mono">fit()</code>,{" "}
+              <code className="rounded bg-emerald-900/10 px-1 font-mono">update()</code> and{" "}
+              <code className="rounded bg-emerald-900/10 px-1 font-mono">load()</code> — all of which accept
               and return tensors. There is no code path by which a pixel array reaches the central
               server, which is why the raw-image counter is structurally zero rather than
               merely reported as zero.
@@ -171,10 +172,10 @@ export default function Architecture() {
       </div>
 
       {/* Model adaptation chain */}
-      <div className="mt-5 rounded-2xl border border-white/10 bg-navy-900/60 p-5">
+      <div className="mt-5 rounded-2xl border border-ink-950/10 bg-white p-5 shadow-soft">
         <div className="mb-3 flex items-center gap-2">
-          <Server className="h-4 w-4 text-accent-300" />
-          <h3 className="text-sm font-semibold text-white">Model adaptation chain</h3>
+          <Server className="h-4 w-4 text-accent-600" />
+          <h3 className="text-sm font-semibold text-ink-950">Model adaptation chain</h3>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           {[
@@ -187,9 +188,9 @@ export default function Architecture() {
             const [title, sub] = s.split("\n");
             return (
               <div key={title} className="flex items-center gap-2">
-                <div className="rounded-xl border border-white/10 bg-navy-950/60 px-3 py-2 text-center">
-                  <p className="text-[11px] font-semibold text-white">{title}</p>
-                  <p className="text-[10px] text-navy-400">{sub}</p>
+                <div className="rounded-xl border border-ink-950/10 bg-white px-3 py-2 text-center shadow-soft">
+                  <p className="text-[11px] font-semibold text-ink-950">{title}</p>
+                  <p className="text-[10px] text-ink-600">{sub}</p>
                 </div>
                 {i < arr.length - 1 && <span className="text-accent-400">→</span>}
               </div>

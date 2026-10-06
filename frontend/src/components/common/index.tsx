@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { motion } from "framer-motion";
-import { AlertTriangle, Clock, FlaskConical, type LucideIcon } from "lucide-react";
+import { AlertTriangle, CalendarDays, Clock, FlaskConical, type LucideIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn, formatMetric, formatPercent } from "@/lib/utils";
 
@@ -27,12 +27,16 @@ export function StatCard({
   isReal?: boolean;
 }) {
   const tones: Record<string, { bg: string; text: string; bar: string }> = {
-    accent: { bg: "bg-accent-500/10", text: "text-accent-300", bar: "from-accent-400 to-accent-600" },
-    emerald: { bg: "bg-emerald-500/10", text: "text-emerald-300", bar: "from-emerald-400 to-emerald-600" },
-    amber: { bg: "bg-amber-500/10", text: "text-amber-300", bar: "from-amber-400 to-amber-600" },
-    red: { bg: "bg-red-500/10", text: "text-red-300", bar: "from-red-400 to-red-600" },
-    violet: { bg: "bg-violet-500/10", text: "text-violet-300", bar: "from-violet-400 to-violet-600" },
-    slate: { bg: "bg-slate-500/10", text: "text-slate-300", bar: "from-slate-400 to-slate-600" },
+    accent: {
+      bg: "bg-gradient-to-br from-blush-400 to-blue-500",
+      text: "text-white",
+      bar: "from-blush-400 via-blue-400 to-blue-500",
+    },
+    emerald: { bg: "bg-gradient-to-br from-emerald-400 to-emerald-600", text: "text-white", bar: "from-emerald-400 to-emerald-600" },
+    amber: { bg: "bg-gradient-to-br from-amber-400 to-amber-600", text: "text-white", bar: "from-amber-400 to-amber-600" },
+    red: { bg: "bg-gradient-to-br from-red-400 to-red-600", text: "text-white", bar: "from-red-400 to-red-600" },
+    violet: { bg: "bg-gradient-to-br from-violet-400 to-violet-600", text: "text-white", bar: "from-violet-400 to-violet-600" },
+    slate: { bg: "bg-gradient-to-br from-slate-400 to-slate-600", text: "text-white", bar: "from-slate-400 to-slate-600" },
   };
   const t = tones[tone];
 
@@ -41,14 +45,14 @@ export function StatCard({
       <div className={cn("absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r", t.bar)} />
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wider text-navy-400">
+          <p className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wider text-ink-600">
             {label}
             {!isReal && <DemoTag compact />}
           </p>
-          <p className="mt-1.5 text-2xl font-semibold tabular-nums tracking-tight text-white">
+          <p className="mt-1.5 text-2xl font-semibold tabular-nums tracking-tight text-ink-950">
             {value}
           </p>
-          {hint && <p className="mt-0.5 truncate text-[11px] text-navy-500">{hint}</p>}
+          {hint && <p className="mt-0.5 truncate text-[11px] text-ink-500">{hint}</p>}
           {sub && <div className="mt-2">{sub}</div>}
         </div>
         {Icon && (
@@ -62,6 +66,23 @@ export function StatCard({
 }
 
 /* ------------------------------------------------------------------ */
+/* Page-title icon chip                                                 */
+/* ------------------------------------------------------------------ */
+
+export function TitleIcon({ icon: Icon, className }: { icon: LucideIcon; className?: string }) {
+  return (
+    <div
+      className={cn(
+        "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blush-400 to-blue-500 shadow-soft",
+        className,
+      )}
+    >
+      <Icon className="h-5 w-5 text-white" />
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /* Demo-data marker                                                    */
 /* ------------------------------------------------------------------ */
 
@@ -70,7 +91,7 @@ export function DemoTag({ compact, label }: { compact?: boolean; label?: string 
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1 rounded border border-amber-500/40 bg-amber-500/10 font-medium uppercase tracking-wide text-amber-300",
+        "inline-flex items-center gap-1 rounded border border-amber-300 bg-amber-100 font-medium uppercase tracking-wide text-amber-700",
         compact ? "px-1 py-0 text-[8px]" : "px-2 py-0.5 text-[9px]",
       )}
       title="Value produced by the simulation harness, not by a real experiment."
@@ -105,30 +126,16 @@ export function Section({
       className={cn(
         "rounded-2xl border p-5",
         tone === "light"
-          ? "border-slate-200 bg-white shadow-soft"
-          : "border-white/10 bg-navy-900/60 backdrop-blur-xl",
+          ? "border-lilac-100 bg-white shadow-soft"
+          : "border-lilac-200/80 bg-white/85 backdrop-blur-xl",
         className,
       )}
     >
       <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h2
-            className={cn(
-              "text-sm font-semibold tracking-tight",
-              tone === "light" ? "text-slate-900" : "text-white",
-            )}
-          >
-            {title}
-          </h2>
+          <h2 className="text-sm font-semibold tracking-tight text-ink-950">{title}</h2>
           {description && (
-            <p
-              className={cn(
-                "mt-0.5 text-xs",
-                tone === "light" ? "text-slate-500" : "text-navy-400",
-              )}
-            >
-              {description}
-            </p>
+            <p className="mt-0.5 text-xs text-ink-600">{description}</p>
           )}
         </div>
         {actions}
@@ -144,10 +151,8 @@ export function Section({
 
 export function MetricRow({
   items,
-  tone = "light",
 }: {
   items: { label: string; value: number | null | undefined; format?: "pct" | "raw"; digits?: number; emphasise?: boolean }[];
-  tone?: "light" | "dark";
 }) {
   return (
     <dl
@@ -161,7 +166,7 @@ export function MetricRow({
           <dt
             className={cn(
               "truncate text-[10px] font-medium uppercase tracking-wider",
-              tone === "light" ? "text-slate-400" : "text-navy-500",
+              "text-ink-500",
             )}
           >
             {it.label}
@@ -169,11 +174,7 @@ export function MetricRow({
           <dd
             className={cn(
               "mt-0.5 text-lg font-semibold tabular-nums",
-              it.emphasise
-                ? "text-accent-600"
-                : tone === "light"
-                  ? "text-slate-900"
-                  : "text-white",
+              it.emphasise ? "text-accent-700" : "text-ink-950",
             )}
           >
             {it.format === "pct"
@@ -204,19 +205,19 @@ export function EmptyState({
   action?: ReactNode;
 }) {
   const cfg = {
-    awaiting: { ring: "border-amber-500/30 bg-amber-500/10", icon: "text-amber-400", text: "text-amber-200" },
-    empty: { ring: "border-white/10 bg-white/5", icon: "text-navy-400", text: "text-navy-300" },
-    error: { ring: "border-red-500/30 bg-red-500/10", icon: "text-red-400", text: "text-red-200" },
+    awaiting: { ring: "border-amber-300/70 bg-amber-100", icon: "text-amber-600", text: "text-amber-800" },
+    empty: { ring: "border-ink-950/10 bg-ink-950/5", icon: "text-ink-600", text: "text-ink-800" },
+    error: { ring: "border-red-300/70 bg-red-100", icon: "text-red-600", text: "text-red-800" },
   }[variant];
 
   return (
-    <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-white/15 px-6 py-12 text-center">
+    <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-ink-950/15 px-6 py-12 text-center">
       <div className={cn("rounded-xl border p-3", cfg.ring)}>
         <Icon className={cn("h-5 w-5", cfg.icon)} />
       </div>
       <h3 className={cn("mt-3 text-sm font-semibold", cfg.text)}>{title}</h3>
       {description && (
-        <p className="mt-1 max-w-md text-xs leading-relaxed text-navy-400">{description}</p>
+        <p className="mt-1 max-w-md text-xs leading-relaxed text-ink-600">{description}</p>
       )}
       {action && <div className="mt-4">{action}</div>}
     </div>
@@ -244,37 +245,40 @@ export function ScheduledPage({
   return (
     <div className="mx-auto max-w-3xl py-10">
       <div className="glass-panel overflow-hidden">
-        <div className="border-b border-white/10 bg-gradient-to-r from-accent-500/10 to-transparent px-6 py-5">
-          <Badge variant="warning" className="mb-2">
-            <Clock className="h-3 w-3" /> Scheduled · Week {week}
-          </Badge>
-          <h1 className="text-xl font-semibold tracking-tight text-white">{title}</h1>
-          <p className="mt-1 text-sm text-navy-400">{planned}</p>
+        <div className="flex items-center gap-3 border-b border-ink-950/10 bg-gradient-to-r from-blush-200/70 via-blue-200/40 to-transparent px-6 py-5">
+          <TitleIcon icon={CalendarDays} />
+          <div>
+            <Badge variant="warning" className="mb-1">
+              <Clock className="h-3 w-3" /> Scheduled · Week {week}
+            </Badge>
+            <h1 className="text-xl font-semibold tracking-tight text-ink-950">{title}</h1>
+            <p className="mt-1 text-sm text-ink-600">{planned}</p>
+          </div>
         </div>
 
         <div className="space-y-4 px-6 py-6">
-          <div className="flex items-start gap-3 rounded-xl border border-amber-500/25 bg-amber-500/10 p-4">
-            <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-400" />
+          <div className="flex items-start gap-3 rounded-xl border border-amber-300/70 bg-amber-100 p-4">
+            <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" />
             <div>
-              <p className="text-sm font-medium text-amber-200">
+              <p className="text-sm font-medium text-amber-900">
                 This module is intentionally not built yet
               </p>
-              <p className="mt-1 text-xs leading-relaxed text-amber-200/70">
+              <p className="mt-1 text-xs leading-relaxed text-amber-700/90">
                 The project is being delivered week by week. This build implements{" "}
-                <strong className="text-amber-100">weeks 1 through 8</strong>. Showing a
+                <strong className="text-amber-900">weeks 1 through 6</strong>. Showing a
                 placeholder rather than fabricated numbers keeps every figure in this
                 application traceable to code that actually ran.
               </p>
             </div>
           </div>
 
-          <div className="rounded-xl border border-white/10 bg-navy-950/50 p-4">
-            <p className="text-xs font-medium uppercase tracking-wider text-navy-500">
+          <div className="rounded-xl border border-ink-950/10 bg-ink-950/5 p-4">
+            <p className="text-xs font-medium uppercase tracking-wider text-ink-500">
               What lands here in week {week}
             </p>
-            <ul className="mt-2 space-y-1.5 text-xs text-navy-300">
+            <ul className="mt-2 space-y-1.5 text-xs text-ink-700">
               <li>· Backend endpoints under `/api/{title.toLowerCase().replace(/\s+/g, "-")}`</li>
-              <li>· Wired to the federated engine already running in week 7</li>
+              <li>· Wired to the federated engine planned from week 7</li>
               <li>· Backed by real results — no illustrative placeholders</li>
             </ul>
           </div>

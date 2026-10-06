@@ -10,32 +10,58 @@ export default {
     },
     extend: {
       colors: {
-        /* Dark navy research-console surface */
-        navy: {
-          50: "#f2f6fc",
-          100: "#e2ebf8",
-          200: "#c3d6ef",
-          300: "#94b6e1",
-          400: "#5d8fcf",
-          500: "#3a70ba",
-          600: "#2b569b",
-          700: "#24457c",
-          800: "#1c3560",
-          900: "#0d1c38",
-          950: "#071225",
+        /* Purple-tinted neutral ink ramp for light theme text — dark enough
+           to hold contrast on white, with the faintest tiers still readable. */
+        ink: {
+          50: "#f6f5fb",
+          100: "#eceaf5",
+          200: "#d9d4ea",
+          300: "#b5aecb",
+          400: "#857ea6",
+          500: "#685f8c",
+          600: "#524b70",
+          700: "#433d5c",
+          800: "#353049",
+          900: "#2b273f",
+          950: "#221f33",
         },
-        /* Clinical cyan accent */
+        /* Vibrant pastel families: blush pink, lilac purple, periwinkle blue */
+        blush: {
+          50: "#fff0f6",
+          100: "#ffe3ee",
+          200: "#ffc7de",
+          300: "#ffa2c9",
+          400: "#fb6cab",
+          500: "#f23d92",
+        },
+        lilac: {
+          50: "#f6f2ff",
+          100: "#ede5ff",
+          200: "#ddccff",
+          300: "#c3a7fd",
+          400: "#a377f9",
+          500: "#8b4ff0",
+        },
+        periwinkle: {
+          50: "#f1f5ff",
+          100: "#e4edff",
+          200: "#ccdcff",
+          300: "#aac2ff",
+          400: "#8aa0fb",
+          500: "#6781f2",
+        },
+        /* Primary accent — vivid violet (aligned to Tailwind violet scale) */
         accent: {
-          50: "#ecfeff",
-          100: "#cffafe",
-          200: "#a5f3fc",
-          300: "#67e8f9",
-          400: "#22d3ee",
-          500: "#06b6d4",
-          600: "#0891b2",
-          700: "#0e7490",
-          800: "#155e75",
-          900: "#164e63",
+          50: "#f5f3ff",
+          100: "#ede9fe",
+          200: "#ddd6fe",
+          300: "#c4b5fd",
+          400: "#a78bfa",
+          500: "#8b5cf6",
+          600: "#7c3aed",
+          700: "#6d28d9",
+          800: "#5b21b6",
+          900: "#4c1d95",
         },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -81,8 +107,9 @@ export default {
         mono: ["JetBrains Mono", "SFMono-Regular", "monospace"],
       },
       boxShadow: {
-        soft: "0 1px 2px 0 rgb(13 28 56 / 0.04), 0 4px 16px -2px rgb(13 28 56 / 0.08)",
-        glow: "0 0 0 1px rgb(34 211 238 / 0.25), 0 8px 32px -8px rgb(34 211 238 / 0.35)",
+        soft: "0 1px 2px 0 rgb(43 39 63 / 0.05), 0 6px 24px -6px rgb(96 165 250 / 0.22)",
+        glow: "0 0 0 1px rgb(191 219 254 / 0.5), 0 8px 32px -8px rgb(96 165 250 / 0.45)",
+        "glow-btn": "0 2px 10px -2px rgb(96 165 250 / 0.5), 0 8px 24px -6px rgb(251 113 133 / 0.4)",
       },
       keyframes: {
         "accordion-down": {
@@ -94,9 +121,9 @@ export default {
           to: { height: "0" },
         },
         pulseRing: {
-          "0%": { boxShadow: "0 0 0 0 rgb(34 211 238 / 0.45)" },
-          "70%": { boxShadow: "0 0 0 12px rgb(34 211 238 / 0)" },
-          "100%": { boxShadow: "0 0 0 0 rgb(34 211 238 / 0)" },
+          "0%": { boxShadow: "0 0 0 0 rgb(96 165 250 / 0.5)" },
+          "70%": { boxShadow: "0 0 0 12px rgb(96 165 250 / 0)" },
+          "100%": { boxShadow: "0 0 0 0 rgb(96 165 250 / 0)" },
         },
         dashFlow: {
           to: { strokeDashoffset: "-1000" },

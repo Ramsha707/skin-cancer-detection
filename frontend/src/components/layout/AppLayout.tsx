@@ -1,9 +1,10 @@
 import { useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Activity, Menu, PanelLeftClose, PanelLeftOpen, X } from "lucide-react";
+import { Activity, Menu, PanelLeftClose, PanelLeftOpen, X, type LucideIcon } from "lucide-react";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Badge } from "@/components/ui/badge";
+import { TitleIcon } from "@/components/common";
 import { SystemStatusContext, useDashboard } from "@/hooks/useDashboard";
 import { RESEARCH_DISCLAIMER } from "@/types";
 import { cn } from "@/lib/utils";
@@ -11,9 +12,9 @@ import { cn } from "@/lib/utils";
 /** Persistent medical-safety banner. Shown on every single page, without exception. */
 export function SafetyBanner() {
   return (
-    <div className="flex items-start gap-2.5 border-b border-amber-500/25 bg-amber-500/10 px-4 py-2.5">
-      <Activity className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-400" />
-      <p className="text-[11px] leading-relaxed text-amber-200/90">{RESEARCH_DISCLAIMER}</p>
+    <div className="flex items-start gap-2.5 border-b border-amber-200 bg-amber-100/80 px-4 py-2.5">
+      <Activity className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-600" />
+      <p className="text-[11px] leading-relaxed text-amber-800">{RESEARCH_DISCLAIMER}</p>
     </div>
   );
 }
@@ -28,7 +29,7 @@ function LiveStatusPill() {
         <span
           className={cn(
             "h-1.5 w-1.5 rounded-full",
-            online ? "animate-pulse bg-emerald-400" : "bg-slate-500",
+            online ? "animate-pulse bg-emerald-400" : "bg-lilac-500",
           )}
         />
         {data.active_agents}/{data.total_agents} agents
@@ -56,7 +57,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
   return (
     <SystemStatusContext.Provider value={sysStatus}>
-      <div className="flex h-screen w-full overflow-hidden bg-navy-950">
+      <div className="flex h-screen w-full overflow-hidden bg-transparent">
         {/* Desktop sidebar */}
         <div className="hidden lg:block">
           <Sidebar collapsed={collapsed} />
@@ -71,7 +72,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={() => setMobileOpen(false)}
-                className="fixed inset-0 z-40 bg-navy-950/80 backdrop-blur-sm lg:hidden"
+                className="fixed inset-0 z-40 bg-ink-950/30 backdrop-blur-sm lg:hidden"
               />
               <motion.div
                 initial={{ x: -280 }}
@@ -84,7 +85,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
                 <button
                   onClick={() => setMobileOpen(false)}
                   aria-label="Close navigation"
-                  className="absolute -right-11 top-4 rounded-lg bg-navy-900 p-2 text-navy-300"
+                  className="absolute -right-11 top-4 rounded-lg bg-white p-2 text-ink-700 shadow-soft"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -95,11 +96,11 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
         {/* Main column */}
         <div className="flex min-w-0 flex-1 flex-col">
-          <header className="flex items-center gap-3 border-b border-white/10 bg-navy-950/80 px-4 py-3 backdrop-blur-xl">
+          <header className="flex items-center gap-3 border-b border-ink-950/10 bg-white/70 px-4 py-3 backdrop-blur-xl">
             <button
               onClick={() => setMobileOpen(true)}
               aria-label="Open navigation"
-              className="rounded-lg p-2 text-navy-300 transition-colors hover:bg-white/5 hover:text-white lg:hidden"
+              className="rounded-lg p-2 text-ink-700 transition-colors hover:bg-ink-950/5 hover:text-ink-950 lg:hidden"
             >
               <Menu className="h-4 w-4" />
             </button>
@@ -107,16 +108,16 @@ export function AppLayout({ children }: { children: ReactNode }) {
             <button
               onClick={() => setCollapsed((c) => !c)}
               aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-              className="hidden rounded-lg p-2 text-navy-400 transition-colors hover:bg-white/5 hover:text-white lg:block"
+              className="hidden rounded-lg p-2 text-ink-600 transition-colors hover:bg-ink-950/5 hover:text-ink-950 lg:block"
             >
               {collapsed ? <PanelLeftOpen className="h-4 w-4" /> : <PanelLeftClose className="h-4 w-4" />}
             </button>
 
             <Link to="/" className="min-w-0 flex-1">
-              <p className="truncate text-sm font-medium text-navy-100">
+              <p className="truncate text-sm font-medium text-ink-900">
                 Privacy-Preserving Multi-Class Skin Cancer Detection
               </p>
-              <p className="truncate text-[11px] text-navy-500">
+              <p className="truncate text-[11px] text-ink-500">
                 Federated learning across four hospital agents
               </p>
             </Link>
@@ -152,16 +153,21 @@ export function PageHeader({
   title,
   description,
   actions,
+  icon: Icon,
 }: {
   title: string;
   description?: string;
   actions?: ReactNode;
+  icon?: LucideIcon;
 }) {
   return (
     <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-      <div>
-        <h1 className="text-xl font-semibold tracking-tight text-white md:text-2xl">{title}</h1>
-        {description && <p className="mt-1 max-w-3xl text-sm text-navy-400">{description}</p>}
+      <div className="flex items-center gap-3">
+        {Icon && <TitleIcon icon={Icon} />}
+        <div>
+          <h1 className="text-xl font-semibold tracking-tight text-ink-950 md:text-2xl">{title}</h1>
+          {description && <p className="mt-1 max-w-3xl text-sm text-ink-600">{description}</p>}
+        </div>
       </div>
       {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}
     </div>

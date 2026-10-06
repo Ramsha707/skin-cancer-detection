@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import {
   AlertTriangle,
   ArrowLeft,
+  Building2,
   DownloadCloud,
   PauseCircle,
   PlayCircle,
@@ -21,25 +22,13 @@ import { CANCER_CLASSES, CANCER_CLASS_INFO } from "@/types";
 import { cn, formatDateTime, formatNumber, formatPercent } from "@/lib/utils";
 
 /** MetricRow only renders numbers, so string fields get their own row. */
-function InfoRow({ label, value, tone = "light" }: { label: string; value: string; tone?: "light" | "dark" }) {
+function InfoRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-baseline justify-between gap-3">
-      <span
-        className={cn(
-          "text-[10px] font-medium uppercase tracking-wider",
-          tone === "light" ? "text-slate-400" : "text-navy-500",
-        )}
-      >
+      <span className="text-[10px] font-medium uppercase tracking-wider text-ink-500">
         {label}
       </span>
-      <span
-        className={cn(
-          "truncate text-sm font-semibold",
-          tone === "light" ? "text-slate-900" : "text-white",
-        )}
-      >
-        {value}
-      </span>
+      <span className="truncate text-sm font-semibold text-ink-950">{value}</span>
     </div>
   );
 }
@@ -55,7 +44,7 @@ export default function AgentDetail() {
   if (error) {
     return (
       <>
-        <PageHeader title="Hospital Detail" />
+        <PageHeader title="Hospital Detail" icon={Building2} />
         <EmptyState
           variant="error"
           icon={AlertTriangle}
@@ -73,7 +62,7 @@ export default function AgentDetail() {
   if (isLoading || !agent) {
     return (
       <>
-        <PageHeader title="Hospital Detail" description="Loading agent record…" />
+        <PageHeader title="Hospital Detail" description="Loading agent record…" icon={Building2} />
         <div className="glass-panel h-64 animate-pulse" />
       </>
     );
@@ -89,6 +78,7 @@ export default function AgentDetail() {
       <PageHeader
         title={agent.name}
         description={`${agent.agent_id} · ${agent.location ?? "location not recorded"}`}
+        icon={Building2}
         actions={
           <Button asChild variant="ghost" size="sm">
             <Link to="/agents">
@@ -128,18 +118,18 @@ export default function AgentDetail() {
               return (
                 <div key={c}>
                   <div className="mb-1 flex items-center justify-between text-xs">
-                    <span className="flex items-center gap-1.5 text-slate-700">
+                    <span className="flex items-center gap-1.5 text-ink-800">
                       <span
                         className="h-2 w-2 rounded-full"
                         style={{ background: CANCER_CLASS_INFO[c].color }}
                       />
                       {CANCER_CLASS_INFO[c].label}
                     </span>
-                    <span className="tabular-nums text-slate-500">
+                    <span className="tabular-nums text-ink-600">
                       {formatNumber(n)} · {formatPercent(frac)}
                     </span>
                   </div>
-                  <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
+                  <div className="h-2 w-full overflow-hidden rounded-full bg-ink-950/10">
                     <div
                       className="h-full rounded-full"
                       style={{ width: `${frac * 100}%`, background: CANCER_CLASS_INFO[c].color }}
@@ -153,15 +143,14 @@ export default function AgentDetail() {
 
         <Section title="Federated status" description="Participation and local controls." tone="dark">
           <div className="space-y-3">
-            <InfoRow tone="dark" label="Status" value={agent.status} />
-            <InfoRow tone="dark" label="Model version" value={agent.model_version} />
-            <InfoRow tone="dark" label="Rounds participated" value={String(agent.rounds_participated)} />
+            <InfoRow label="Status" value={agent.status} />
+            <InfoRow label="Model version" value={agent.model_version} />
+            <InfoRow label="Rounds participated" value={String(agent.rounds_participated)} />
             <InfoRow
-              tone="dark"
               label="Last sync"
               value={agent.last_sync ? formatDateTime(agent.last_sync) : "never"}
             />
-            <InfoRow tone="dark" label="Privacy status" value={agent.privacy_status} />
+            <InfoRow label="Privacy status" value={agent.privacy_status} />
 
             <div className="flex flex-wrap gap-2 pt-2">
               <Button
@@ -216,7 +205,7 @@ export default function AgentDetail() {
           description="The complete transmission surface for one hospital."
           actions={<Badge variant="success">images: 0</Badge>}
         >
-          <ul className="space-y-2.5 text-xs text-slate-600">
+          <ul className="space-y-2.5 text-xs text-ink-700">
             {[
               ["Dermatite images", "Never transmitted", true],
               ["Patient identifiers", "Never transmitted", true],
@@ -234,8 +223,8 @@ export default function AgentDetail() {
                   {safe ? "✓" : "→"}
                 </span>
                 <span>
-                  <span className="font-medium text-slate-800">{label as string}</span>
-                  <span className="text-slate-400"> — {value as string}</span>
+                  <span className="font-medium text-ink-900">{label as string}</span>
+                  <span className="text-ink-500"> — {value as string}</span>
                 </span>
               </li>
             ))}

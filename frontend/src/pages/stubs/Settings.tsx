@@ -22,16 +22,16 @@ export default function Settings() {
       <section className="glass-panel p-5">
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Settings2 className="h-4 w-4 text-accent-300" />
-            <h2 className="text-sm font-semibold text-white">Runtime status</h2>
+            <Settings2 className="h-4 w-4 text-accent-500" />
+            <h2 className="text-sm font-semibold text-ink-950">Runtime status</h2>
           </div>
           {error && <Badge variant="destructive">backend unreachable</Badge>}
         </div>
-        <dl className="divide-y divide-white/5">
+        <dl className="divide-y divide-ink-950/5">
           {rows.map(([k, v]) => (
             <div key={k} className="flex items-center justify-between gap-4 py-2.5">
-              <dt className="text-xs text-navy-400">{k}</dt>
-              <dd className="truncate font-mono text-xs text-white">{v}</dd>
+              <dt className="text-xs text-ink-600">{k}</dt>
+              <dd className="truncate font-mono text-xs text-ink-800">{v}</dd>
             </div>
           ))}
         </dl>

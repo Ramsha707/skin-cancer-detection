@@ -38,7 +38,7 @@ export default function Dashboard() {
   if (error) {
     return (
       <>
-        <PageHeader title="Dashboard" />
+        <PageHeader title="Dashboard" icon={Activity} />
         <EmptyState
           variant="error"
           icon={AlertTriangle}
@@ -52,7 +52,7 @@ export default function Dashboard() {
   if (isLoading || !data) {
     return (
       <>
-        <PageHeader title="Dashboard" description="Loading live system state…" />
+        <PageHeader title="Dashboard" description="Loading live system state…" icon={Activity} />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {Array.from({ length: 8 }).map((_, i) => (
             <div key={i} className="glass-panel h-28 animate-pulse" />
@@ -70,6 +70,7 @@ export default function Dashboard() {
       <PageHeader
         title="Dashboard"
         description="Live federated state across four hospital agents. Every figure below is read from the backend database."
+        icon={Activity}
         actions={
           <>
             <Button asChild variant="outline" size="sm">
@@ -159,43 +160,43 @@ export default function Dashboard() {
           actions={<Badge variant="success">Protected</Badge>}
         >
           <div className="space-y-4">
-            <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-center">
-              <p className="text-[10px] font-medium uppercase tracking-widest text-emerald-300/80">
+            <div className="rounded-xl border border-emerald-300/70 bg-emerald-100 p-4 text-center">
+              <p className="text-[10px] font-medium uppercase tracking-widest text-emerald-700">
                 Raw patient images shared
               </p>
-              <p className="mt-1 text-4xl font-bold tabular-nums text-emerald-300">
+              <p className="mt-1 text-4xl font-bold tabular-nums text-emerald-600">
                 {data.privacy.raw_images_shared}
               </p>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-lg border border-white/10 bg-navy-950/50 p-3">
-                <p className="text-[10px] uppercase tracking-wider text-navy-500">Updates shared</p>
-                <p className="mt-0.5 text-sm font-semibold text-accent-300">
+              <div className="rounded-lg border border-ink-950/10 bg-ink-950/5 p-3">
+                <p className="text-[10px] uppercase tracking-wider text-ink-500">Updates shared</p>
+                <p className="mt-0.5 text-sm font-semibold text-accent-600">
                   {data.privacy.model_updates_shared ? "YES" : "NO"}
                 </p>
               </div>
-              <div className="rounded-lg border border-white/10 bg-navy-950/50 p-3">
-                <p className="text-[10px] uppercase tracking-wider text-navy-500">Protected sites</p>
-                <p className="mt-0.5 text-sm font-semibold text-white">
+              <div className="rounded-lg border border-ink-950/10 bg-ink-950/5 p-3">
+                <p className="text-[10px] uppercase tracking-wider text-ink-500">Protected sites</p>
+                <p className="mt-0.5 text-sm font-semibold text-ink-950">
                   {data.privacy.agents_protected}/{data.privacy.total_agents}
                 </p>
               </div>
-              <div className="rounded-lg border border-white/10 bg-navy-950/50 p-3">
-                <p className="text-[10px] uppercase tracking-wider text-navy-500">Transmissions</p>
-                <p className="mt-0.5 text-sm font-semibold text-white">
+              <div className="rounded-lg border border-ink-950/10 bg-ink-950/5 p-3">
+                <p className="text-[10px] uppercase tracking-wider text-ink-500">Transmissions</p>
+                <p className="mt-0.5 text-sm font-semibold text-ink-950">
                   {formatNumber(data.privacy.transmissions_logged)}
                 </p>
               </div>
-              <div className="rounded-lg border border-white/10 bg-navy-950/50 p-3">
-                <p className="text-[10px] uppercase tracking-wider text-navy-500">Total payload</p>
-                <p className="mt-0.5 text-sm font-semibold text-white">
+              <div className="rounded-lg border border-ink-950/10 bg-ink-950/5 p-3">
+                <p className="text-[10px] uppercase tracking-wider text-ink-500">Total payload</p>
+                <p className="mt-0.5 text-sm font-semibold text-ink-950">
                   {formatNumber(data.privacy.total_update_size_kb, 0)} KB
                 </p>
               </div>
             </div>
 
-            <p className="text-[11px] leading-relaxed text-navy-400">{data.privacy.guarantee}</p>
+            <p className="text-[11px] leading-relaxed text-ink-600">{data.privacy.guarantee}</p>
 
             <Button asChild variant="outline" size="sm" className="w-full">
               <Link to="/privacy">
@@ -220,12 +221,12 @@ export default function Dashboard() {
               <Link
                 key={a.id}
                 to={`/agents/${a.id}`}
-                className="block rounded-xl border border-slate-200 p-3 transition-colors hover:border-accent-400/50 hover:bg-accent-500/5"
+                className="block rounded-xl border border-ink-950/10 p-3 transition-colors hover:border-accent-400/50 hover:bg-accent-500/5"
               >
                 <div className="flex items-center justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="truncate text-sm font-medium text-slate-900">{a.name}</p>
-                    <p className="font-mono text-[10px] text-slate-400">{a.agent_id}</p>
+                    <p className="truncate text-sm font-medium text-ink-950">{a.name}</p>
+                    <p className="font-mono text-[10px] text-ink-500">{a.agent_id}</p>
                   </div>
                   <Badge
                     variant={
@@ -243,7 +244,7 @@ export default function Dashboard() {
                 </div>
 
                 <div className="mt-2.5">
-                  <div className="mb-1 flex justify-between text-[10px] text-slate-500">
+                  <div className="mb-1 flex justify-between text-[10px] text-ink-600">
                     <span>{formatNumber(a.dataset_size)} images</span>
                     <span>{formatPercent(a.accuracy)} acc</span>
                   </div>
@@ -276,18 +277,18 @@ export default function Dashboard() {
                 return (
                   <div key={c}>
                     <div className="mb-1 flex items-center justify-between text-xs">
-                      <span className="flex items-center gap-1.5 text-slate-700">
+                      <span className="flex items-center gap-1.5 text-ink-800">
                         <span
                           className="h-2 w-2 rounded-full"
                           style={{ background: CANCER_CLASS_INFO[c].color }}
                         />
                         {CANCER_CLASS_INFO[c].label}
                       </span>
-                      <span className="tabular-nums text-slate-500">
+                      <span className="tabular-nums text-ink-600">
                         {formatNumber(count)} · {formatPercent(frac)}
                       </span>
                     </div>
-                    <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
+                    <div className="h-2 w-full overflow-hidden rounded-full bg-ink-950/10">
                       <div
                         className="h-full rounded-full transition-all duration-500"
                         style={{ width: `${frac * 100}%`, background: CANCER_CLASS_INFO[c].color }}
@@ -330,7 +331,7 @@ export default function Dashboard() {
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
                 <thead>
-                  <tr className="border-b border-slate-200 text-[10px] uppercase tracking-wider text-slate-400">
+                  <tr className="border-b border-ink-950/10 text-[10px] uppercase tracking-wider text-ink-500">
                     <th className="pb-2 pr-4">Round</th>
                     <th className="pb-2 pr-4">Status</th>
                     <th className="pb-2 pr-4">Agents</th>
@@ -340,9 +341,9 @@ export default function Dashboard() {
                     <th className="pb-2">Completed</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y divide-ink-950/10">
                   {recentRounds.map((r) => (
-                    <tr key={r.id} className="text-slate-700">
+                    <tr key={r.id} className="text-ink-800">
                       <td className="py-2.5 pr-4 font-mono text-xs font-medium">{r.round_number}</td>
                       <td className="py-2.5 pr-4">
                         <Badge
@@ -368,7 +369,7 @@ export default function Dashboard() {
                         {!data.demo_mode && null}
                       </td>
                       <td className="py-2.5 pr-4 tabular-nums">{formatPercent(r.global_recall)}</td>
-                      <td className="py-2.5 text-xs text-slate-400">
+                      <td className="py-2.5 text-xs text-ink-500">
                         {formatDateTime(r.completed_at)}
                       </td>
                     </tr>
@@ -415,21 +416,21 @@ export default function Dashboard() {
                 transition={{ delay: r.w * 0.03 }}
                 className={cn(
                   "flex items-center gap-3 rounded-lg border px-3 py-2",
-                  done ? "border-accent-500/20 bg-accent-500/5" : "border-slate-200",
+                  done ? "border-violet-200 bg-violet-100" : "border-ink-950/10",
                 )}
               >
                 <span
                   className={cn(
                     "flex h-5 w-5 items-center justify-center rounded font-mono text-[9px] font-bold",
-                    done ? "bg-accent-500 text-navy-950" : "bg-slate-200 text-slate-500",
+                    done ? "bg-accent-500 text-white" : "bg-ink-950/15 text-ink-600",
                   )}
                 >
                   {r.w}
                 </span>
-                <span className={cn("flex-1 text-xs", done ? "text-slate-900" : "text-slate-500")}>
+                <span className={cn("flex-1 text-xs", done ? "text-ink-950" : "text-ink-600")}>
                   {r.t}
                 </span>
-                <span className={cn("text-[9px] font-medium", done ? "text-emerald-600" : "text-slate-400")}>
+                <span className={cn("text-[9px] font-medium", done ? "text-emerald-600" : "text-ink-500")}>
                   {done ? "done" : "planned"}
                 </span>
               </motion.div>

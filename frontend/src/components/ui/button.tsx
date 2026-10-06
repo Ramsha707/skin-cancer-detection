@@ -5,19 +5,19 @@ import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
         default:
-          "bg-gradient-to-r from-accent-500 to-accent-600 text-white shadow-soft hover:from-accent-400 hover:to-accent-500",
-        secondary: "bg-slate-100 text-slate-900 hover:bg-slate-200",
+          "bg-gradient-to-r from-blush-400 via-blue-400 to-blue-500 text-white shadow-glow-btn hover:from-blush-500 hover:via-blue-500 hover:to-blue-600",
+        secondary: "bg-gradient-to-r from-blush-200 via-blue-200 to-blue-300 text-blush-900 hover:from-blush-300 hover:via-blue-300 hover:to-blue-400",
         outline:
-          "border border-white/15 bg-white/5 text-navy-50 hover:border-accent-400/50 hover:bg-white/10",
-        ghost: "text-navy-200 hover:bg-white/10 hover:text-white",
-        destructive: "bg-red-600 text-white hover:bg-red-700",
-        success: "bg-emerald-600 text-white hover:bg-emerald-700",
-        link: "text-accent-300 underline-offset-4 hover:underline",
+          "border border-blush-300 bg-gradient-to-r from-blush-50 via-blue-50 to-blue-100 text-ink-900 shadow-soft hover:border-blush-400 hover:from-blush-100 hover:via-blue-100 hover:to-blue-200",
+        ghost: "text-accent-700 hover:bg-blue-100 hover:text-accent-800",
+        destructive: "bg-gradient-to-r from-red-500 to-red-700 text-white hover:from-red-600 hover:to-red-800",
+        success: "bg-gradient-to-r from-emerald-500 to-emerald-700 text-white hover:from-emerald-600 hover:to-emerald-800",
+        link: "text-accent-600 underline-offset-4 hover:text-accent-800 hover:underline",
       },
       size: {
         default: "h-10 px-4 py-2",

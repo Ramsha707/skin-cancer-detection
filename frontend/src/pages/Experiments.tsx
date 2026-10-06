@@ -59,6 +59,7 @@ export default function Experiments() {
         <PageHeader
           title="Fine-Tuning & Experiments"
           description="Frozen backbone vs selective vs full fine-tuning."
+          icon={FlaskConical}
         />
         <EmptyState
           title="Loading registered experiments…"
@@ -75,6 +76,7 @@ export default function Experiments() {
         <PageHeader
           title="Fine-Tuning & Experiments"
           description="Frozen backbone vs selective vs full fine-tuning."
+          icon={FlaskConical}
         />
         <EmptyState
           variant="error"
@@ -104,6 +106,7 @@ export default function Experiments() {
       <PageHeader
         title="Fine-Tuning & Experiments"
         description="Three transfer-learning strategies over the MedSigLIP-448 vision tower, compared on the held-out validation split. Metrics appear only when a strategy actually runs on this host; the page never substitutes a simulated figure."
+        icon={FlaskConical}
         actions={
           <>
             <Badge variant={completed.length ? "success" : "warning"}>
@@ -176,7 +179,7 @@ export default function Experiments() {
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
-            <thead className="bg-slate-50 text-[10px] uppercase tracking-wider text-slate-400">
+            <thead className="bg-lilac-50 text-[10px] uppercase tracking-wider text-ink-500">
               <tr>
                 <th className="px-4 py-2 font-medium">Strategy</th>
                 <th className="px-4 py-2 font-medium">Status</th>
@@ -192,14 +195,14 @@ export default function Experiments() {
                 <th className="px-4 py-2 text-right font-medium">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-ink-950/10">
               {rows.map((r) => {
                 const attempted = run.variables === r.name;
                 return (
                   <tr key={r.id} className="bg-white">
                     <td className="px-4 py-2.5">
-                      <p className="font-medium text-slate-900">{r.name}</p>
-                      <p className="text-[11px] text-slate-500">
+                      <p className="font-medium text-ink-950">{r.name}</p>
+                      <p className="text-[11px] text-ink-600">
                         {r.learning_rate != null ? `lr ${r.learning_rate.toExponential(0)}` : "lr --"}
                         {" · "}
                         {r.epochs ?? "--"} epochs
@@ -208,20 +211,20 @@ export default function Experiments() {
                     <td className="px-4 py-2.5">
                       <Badge variant={STATUS_VARIANT[r.status]}>{STATUS_LABEL[r.status]}</Badge>
                     </td>
-                    <td className="max-w-[16rem] px-4 py-2.5 text-xs text-slate-600">
+                    <td className="max-w-[16rem] px-4 py-2.5 text-xs text-ink-700">
                       {r.trainable_layers ?? "--"}
                     </td>
                     {([r.accuracy, r.precision, r.recall, r.specificity, r.f1, r.auc] as const).map(
                       (v, i) => (
-                        <td key={i} className="px-4 py-2.5 text-right tabular-nums text-slate-700">
-                          {typeof v === "number" ? formatPercent(v) : <span className="text-slate-300">--</span>}
+                        <td key={i} className="px-4 py-2.5 text-right tabular-nums text-ink-800">
+                          {typeof v === "number" ? formatPercent(v) : <span className="text-ink-400">--</span>}
                         </td>
                       ),
                     )}
-                    <td className="px-4 py-2.5 text-right tabular-nums text-slate-700">
+                    <td className="px-4 py-2.5 text-right tabular-nums text-ink-800">
                       {r.trainable_params ? formatNumber(r.trainable_params) : "--"}
                     </td>
-                    <td className="px-4 py-2.5 text-right tabular-nums text-slate-700">
+                    <td className="px-4 py-2.5 text-right tabular-nums text-ink-800">
                       {r.train_seconds != null ? formatDuration(r.train_seconds) : "--"}
                     </td>
                     <td className="px-4 py-2.5 text-right">
@@ -245,7 +248,7 @@ export default function Experiments() {
                         </Button>
                       ) : (
                         <span
-                          className="inline-flex items-center gap-1 text-[11px] text-slate-400"
+                          className="inline-flex items-center gap-1 text-[11px] text-ink-500"
                           title={r.feasibility_note ?? undefined}
                         >
                           <Ban className="h-3 w-3" /> Not runnable here
@@ -275,7 +278,7 @@ export default function Experiments() {
           </div>
         )}
 
-        <p className="mt-4 border-t border-slate-200 pt-3 text-[10px] leading-relaxed text-slate-400">
+        <p className="mt-4 border-t border-ink-950/10 pt-3 text-[10px] leading-relaxed text-ink-500">
           {RESEARCH_DISCLAIMER}
         </p>
       </Section>
@@ -296,12 +299,12 @@ export default function Experiments() {
               key={r.id}
               className={cn(
                 "rounded-xl border p-4",
-                r.feasible ? "border-slate-200 bg-white" : "border-amber-200 bg-amber-50/60",
+                r.feasible ? "border-ink-950/10 bg-white" : "border-amber-200 bg-amber-50/60",
               )}
             >
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-sm font-semibold text-slate-900">{r.name}</span>
+                  <span className="text-sm font-semibold text-ink-950">{r.name}</span>
                   <Badge variant={r.feasible ? "success" : "warning"}>
                     {r.feasible ? "Runnable here" : "Not runnable here"}
                   </Badge>
@@ -311,13 +314,13 @@ export default function Experiments() {
                     </Badge>
                   )}
                 </div>
-                <span className="font-mono text-[11px] text-slate-500">
+                <span className="font-mono text-[11px] text-ink-600">
                   {r.learning_rate != null ? `lr ${r.learning_rate.toExponential(0)}` : "lr --"}
                   {" · "}
                   {r.epochs ?? "--"} epochs · {r.trainable_layers}
                 </span>
               </div>
-              <p className="mt-2 whitespace-pre-line text-xs leading-relaxed text-slate-600">
+              <p className="mt-2 whitespace-pre-line text-xs leading-relaxed text-ink-700">
                 {r.notes}
               </p>
               {!r.feasible && r.feasibility_note && (
@@ -330,14 +333,14 @@ export default function Experiments() {
           ))}
         </div>
 
-        <p className="mt-4 border-t border-slate-200 pt-3 text-[10px] leading-relaxed text-slate-500">
+        <p className="mt-4 border-t border-ink-950/10 pt-3 text-[10px] leading-relaxed text-ink-600">
           The frozen head trains full-batch on the concatenated per-hospital train caches with a
           10% holdout carved from train (never from val) for early stopping at patience 20,
           inverse-frequency class weights against the 80% benign majority, L2 1e-4 and row
           L2-normalisation matching <code className="font-mono">CancerHead.logits</code>. Val
           stays untouched until the single final scoring pass.
         </p>
-        <p className="mt-2 text-[10px] leading-relaxed text-slate-400">{RESEARCH_DISCLAIMER}</p>
+        <p className="mt-2 text-[10px] leading-relaxed text-ink-500">{RESEARCH_DISCLAIMER}</p>
       </Section>
     </div>
   );
