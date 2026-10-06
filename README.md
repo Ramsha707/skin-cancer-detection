@@ -20,15 +20,15 @@ without ever sharing a raw patient image.
 | 3 | Hospital agents | ✅ complete |
 | 4 | Cancer detection | ✅ complete |
 | 5 | Pre-trained model integration | ✅ complete |
-| 6 | Fine-tuning + experiments | ✅ complete |
-| 7 | Federated learning engine | ✅ complete |
-| 8 | Federated training dashboard | ✅ complete |
+| 6 | Fine-tuning + experiments | ⬜ planned |
+| 7 | Federated learning engine | ⬜ planned |
+| 8 | Federated training dashboard | ⬜ planned |
 | 9 | Evaluation (ROC, confusion matrix) | ⬜ planned |
 | 10 | Explainability + privacy centre | ⬜ planned |
 | 11 | Full-system integration (WebSocket) | ⬜ planned |
 | 12 | Testing + final demo | ⬜ planned |
 
-Routes for weeks 9–12 render an explicit *"not built yet"* panel rather than placeholder
+Routes for weeks 6–12 render an explicit *"not built yet"* panel rather than placeholder
 metrics. Every number visible in this application traces to code that actually executed.
 
 ---

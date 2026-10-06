@@ -2,7 +2,9 @@
 
 import numpy as np
 import pandas as pd
+import torch
 
+from medsiglip import MedSiglipClassifier
 from medsiglip_ov import MedSiglipOpenVINO
 
 PROMPTS = [
@@ -33,9 +35,6 @@ print(f"{len(paths)} probe images")
 ov = MedSiglipOpenVINO()
 
 # 1. does the OpenVINO image embedding match torch?
-from medsiglip import MedSiglipClassifier
-import torch
-
 tc = MedSiglipClassifier()
 with torch.no_grad():
     t_img = tc.embed_images(paths)
@@ -56,9 +55,12 @@ print(f"cos(torch, openvino) text  embeds: min {cos_t.min():.4f} mean {cos_t.mea
 for name, sim in (("torch", (t_img @ t_txt.T).numpy()), ("openvino", o_img @ o_txt.T)):
     pred = sim.argmax(axis=1)
     print(f"\n--- {name} predictions ---")
-    for i, (p, lab) in enumerate(zip(paths, labels)):
-        top = sorted(zip(PROMPTS, sim[i]), key=lambda x: -x[1])[:2]
-        print(f"true dx={lab:6s} pred={PROMPTS[pred[i]].split('of ')[1]:28s} | {top[0][1]:.3f} {top[1][1]:.3f}")
+    for i, lab in enumerate(labels):
+        top = sorted(zip(PROMPTS, sim[i], strict=True), key=lambda x: -x[1])[:2]
+        print(
+            f"true dx={lab:6s} pred={PROMPTS[pred[i]].split('of ')[1]:28s} "
+            f"| {top[0][1]:.3f} {top[1][1]:.3f}"
+        )
 
 # 3. are the prompt embeddings themselves sane?
 print("\n--- prompt embedding similarity matrix (torch) ---")

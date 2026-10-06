@@ -202,6 +202,8 @@ class PretrainedModelInfo(BaseModel):
     preprocessing: PreprocessingInfo
     original_training_domain: str
     original_task: str
+    original_classes: str
+    output_format: str
     domain_similarity_to_dermoscopy: str
     suitable_as_backbone: bool
     backbone_viability_notes: list[str]

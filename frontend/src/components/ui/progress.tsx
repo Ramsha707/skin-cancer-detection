@@ -42,6 +42,7 @@ export function ProgressDark({
   max = 100,
   className,
   indicatorClassName,
+  color,
 }: ProgressProps & {
   /** Solid fill colour, e.g. a per-class hex from the taxonomy. */
   color?: string;

@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
+from collections.abc import Iterable, Sequence
 from pathlib import Path
-from typing import Iterable, Sequence
 
 import torch
 from PIL import Image
@@ -104,7 +104,9 @@ class MedSiglipClassifier:
             results.append(
                 {
                     label: round(float(p), 6)
-                    for p, label in zip(scores, (candidate_labels[i] for i in idx))
+                    for p, label in zip(
+                        scores, (candidate_labels[i] for i in idx), strict=True
+                    )
                 }
             )
         return results
@@ -121,7 +123,9 @@ class MedSiglipClassifier:
         return image_embeds @ text_embeds.T
 
 
-def iter_image_paths(folder: str | Path, patterns: Iterable[str] = ("*.png", "*.jpg", "*.jpeg")) -> list[Path]:
+def iter_image_paths(
+    folder: str | Path, patterns: Iterable[str] = ("*.png", "*.jpg", "*.jpeg")
+) -> list[Path]:
     root = Path(folder)
     paths: list[Path] = []
     for pattern in patterns:

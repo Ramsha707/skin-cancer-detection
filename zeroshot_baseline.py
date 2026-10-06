@@ -13,8 +13,6 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import classification_report, confusion_matrix, roc_auc_score
 
-from medsiglip import iter_image_paths
-
 DX_LABELS = {
     "mel": "melanoma",
     "nv": "melanocytic nev",
@@ -46,7 +44,9 @@ def find_image(image_id: str, roots: list[Path]) -> Path | None:
 
 
 def main() -> int:
-    p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    p = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
     p.add_argument("--data", default="data")
     p.add_argument("--per-class", type=int, default=40)
     p.add_argument("--backend", default="ov", choices=["ov", "torch"])
@@ -118,7 +118,8 @@ def main() -> int:
 
     print("\n" + classification_report(y_true, predictions, target_names=names, zero_division=0))
     print("confusion matrix (rows=true):")
-    print(pd.DataFrame(confusion_matrix(y_true, predictions), index=names, columns=names).to_string())
+    cm = confusion_matrix(y_true, predictions)
+    print(pd.DataFrame(cm, index=names, columns=names).to_string())
 
     y_true_bin = [int(c in MALIGNANT) for c in classes]
     try:
@@ -126,11 +127,11 @@ def main() -> int:
         malignant_score = prob_matrix[:, malignant_idx].sum(axis=1)
         auc = roc_auc_score(y_true_bin, malignant_score)
         print(f"\nbinary malignant-vs-benign AUC: {auc:.4f}")
-    except Exception as exc:
+    except ValueError as exc:
         auc = None
         print(f"\nAUC not computed: {exc}")
 
-    acc = float(np.mean([a == b for a, b in zip(predictions, y_true)]))
+    acc = float(np.mean([a == b for a, b in zip(predictions, y_true, strict=True)]))
     print(f"top-1 accuracy: {acc:.4f}")
 
     out = Path(args.out)

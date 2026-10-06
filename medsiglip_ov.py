@@ -10,23 +10,16 @@ is negligible next to per-image vision encoding.
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from pathlib import Path
-from typing import Sequence
 
 import numpy as np
+import openvino as ov
 import torch
 from PIL import Image
+from transformers import AutoModelForZeroShotImageClassification, AutoProcessor
 
 from medsiglip import IMAGE_SIZE, MAX_TEXT_TOKENS, MODEL_ID, _as_tensor, iter_image_paths
-
-import openvino as ov
-
-try:  # 2026.x layout; only used for device discovery
-    from openvino._pyopenvino import Core as _RawCore
-except ImportError:  # older layout
-    from openvino.runtime import Core as _RawCore
-
-from transformers import AutoModelForZeroShotImageClassification, AutoProcessor
 
 CACHE_DIR = Path(__file__).parent / ".cache_openvino"
 
