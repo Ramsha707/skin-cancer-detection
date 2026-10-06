@@ -116,7 +116,7 @@ export default function Agents() {
           variant="error"
           icon={AlertTriangle}
           title="Backend is not reachable"
-          description="The agent roster is served by the FastAPI API. Start it with 'uvicorn app.main:app --reload' from the backend directory."
+          description="The agent roster is served by the FastAPI API. Start it with 'python -m uvicorn app.main:app --app-dir backend --reload' from the repository root."
         />
       </>
     );

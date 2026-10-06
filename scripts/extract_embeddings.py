@@ -123,6 +123,14 @@ def extract(
                 json.dump({"labels": done_labels, "image_ids": done_ids}, fh)
 
     embeddings = np.vstack(chunks)
+    sample = embeddings[: min(512, len(embeddings))]
+    unique_rows = np.unique(sample, axis=0).shape[0]
+    if unique_rows < 0.9 * len(sample):
+        raise SystemExit(
+            f"[abort] {out.path.name}: only {unique_rows}/{len(sample)} unique rows in "
+            "the first 512 embeddings -- outputs are collapsing (buffer aliasing or "
+            "device fault); refusing to save a corrupt cache"
+        )
     out.save(
         embeddings,
         np.asarray(done_labels),
@@ -142,7 +150,16 @@ def main() -> int:
     p.add_argument("--split", default="train", choices=["train", "val", "test"])
     p.add_argument("--batch", type=int, default=4)
     p.add_argument("--limit", type=int, default=0, help="debug: cap images per split")
+    p.add_argument(
+        "--agents",
+        default="",
+        help="train only these comma-separated agent slugs (default: all); lets two "
+        "processes run disjoint partitions in parallel without touching each "
+        "other's checkpoint files",
+    )
     args = p.parse_args()
+    if args.agents and args.split != "train":
+        raise SystemExit("--agents only applies to --split train")
 
     data = load_split(args.split)
 
@@ -164,7 +181,16 @@ def main() -> int:
         extract(paths, labels, ids, EmbeddingCache(cache_path(args.split, name)), batch=args.batch)
 
     if args.split == "train":
-        for slug in sorted(data["agents"]):
+        slugs = sorted(data["agents"])
+        if args.agents:
+            wanted = {s.strip() for s in args.agents.split(",") if s.strip()}
+            unknown = sorted(wanted - set(slugs))
+            if unknown:
+                raise SystemExit(f"unknown agent slugs {unknown}; known: {slugs}")
+            slugs = [s for s in slugs if s in wanted]
+            if not slugs:
+                raise SystemExit("no agents selected")
+        for slug in slugs:
             run(slug, data["agents"][slug])
     else:
         run(None, data[args.split])

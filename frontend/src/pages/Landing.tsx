@@ -266,8 +266,8 @@ export default function Landing() {
                 { w: 4, t: "Cancer detection", d: "Real MedSigLIP-448 inference", done: true },
                 { w: 5, t: "Model integration", d: "Backbone analysis + cancer head", done: true },
                 { w: 6, t: "Experiments", d: "Frozen vs selective vs full", done: true },
-                { w: 7, t: "FedAvg engine", d: "Local train → aggregate → broadcast", done: true },
-                { w: 8, t: "Federated dashboard", d: "Live topology and controls", done: true },
+                { w: 7, t: "FedAvg engine", d: "Local train → aggregate → broadcast", done: false },
+                { w: 8, t: "Federated dashboard", d: "Live topology and controls", done: false },
                 { w: 9, t: "Evaluation", d: "ROC, confusion matrix, full metrics", done: false },
                 { w: 10, t: "Explainability + privacy", d: "Grad-CAM and privacy centre", done: false },
               ].map((row) => (

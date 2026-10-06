@@ -51,10 +51,10 @@ AGENT_DEFINITIONS = [
 
 EXPERIMENT_DEFINITIONS = [
     {
-        "name": "A — Frozen backbone feature extractor",
+        "name": "A - Frozen backbone feature extractor",
         "strategy": "frozen",
-        "learning_rate": 1e-3,
-        "epochs": 10,
+        "learning_rate": 5e-2,
+        "epochs": 200,
         "trainable_layers": "classification head only (4-class linear)",
         "notes": (
             "Entire SigLIP vision tower frozen. Only the 4-class head is trained. "
@@ -63,7 +63,7 @@ EXPERIMENT_DEFINITIONS = [
         ),
     },
     {
-        "name": "B — Selective fine-tuning (upper tower)",
+        "name": "B - Selective fine-tuning (upper tower)",
         "strategy": "selective",
         "learning_rate": 1e-5,
         "epochs": 10,
@@ -75,7 +75,7 @@ EXPERIMENT_DEFINITIONS = [
         ),
     },
     {
-        "name": "C — Full fine-tuning",
+        "name": "C - Full fine-tuning",
         "strategy": "full",
         "learning_rate": 1e-5,
         "epochs": 10,
@@ -132,20 +132,35 @@ def seed_agents(db: Session) -> None:
 
 
 def seed_experiments(db: Session) -> None:
-    existing = db.scalar(select(func.count()).select_from(Experiment)) or 0
-    if existing:
-        return
+    """Idempotent upsert keyed by strategy.
 
+    Existing rows keep their metrics and status; only the configuration
+    fields defined by EXPERIMENT_DEFINITIONS are re-synced. This also repairs
+    rows seeded before the names were ASCII-ised (mojibake em-dashes) without
+    ever touching a real result.
+    """
     for definition in EXPERIMENT_DEFINITIONS:
-        db.add(
-            Experiment(
-                model=settings.pretrained_model_id,
-                status="awaiting",
-                is_real_result=False,
-                total_params=None,
-                **definition,
+        row = db.scalar(select(Experiment).where(Experiment.strategy == definition["strategy"]))
+        if row is None:
+            db.add(
+                Experiment(
+                    model=settings.pretrained_model_id,
+                    status="awaiting",
+                    is_real_result=False,
+                    total_params=None,
+                    **definition,
+                )
             )
-        )
+            continue
+        for key, value in definition.items():
+            if row.is_real_result and key in ("epochs", "notes"):
+                # A completed run overwrote these with what actually happened
+                # (epochs trained, provenance receipt); re-syncing the seed
+                # config would silently misreport a real result.
+                continue
+            setattr(row, key, value)
+        if row.model != settings.pretrained_model_id:
+            row.model = settings.pretrained_model_id
     db.flush()
 
 

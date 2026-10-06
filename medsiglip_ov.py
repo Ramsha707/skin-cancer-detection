@@ -100,7 +100,11 @@ class MedSiglipOpenVINO:
         pixels = [self.load_image(img) for img in images]
         inputs = self.processor(images=pixels, return_tensors="np")
         self._infer.infer(inputs["pixel_values"])
-        return np.asarray(self._infer.get_output_tensor().data)
+        # Copy: get_output_tensor().data is a view into the infer request's
+        # persistent output buffer, which the next infer() call overwrites in
+        # place. Returning the view makes every earlier result silently become
+        # the newest batch's output (this corrupted one full extraction run).
+        return np.array(self._infer.get_output_tensor().data, copy=True)
 
     @torch.no_grad()
     def embed_texts(self, texts: Sequence[str]) -> np.ndarray:

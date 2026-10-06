@@ -20,7 +20,7 @@ without ever sharing a raw patient image.
 | 3 | Hospital agents | ✅ complete |
 | 4 | Cancer detection | ✅ complete |
 | 5 | Pre-trained model integration | ✅ complete |
-| 6 | Fine-tuning + experiments | ⬜ planned |
+| 6 | Fine-tuning + experiments | ✅ complete |
 | 7 | Federated learning engine | ⬜ planned |
 | 8 | Federated training dashboard | ⬜ planned |
 | 9 | Evaluation (ROC, confusion matrix) | ⬜ planned |
@@ -78,9 +78,8 @@ docs/         Architecture and adaptation notes
 **Backend** (Python 3.10+):
 
 ```bash
-cd backend
-pip install -r requirements.txt
-uvicorn app.main:app --reload        # http://localhost:8000
+pip install -r backend/requirements.txt
+python -m uvicorn app.main:app --app-dir backend --reload   # http://localhost:8000 (run from the repo root)
 ```
 
 **Frontend** (Node 18+):

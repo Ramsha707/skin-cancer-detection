@@ -43,7 +43,7 @@ export default function Dashboard() {
           variant="error"
           icon={AlertTriangle}
           title="Backend is not reachable"
-          description="Start the FastAPI server with 'uvicorn app.main:app --reload' from the backend directory, then this page will populate from the live database."
+          description="Start the FastAPI server with 'python -m uvicorn app.main:app --app-dir backend --reload' from the repository root, then this page will populate from the live database."
         />
       </>
     );
