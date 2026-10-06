@@ -36,7 +36,7 @@ export function Progress({
   );
 }
 
-/** Dark-surface variant for panels sitting on the navy shell. */
+/** Bar variant used inside frosted panels and result cards. */
 export function ProgressDark({
   value,
   max = 100,
@@ -49,7 +49,7 @@ export function ProgressDark({
 }) {
   const pct = value === null || value === undefined ? 0 : Math.min(100, Math.max(0, (value / max) * 100));
   return (
-    <div className={cn("relative h-1.5 w-full overflow-hidden rounded-full bg-white/10", className)}>
+    <div className={cn("relative h-1.5 w-full overflow-hidden rounded-full bg-ink-950/10", className)}>
       <div
         className={cn(
           "h-full rounded-full transition-all duration-500",

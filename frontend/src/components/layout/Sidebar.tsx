@@ -49,19 +49,19 @@ export function Sidebar({ collapsed, onNavigate }: { collapsed: boolean; onNavig
   return (
     <aside
       className={cn(
-        "flex h-full flex-col border-r border-white/10 bg-navy-950/95 backdrop-blur-xl transition-all duration-300",
+        "flex h-full flex-col border-r border-ink-950/10 bg-white/80 backdrop-blur-xl transition-all duration-300",
         collapsed ? "w-[72px]" : "w-[264px]",
       )}
     >
       {/* Brand */}
-      <div className={cn("flex items-center gap-3 border-b border-white/10 px-4 py-5", collapsed && "justify-center px-2")}>
-        <div className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-accent-400 to-accent-600 shadow-glow">
-          <Sparkles className="h-5 w-5 text-navy-950" />
+      <div className={cn("flex items-center gap-3 border-b border-ink-950/10 px-4 py-5", collapsed && "justify-center px-2")}>
+        <div className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-lilac-400 to-periwinkle-400 shadow-glow">
+          <Sparkles className="h-5 w-5 text-white" />
         </div>
         {!collapsed && (
           <div className="min-w-0">
-            <p className="truncate text-sm font-semibold tracking-tight text-white">SkinFL</p>
-            <p className="truncate text-[10px] uppercase tracking-widest text-accent-300/70">
+            <p className="truncate text-sm font-semibold tracking-tight text-ink-950">SkinFL</p>
+            <p className="truncate text-[10px] uppercase tracking-widest text-accent-600">
               Federated Oncology
             </p>
           </div>
@@ -82,8 +82,8 @@ export function Sidebar({ collapsed, onNavigate }: { collapsed: boolean; onNavig
                 cn(
                   "group relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-all",
                   isActive
-                    ? "bg-accent-500/15 font-medium text-white"
-                    : "text-navy-300 hover:bg-white/5 hover:text-white",
+                    ? "bg-accent-100 font-medium text-accent-700 shadow-soft"
+                    : "text-ink-700 hover:bg-ink-950/5 hover:text-ink-950",
                   collapsed && "justify-center px-0",
                 )
               }
@@ -99,14 +99,14 @@ export function Sidebar({ collapsed, onNavigate }: { collapsed: boolean; onNavig
                   <item.icon
                     className={cn(
                       "h-4 w-4 shrink-0 transition-colors",
-                      isActive ? "text-accent-300" : "text-navy-400 group-hover:text-accent-300",
+                      isActive ? "text-accent-500" : "text-ink-600 group-hover:text-accent-500",
                     )}
                   />
                   {!collapsed && (
                     <>
                       <span className="flex-1 truncate">{item.label}</span>
                       {scheduled && (
-                        <span className="rounded bg-white/10 px-1.5 py-0.5 text-[9px] font-medium uppercase tracking-wide text-navy-400">
+                        <span className="rounded bg-ink-950/[0.06] px-1.5 py-0.5 text-[9px] font-medium uppercase tracking-wide text-ink-500">
                           W{item.week}
                         </span>
                       )}
@@ -121,17 +121,17 @@ export function Sidebar({ collapsed, onNavigate }: { collapsed: boolean; onNavig
 
       {/* Footer */}
       {!collapsed && (
-        <div className="border-t border-white/10 p-4">
-          <div className="rounded-xl border border-accent-400/20 bg-accent-500/10 p-3">
-            <div className="flex items-center gap-2 text-[11px] font-medium text-accent-200">
+        <div className="border-t border-ink-950/10 p-4">
+          <div className="rounded-xl border border-accent-200 bg-accent-100/80 p-3">
+            <div className="flex items-center gap-2 text-[11px] font-medium text-accent-700">
               <ShieldCheck className="h-3.5 w-3.5" />
               Raw images shared: 0
             </div>
-            <p className="mt-1 text-[10px] leading-relaxed text-navy-400">
+            <p className="mt-1 text-[10px] leading-relaxed text-ink-600">
               Only model weight updates leave each hospital.
             </p>
           </div>
-          <p className="mt-3 text-center text-[9px] uppercase tracking-widest text-navy-600">
+          <p className="mt-3 text-center text-[9px] uppercase tracking-widest text-ink-400">
             Research prototype · not a device
           </p>
         </div>

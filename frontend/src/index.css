@@ -4,26 +4,25 @@
 
 @layer base {
   :root {
-    /* Light card surfaces used inside the dark console shell */
-    --background: 210 40% 98%;
-    --foreground: 222 47% 11%;
+    --background: 300 40% 99%;
+    --foreground: 258 30% 17%;
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card-foreground: 258 30% 17%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-    --primary: 199 89% 42%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 214 32% 91%;
-    --secondary-foreground: 222 47% 11%;
-    --muted: 214 32% 94%;
-    --muted-foreground: 215 16% 47%;
-    --accent: 199 89% 42%;
-    --accent-foreground: 210 40% 98%;
+    --popover-foreground: 258 30% 17%;
+    --primary: 258 74% 55%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 250 60% 96%;
+    --secondary-foreground: 258 30% 17%;
+    --muted: 250 50% 96%;
+    --muted-foreground: 252 12% 45%;
+    --accent: 258 74% 55%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 72% 51%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214 32% 88%;
-    --input: 214 32% 88%;
-    --ring: 199 89% 42%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 252 45% 90%;
+    --input: 252 45% 88%;
+    --ring: 258 74% 55%;
     --radius: 0.85rem;
   }
 
@@ -36,29 +35,32 @@
   }
 
   body {
-    @apply bg-navy-950 text-navy-50 antialiased;
+    min-height: 100vh;
+    background:
+      linear-gradient(135deg, #fdf2f7 0%, #f7f4ff 45%, #f0f6ff 100%) fixed;
+    @apply text-ink-900 antialiased;
     font-feature-settings: "cv11", "ss01";
   }
 }
 
 @layer components {
-  /* Frosted panel used across the dark console */
+  /* Frosted white panel used across the console */
   .glass-panel {
-    @apply rounded-2xl border border-white/10 bg-navy-900/60 backdrop-blur-xl;
+    @apply rounded-2xl border border-white/70 bg-white/70 shadow-soft backdrop-blur-xl;
   }
 
-  /* Light data card that sits on top of the navy shell */
+  /* Opaque light data card */
   .data-card {
-    @apply rounded-2xl border border-slate-200/80 bg-white text-slate-900 shadow-soft;
+    @apply rounded-2xl border border-lilac-100 bg-white text-ink-950 shadow-soft;
   }
 
   .data-card-dark {
-    @apply rounded-2xl border border-white/10 bg-navy-900/70 text-navy-50;
+    @apply rounded-2xl border border-white/70 bg-white/75 text-ink-950 backdrop-blur-xl;
   }
 
   /* Gradient text for hero + section titles */
   .text-gradient {
-    @apply bg-gradient-to-r from-accent-300 via-accent-400 to-navy-300 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-blush-400 via-lilac-400 to-periwinkle-400 bg-clip-text text-transparent;
   }
 
   /* Animated dashed link between federated nodes */
@@ -69,8 +71,8 @@
 
   .grid-backdrop {
     background-image:
-      linear-gradient(to right, rgb(148 182 225 / 0.07) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(148 182 225 / 0.07) 1px, transparent 1px);
+      linear-gradient(to right, rgb(167 139 250 / 0.1) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(167 139 250 / 0.1) 1px, transparent 1px);
     background-size: 44px 44px;
   }
 }
@@ -84,9 +86,9 @@
     background: transparent;
   }
   .scrollbar-thin::-webkit-scrollbar-thumb {
-    @apply rounded-full bg-navy-700/60;
+    @apply rounded-full bg-ink-950/20;
   }
   .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-    @apply bg-accent-500/60;
+    @apply bg-accent-500/50;
   }
 }

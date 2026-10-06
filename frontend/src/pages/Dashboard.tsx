@@ -159,43 +159,43 @@ export default function Dashboard() {
           actions={<Badge variant="success">Protected</Badge>}
         >
           <div className="space-y-4">
-            <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-center">
-              <p className="text-[10px] font-medium uppercase tracking-widest text-emerald-300/80">
+            <div className="rounded-xl border border-emerald-300/70 bg-emerald-100 p-4 text-center">
+              <p className="text-[10px] font-medium uppercase tracking-widest text-emerald-700">
                 Raw patient images shared
               </p>
-              <p className="mt-1 text-4xl font-bold tabular-nums text-emerald-300">
+              <p className="mt-1 text-4xl font-bold tabular-nums text-emerald-600">
                 {data.privacy.raw_images_shared}
               </p>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-lg border border-white/10 bg-navy-950/50 p-3">
-                <p className="text-[10px] uppercase tracking-wider text-navy-500">Updates shared</p>
-                <p className="mt-0.5 text-sm font-semibold text-accent-300">
+              <div className="rounded-lg border border-ink-950/10 bg-white/70 p-3">
+                <p className="text-[10px] uppercase tracking-wider text-ink-500">Updates shared</p>
+                <p className="mt-0.5 text-sm font-semibold text-accent-600">
                   {data.privacy.model_updates_shared ? "YES" : "NO"}
                 </p>
               </div>
-              <div className="rounded-lg border border-white/10 bg-navy-950/50 p-3">
-                <p className="text-[10px] uppercase tracking-wider text-navy-500">Protected sites</p>
-                <p className="mt-0.5 text-sm font-semibold text-white">
+              <div className="rounded-lg border border-ink-950/10 bg-white/70 p-3">
+                <p className="text-[10px] uppercase tracking-wider text-ink-500">Protected sites</p>
+                <p className="mt-0.5 text-sm font-semibold text-ink-950">
                   {data.privacy.agents_protected}/{data.privacy.total_agents}
                 </p>
               </div>
-              <div className="rounded-lg border border-white/10 bg-navy-950/50 p-3">
-                <p className="text-[10px] uppercase tracking-wider text-navy-500">Transmissions</p>
-                <p className="mt-0.5 text-sm font-semibold text-white">
+              <div className="rounded-lg border border-ink-950/10 bg-white/70 p-3">
+                <p className="text-[10px] uppercase tracking-wider text-ink-500">Transmissions</p>
+                <p className="mt-0.5 text-sm font-semibold text-ink-950">
                   {formatNumber(data.privacy.transmissions_logged)}
                 </p>
               </div>
-              <div className="rounded-lg border border-white/10 bg-navy-950/50 p-3">
-                <p className="text-[10px] uppercase tracking-wider text-navy-500">Total payload</p>
-                <p className="mt-0.5 text-sm font-semibold text-white">
+              <div className="rounded-lg border border-ink-950/10 bg-white/70 p-3">
+                <p className="text-[10px] uppercase tracking-wider text-ink-500">Total payload</p>
+                <p className="mt-0.5 text-sm font-semibold text-ink-950">
                   {formatNumber(data.privacy.total_update_size_kb, 0)} KB
                 </p>
               </div>
             </div>
 
-            <p className="text-[11px] leading-relaxed text-navy-400">{data.privacy.guarantee}</p>
+            <p className="text-[11px] leading-relaxed text-ink-600">{data.privacy.guarantee}</p>
 
             <Button asChild variant="outline" size="sm" className="w-full">
               <Link to="/privacy">
@@ -415,13 +415,13 @@ export default function Dashboard() {
                 transition={{ delay: r.w * 0.03 }}
                 className={cn(
                   "flex items-center gap-3 rounded-lg border px-3 py-2",
-                  done ? "border-accent-500/20 bg-accent-500/5" : "border-slate-200",
+                  done ? "border-accent-200 bg-accent-50" : "border-slate-200",
                 )}
               >
                 <span
                   className={cn(
                     "flex h-5 w-5 items-center justify-center rounded font-mono text-[9px] font-bold",
-                    done ? "bg-accent-500 text-navy-950" : "bg-slate-200 text-slate-500",
+                    done ? "bg-accent-500 text-white" : "bg-slate-200 text-slate-500",
                   )}
                 >
                   {r.w}

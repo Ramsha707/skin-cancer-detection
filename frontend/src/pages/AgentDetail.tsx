@@ -27,7 +27,7 @@ function InfoRow({ label, value, tone = "light" }: { label: string; value: strin
       <span
         className={cn(
           "text-[10px] font-medium uppercase tracking-wider",
-          tone === "light" ? "text-slate-400" : "text-navy-500",
+          tone === "light" ? "text-slate-400" : "text-ink-500",
         )}
       >
         {label}
@@ -35,7 +35,7 @@ function InfoRow({ label, value, tone = "light" }: { label: string; value: strin
       <span
         className={cn(
           "truncate text-sm font-semibold",
-          tone === "light" ? "text-slate-900" : "text-white",
+          tone === "light" ? "text-slate-900" : "text-ink-950",
         )}
       >
         {value}

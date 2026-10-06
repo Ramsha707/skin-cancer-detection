@@ -94,10 +94,10 @@ export default function Detection() {
       {/* ------------------------------------------------ page header */}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-xl font-semibold tracking-tight text-white">
+          <h1 className="text-xl font-semibold tracking-tight text-ink-950">
             Cancer Detection
           </h1>
-          <p className="mt-1 max-w-3xl text-sm text-navy-400">
+          <p className="mt-1 max-w-3xl text-sm text-ink-600">
             Upload a dermoscopy image. MedSigLIP-448 embeds it, the 4,612-parameter
             linear head scores the four classes, and the full probability vector is
             returned so the result is auditable rather than a bare label.
@@ -182,8 +182,8 @@ export default function Detection() {
             className={cn(
               "relative flex min-h-[240px] cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed p-6 text-center transition-colors",
               dragging
-                ? "border-accent-400/60 bg-accent-500/10"
-                : "border-white/15 bg-navy-950/40 hover:border-accent-400/40 hover:bg-accent-500/5",
+                ? "border-accent-400 bg-accent-100"
+                : "border-ink-950/15 bg-white/70 hover:border-accent-400/50 hover:bg-accent-50",
               !ready && "pointer-events-none opacity-50",
             )}
             onClick={() => inputRef.current?.click()}
@@ -212,28 +212,28 @@ export default function Detection() {
               />
             ) : (
               <>
-                <Upload className="h-8 w-8 text-navy-500" />
-                <p className="mt-3 text-sm font-medium text-navy-200">
+                <Upload className="h-8 w-8 text-ink-500" />
+                <p className="mt-3 text-sm font-medium text-ink-800">
                   Drop a dermoscopy image here
                 </p>
-                <p className="mt-1 text-xs text-navy-500">or click to browse</p>
+                <p className="mt-1 text-xs text-ink-500">or click to browse</p>
               </>
             )}
           </div>
 
           {selected && (
             <div className="mt-4 space-y-3">
-              <div className="flex items-center justify-between gap-3 text-xs text-navy-400">
+              <div className="flex items-center justify-between gap-3 text-xs text-ink-600">
                 <span className="flex min-w-0 items-center gap-2">
                   <FileImage className="h-3.5 w-3.5 shrink-0" />
                   <span className="truncate">{selected.name}</span>
-                  <span className="shrink-0 text-navy-600">
+                  <span className="shrink-0 text-ink-400">
                     {(selected.size / 1024).toFixed(0)} KB
                   </span>
                 </span>
                 <button
                   onClick={clear}
-                  className="shrink-0 text-navy-500 transition-colors hover:text-red-400"
+                  className="shrink-0 text-ink-500 transition-colors hover:text-red-400"
                   aria-label="Clear selection"
                 >
                   <X className="h-4 w-4" />
@@ -268,7 +268,7 @@ export default function Detection() {
             </div>
           )}
 
-          <p className="mt-4 border-t border-white/10 pt-3 text-[10px] leading-relaxed text-navy-500">
+          <p className="mt-4 border-t border-ink-950/10 pt-3 text-[10px] leading-relaxed text-ink-500">
             {RESEARCH_DISCLAIMER}
           </p>
         </Section>
@@ -299,7 +299,7 @@ export default function Detection() {
           description="Four classes, three of them malignant. The head is initialised from these prompts."
         >
           {classes.isLoading ? (
-            <p className="text-xs text-navy-500">Loading taxonomy...</p>
+            <p className="text-xs text-ink-500">Loading taxonomy...</p>
           ) : (
             <ul className="space-y-2.5">
               {(classes.data?.classes ?? []).map((c) => {
@@ -307,7 +307,7 @@ export default function Detection() {
                 return (
                   <li
                     key={c.name}
-                    className="flex items-start gap-3 rounded-lg border border-white/10 bg-navy-950/40 p-3"
+                    className="flex items-start gap-3 rounded-lg border border-ink-950/10 bg-white/70 p-3"
                   >
                     <span
                       className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full"
@@ -316,13 +316,13 @@ export default function Detection() {
                     />
                     <div className="min-w-0">
                       <div className="flex flex-wrap items-center gap-2">
-                        <p className="text-xs font-semibold text-white">{info.label}</p>
+                        <p className="text-xs font-semibold text-ink-950">{info.label}</p>
 <Badge variant={c.malignant ? "destructive" : "info"}>
                         {c.malignant ? "malignant" : "benign"}
                       </Badge>
-                        <span className="text-[10px] text-navy-600">HAM10000: {info.hamDx}</span>
+                        <span className="text-[10px] text-ink-400">HAM10000: {info.hamDx}</span>
                       </div>
-                      <p className="mt-0.5 truncate font-mono text-[10px] text-navy-500">
+                      <p className="mt-0.5 truncate font-mono text-[10px] text-ink-500">
                         &ldquo;{c.prompt}&rdquo;
                       </p>
                     </div>
@@ -331,12 +331,12 @@ export default function Detection() {
               })}
             </ul>
           )}
-          <p className="mt-4 border-t border-white/10 pt-3 text-[11px] leading-relaxed text-navy-400">
-            HAM10000 contains <strong className="text-navy-200">no</strong> squamous cell
-            carcinoma images. Its seven <code className="text-navy-300">dx</code> values
-            include <code className="text-navy-300">akiec</code> — actinic keratosis — which
+          <p className="mt-4 border-t border-ink-950/10 pt-3 text-[11px] leading-relaxed text-ink-600">
+            HAM10000 contains <strong className="text-ink-800">no</strong> squamous cell
+            carcinoma images. Its seven <code className="text-ink-700">dx</code> values
+            include <code className="text-ink-700">akiec</code> — actinic keratosis — which
             is kept as its own class rather than relabelled{" "}
-            <code className="text-navy-300">scc</code>. Relabelling would fabricate ground
+            <code className="text-ink-700">scc</code>. Relabelling would fabricate ground
             truth on all 327 of those images.
           </p>
         </Section>
@@ -346,12 +346,12 @@ export default function Detection() {
           description="Persisted locally. Newest first."
           actions={
             history.data && history.data.length > 0 ? (
-              <span className="text-[11px] text-navy-500">{history.data.length} stored</span>
+              <span className="text-[11px] text-ink-500">{history.data.length} stored</span>
             ) : null
           }
         >
           {history.isLoading ? (
-            <p className="text-xs text-navy-500">Loading history...</p>
+            <p className="text-xs text-ink-500">Loading history...</p>
           ) : history.isError ? (
             <EmptyState
               variant="error"
@@ -373,7 +373,7 @@ export default function Detection() {
                 return (
                   <li
                     key={d.id}
-                    className="flex items-center gap-3 rounded-lg border border-white/10 bg-navy-950/40 px-3 py-2"
+                    className="flex items-center gap-3 rounded-lg border border-ink-950/10 bg-white/70 px-3 py-2"
                   >
                     <span
                       className="h-2 w-2 shrink-0 rounded-full"
@@ -381,18 +381,18 @@ export default function Detection() {
                       aria-hidden
                     />
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-xs text-navy-200">
+                      <p className="truncate text-xs text-ink-800">
                         {info?.label ?? d.predicted_class}
                       </p>
-                      <p className="truncate text-[10px] text-navy-600">
+                      <p className="truncate text-[10px] text-ink-400">
                         {d.image_name} · {formatDateTime(d.created_at)}
                       </p>
                     </div>
                     <div className="shrink-0 text-right">
-                      <p className="text-xs font-semibold tabular-nums text-white">
+                      <p className="text-xs font-semibold tabular-nums text-ink-900">
                         {formatPercent(d.confidence)}
                       </p>
-                      <p className="text-[10px] text-navy-600">
+                      <p className="text-[10px] text-ink-400">
                         {d.inference_time ? formatDuration(d.inference_time) : "--"}
                       </p>
                     </div>
@@ -429,18 +429,18 @@ style={{
       >
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <p className="text-[10px] uppercase tracking-wider text-navy-400">
+            <p className="text-[10px] uppercase tracking-wider text-ink-600">
               Predicted diagnosis
             </p>
-            <p className="mt-1 text-xl font-semibold tracking-tight text-white">
+            <p className="mt-1 text-xl font-semibold tracking-tight text-ink-950">
               {info?.label ?? result.predicted_class}
             </p>
           </div>
           <div className="text-right">
-            <p className="text-2xl font-semibold tabular-nums text-white">
+            <p className="text-2xl font-semibold tabular-nums text-ink-950">
               {formatPercent(result.confidence)}
             </p>
-            <p className="text-[10px] uppercase tracking-wider text-navy-500">
+            <p className="text-[10px] uppercase tracking-wider text-ink-500">
               confidence
             </p>
           </div>
@@ -462,7 +462,7 @@ style={{
       </div>
 
       <div>
-        <p className="mb-2 text-xs font-medium uppercase tracking-wider text-navy-400">
+        <p className="mb-2 text-xs font-medium uppercase tracking-wider text-ink-600">
           Class probabilities
         </p>
         <ul className="space-y-2">
@@ -471,8 +471,8 @@ style={{
             return (
               <li key={p.dx}>
                 <div className="mb-1 flex items-center justify-between text-[11px]">
-                  <span className="text-navy-300">{ci?.label ?? p.dx}</span>
-                  <span className="tabular-nums text-navy-400">
+                  <span className="text-ink-700">{ci?.label ?? p.dx}</span>
+                  <span className="tabular-nums text-ink-600">
                     {formatPercent(p.probability)}
                   </span>
                 </div>
@@ -484,13 +484,13 @@ style={{
       </div>
 
       {result.note && (
-        <div className="flex items-start gap-2 rounded-lg border border-white/10 bg-navy-950/40 p-3">
-          <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-400" />
-          <p className="text-[11px] leading-relaxed text-navy-400">{result.note}</p>
+        <div className="flex items-start gap-2 rounded-lg border border-ink-950/10 bg-white/70 p-3">
+          <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-500" />
+          <p className="text-[11px] leading-relaxed text-ink-600">{result.note}</p>
         </div>
       )}
 
-      <p className="text-[11px] leading-relaxed text-navy-500">
+      <p className="text-[11px] leading-relaxed text-ink-500">
         Recorded {formatDateTime(result.created_at)} as a {result.modality} image. The
         probabilities are a softmax over the four prompt-initialised head rows, so they
         are directly comparable across classes and sum to 1.

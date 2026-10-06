@@ -152,10 +152,10 @@ export default function PretrainedModel() {
       {/* ------------------------------------------------ page header */}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-xl font-semibold tracking-tight text-white">
+          <h1 className="text-xl font-semibold tracking-tight text-ink-950">
             Pre-trained Model
           </h1>
-          <p className="mt-1 max-w-3xl text-sm text-navy-400">
+          <p className="mt-1 max-w-3xl text-sm text-ink-600">
             {d.model_id} — the vision-language backbone every other week builds on.
             Parameter counts below are summed from the tensor header of the weight
             file on this machine, not from a datasheet.
@@ -470,7 +470,7 @@ export default function PretrainedModel() {
       </Section>
 
       {/* ------------------------------------------------ provenance note */}
-      <p className="px-1 text-[11px] leading-relaxed text-navy-500">
+      <p className="px-1 text-[11px] leading-relaxed text-ink-500">
         <SlidersHorizontal className="mr-1.5 inline h-3 w-3" />
         {cached
           ? "Counts read from the local safetensors header; architecture read from config.json."

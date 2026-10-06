@@ -5,19 +5,19 @@ import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
         default:
-          "bg-gradient-to-r from-accent-500 to-accent-600 text-white shadow-soft hover:from-accent-400 hover:to-accent-500",
+          "bg-gradient-to-r from-accent-400 to-accent-600 text-white shadow-soft hover:from-accent-300 hover:to-accent-500",
         secondary: "bg-slate-100 text-slate-900 hover:bg-slate-200",
         outline:
-          "border border-white/15 bg-white/5 text-navy-50 hover:border-accent-400/50 hover:bg-white/10",
-        ghost: "text-navy-200 hover:bg-white/10 hover:text-white",
+          "border border-ink-950/20 bg-white/70 text-ink-900 shadow-soft hover:border-accent-400/60 hover:bg-accent-50",
+        ghost: "text-ink-800 hover:bg-ink-950/10 hover:text-ink-950",
         destructive: "bg-red-600 text-white hover:bg-red-700",
         success: "bg-emerald-600 text-white hover:bg-emerald-700",
-        link: "text-accent-300 underline-offset-4 hover:underline",
+        link: "text-accent-600 underline-offset-4 hover:text-accent-700 hover:underline",
       },
       size: {
         default: "h-10 px-4 py-2",
