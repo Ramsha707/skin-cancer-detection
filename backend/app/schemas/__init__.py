@@ -239,6 +239,9 @@ class ExperimentOut(ORMModel):
     is_real_result: bool = False
     notes: str | None = None
     created_at: datetime
+    # Week 6: whether this host can actually execute the strategy, and why.
+    feasible: bool = True
+    feasibility_note: str | None = None
 
 
 class RunExperimentRequest(BaseModel):

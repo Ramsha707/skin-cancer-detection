@@ -7,7 +7,7 @@ export default function Timeline() {
     <div>
       <PageHeader
         title="Project Timeline"
-        description="The 12-week delivery plan. Weeks 1 to 8 are implemented in this build; the remainder are sequenced but not yet built."
+        description="The 12-week delivery plan. Weeks 1 to 6 are implemented in this build; the remainder are sequenced but not yet built."
       />
       <ol className="relative space-y-3 border-l border-white/10 pl-6">
         {ROADMAP.map((w) => (

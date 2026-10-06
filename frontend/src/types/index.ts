@@ -211,6 +211,10 @@ export interface Experiment {
   is_real_result: boolean;
   notes: string | null;
   created_at: string;
+  /** Backend feasibility gate: false => this host cannot honestly run it. */
+  feasible: boolean;
+  /** Why the strategy is refused (or what makes it cheap) on this host. */
+  feasibility_note: string | null;
 }
 
 /* ------------------------------------------------------------------ */
@@ -432,9 +436,9 @@ export const ROADMAP: WeekMilestone[] = [
   { week: 1, title: "UI/UX + Project Foundation", summary: "Design system, routing, landing page", status: "complete", route: "/" },
   { week: 2, title: "Backend + Database", summary: "FastAPI, SQLAlchemy, SQLite schema", status: "complete" },
   { week: 3, title: "Hospital Agents", summary: "Four isolated hospital agents with local data", status: "complete", route: "/agents" },
-  { week: 4, title: "Cancer Detection Interface", summary: "Upload, preprocess, predict, explain", status: "planned", route: "/detection" },
-  { week: 5, title: "Pre-trained Model Integration", summary: "MedSigLIP-448 analysis + cancer adaptation", status: "planned", route: "/models/pretrained" },
-  { week: 6, title: "Fine-Tuning + Experiments", summary: "Frozen vs selective vs full comparison", status: "planned", route: "/experiments" },
+  { week: 4, title: "Cancer Detection Interface", summary: "Upload, preprocess, predict, explain", status: "complete", route: "/detection" },
+  { week: 5, title: "Pre-trained Model Integration", summary: "MedSigLIP-448 analysis + cancer adaptation", status: "complete", route: "/models/pretrained" },
+  { week: 6, title: "Fine-Tuning + Experiments", summary: "Frozen vs selective vs full comparison", status: "complete", route: "/experiments" },
   { week: 7, title: "Federated Learning Engine", summary: "FedAvg local train / aggregate / broadcast", status: "planned", route: "/federated-training" },
   { week: 8, title: "Federated Dashboard", summary: "Interactive topology, controls, live rounds", status: "planned", route: "/federated-training" },
   { week: 9, title: "Evaluation", summary: "Full metric suite + ROC + confusion matrix", status: "planned", route: "/performance" },
@@ -446,11 +450,12 @@ export const ROADMAP: WeekMilestone[] = [
 /**
  * Highest roadmap week actually implemented in this build.
  *
- * This must be bumped as weeks land. It is 5 right now: detection (week 4) and
- * pretrained-model introspection (week 5) read live from the backend, while
- * the routes beyond 5 are navigation shells and must stay `planned`.
+ * This must be bumped as weeks land. It is 6 right now: detection (week 4),
+ * pretrained-model introspection (week 5) and the experiments comparison
+ * (week 6) read live from the backend, while the routes beyond 6 are
+ * navigation shells and must stay `planned`.
  */
-export const CURRENT_IMPLEMENTED_WEEK = 5;
+export const CURRENT_IMPLEMENTED_WEEK = 6;
 
 export const RESEARCH_DISCLAIMER =
   "RESEARCH PROTOTYPE — NOT A MEDICAL DIAGNOSIS. This system is intended for academic and research demonstration only. It has not been clinically validated and must not be used to make medical decisions.";
