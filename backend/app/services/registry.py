@@ -239,6 +239,23 @@ def class_names() -> list[str]:
     return list(CANCER_CLASSES)
 
 
+@lru_cache(maxsize=1)
+def ov_available() -> bool:
+    """Whether the OpenVINO runtime is importable and lists a GPU device.
+
+    Cached because constructing a `Core` enumerates devices, which is not free,
+    and the answer cannot change while the process lives.
+    """
+    try:
+        import openvino as ov
+
+        return "GPU" in ov.Core().available_devices
+    except (ImportError, AttributeError, OSError, RuntimeError):
+        # No OpenVINO build, a stub install, or device enumeration refused.
+        # Reporting false is the safe direction: it never claims a GPU.
+        return False
+
+
 __all__ = [
     "AGENT_SLUGS",
     "EMBEDDING_DIR",
@@ -250,5 +267,6 @@ __all__ = [
     "load_model_card",
     "load_split",
     "load_trained_head",
+    "ov_available",
     "save_head",
 ]

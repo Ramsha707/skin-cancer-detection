@@ -255,8 +255,15 @@ export interface CancerHeadInfo {
   trainable_params: number;
 }
 
+/** One row of the backend `/api/detection/classes` taxonomy. */
+export interface DetectionClassEntry {
+  name: CancerClass;
+  prompt: string;
+  malignant: boolean;
+}
+
 export interface DetectionClasses {
-  classes: CancerClassInfo[];
+  classes: DetectionClassEntry[];
   head: CancerHeadInfo;
   caches_ready: Record<string, boolean>;
 }
@@ -335,6 +342,8 @@ export interface PretrainedModelInfo {
   };
   original_training_domain: string;
   original_task: string;
+  original_classes: string;
+  output_format: string;
   domain_similarity_to_dermoscopy: string;
   suitable_as_backbone: boolean;
   backbone_viability_notes: string[];
@@ -437,11 +446,11 @@ export const ROADMAP: WeekMilestone[] = [
 /**
  * Highest roadmap week actually implemented in this build.
  *
- * This must be bumped as weeks land. It is 3 right now: week 3's agent roster,
- * class-mix view and per-site controls read live from the backend, while the
- * routes for weeks 4-8 exist as navigation shells and must stay `planned`.
+ * This must be bumped as weeks land. It is 5 right now: detection (week 4) and
+ * pretrained-model introspection (week 5) read live from the backend, while
+ * the routes beyond 5 are navigation shells and must stay `planned`.
  */
-export const CURRENT_IMPLEMENTED_WEEK = 3;
+export const CURRENT_IMPLEMENTED_WEEK = 5;
 
 export const RESEARCH_DISCLAIMER =
   "RESEARCH PROTOTYPE — NOT A MEDICAL DIAGNOSIS. This system is intended for academic and research demonstration only. It has not been clinically validated and must not be used to make medical decisions.";

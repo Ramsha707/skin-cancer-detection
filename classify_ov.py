@@ -10,13 +10,14 @@ import argparse
 import json
 import sys
 import time
-from pathlib import Path
 
 from medsiglip_ov import MedSiglipOpenVINO, iter_image_paths
 
 
 def parse_args() -> argparse.Namespace:
-    p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    p = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
     src = p.add_mutually_exclusive_group(required=True)
     src.add_argument("--image")
     src.add_argument("--folder")
@@ -53,14 +54,17 @@ def main() -> int:
     elapsed = time.perf_counter() - start
 
     if args.json:
-        print(json.dumps(dict(zip(images, results)), indent=2))
+        print(json.dumps(dict(zip(images, results, strict=True)), indent=2))
         return 0
 
-    for path, scores in zip(images, results):
+    for path, scores in zip(images, results, strict=True):
         print(f"\n{path}")
         for label, prob in scores.items():
             print(f"  {prob:7.2%}  {label}")
-    print(f"\n[{clf.device}] {len(images)} image(s) in {elapsed:.2f}s ({elapsed/len(images):.2f}s each)")
+    print(
+        f"[{clf.device}] {len(images)} image(s) in {elapsed:.2f}s "
+        f"({elapsed / len(images):.2f}s each)"
+    )
     return 0
 
 

@@ -1,9 +1,9 @@
 """Find why HAM10000 prompts collapse. Tests padding side and prompt templates."""
 
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
-import torch
-from pathlib import Path
 
 from medsiglip import MedSiglipClassifier
 
@@ -56,6 +56,9 @@ for side in ("right", "left"):
         mx, mean = separation(te)
         sim = (img @ (te / te.norm(dim=-1, keepdim=True)).T).numpy()
         pred = sim.argmax(axis=1)
-        acc = np.mean([codes[p] == l for p, l in zip(pred, labels)])
+        acc = np.mean([codes[p] == lab for p, lab in zip(pred, labels, strict=True)])
         top1 = np.mean(sim.max(axis=1))
-        print(f"  {name:34s} acc {acc:5.1%} | mean sim {top1:.3f} | prompt maxcos {mx:.3f} meancos {mean:.3f}")
+        print(
+            f"  {name:34s} acc {acc:5.1%} | mean sim {top1:.3f} "
+            f"prompt maxcos {mx:.3f} meancos {mean:.3f}"
+        )

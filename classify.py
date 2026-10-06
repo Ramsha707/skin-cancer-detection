@@ -15,7 +15,9 @@ from medsiglip import MedSiglipClassifier, iter_image_paths
 
 
 def parse_args() -> argparse.Namespace:
-    p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    p = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
     src = p.add_mutually_exclusive_group(required=True)
     src.add_argument("--image", help="single image path or URL-free local file")
     src.add_argument("--folder", help="directory of images (searched recursively)")
@@ -52,10 +54,10 @@ def main() -> int:
     results = clf.classify(images, labels, top_k=args.top_k)
 
     if args.json:
-        print(json.dumps(dict(zip(images, results)), indent=2))
+        print(json.dumps(dict(zip(images, results, strict=True)), indent=2))
         return 0
 
-    for path, scores in zip(images, results):
+    for path, scores in zip(images, results, strict=True):
         print(f"\n{path}")
         for label, prob in scores.items():
             print(f"  {prob:7.2%}  {label}")
