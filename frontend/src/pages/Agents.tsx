@@ -7,6 +7,7 @@ import {
   Building2,
   CircleSlash,
   DownloadCloud,
+  Hospital,
   PauseCircle,
   PlayCircle,
   Scale,
@@ -111,7 +112,7 @@ export default function Agents() {
   if (error) {
     return (
       <>
-        <PageHeader title="Hospital Agents" />
+        <PageHeader title="Hospital Agents" icon={Hospital} />
         <EmptyState
           variant="error"
           icon={AlertTriangle}
@@ -125,7 +126,7 @@ export default function Agents() {
   if (isLoading) {
     return (
       <>
-        <PageHeader title="Hospital Agents" description="Loading agent partitions…" />
+        <PageHeader title="Hospital Agents" description="Loading agent partitions…" icon={Hospital} />
         <div className="grid gap-4 md:grid-cols-2">
           {Array.from({ length: 4 }).map((_, i) => (
             <div key={i} className="glass-panel h-56 animate-pulse" />
@@ -140,6 +141,7 @@ export default function Agents() {
       <PageHeader
         title="Hospital Agents"
         description="Four simulated hospital sites, each holding an isolated, non-IID partition of the HAM10000 training split. Only model updates cross site boundaries."
+        icon={Hospital}
         actions={
           <Button asChild variant="outline" size="sm">
             <Link to="/privacy">

@@ -55,11 +55,11 @@ export default function Landing() {
       <section className="relative overflow-hidden border-b border-ink-950/10">
         <div className="grid-backdrop absolute inset-0 opacity-60" aria-hidden />
         <div
-          className="pointer-events-none absolute -left-32 top-0 h-[420px] w-[420px] rounded-full bg-blush-500/30 blur-[120px]"
+          className="pointer-events-none absolute -left-32 top-0 h-[420px] w-[420px] rounded-full bg-blush-400/40 blur-[120px]"
           aria-hidden
         />
         <div
-          className="pointer-events-none absolute -right-24 bottom-0 h-[380px] w-[380px] rounded-full bg-periwinkle-500/30 blur-[120px]"
+          className="pointer-events-none absolute -right-24 bottom-0 h-[380px] w-[380px] rounded-full bg-blue-300/40 blur-[120px]"
           aria-hidden
         />
 
@@ -199,7 +199,7 @@ export default function Landing() {
                 transition={{ delay: i * 0.08, duration: 0.4 }}
               >
                 <div className="group h-full rounded-2xl border border-ink-950/10 bg-white p-5 transition-all hover:-translate-y-1 hover:border-lilac-300 hover:shadow-glow">
-                  <div className="rounded-xl bg-gradient-to-br from-pink-500 via-violet-500 to-blue-500 p-2.5 transition-transform group-hover:scale-110">
+                  <div className="rounded-xl bg-gradient-to-br from-blush-400 via-blue-400 to-blue-500 p-2.5 transition-transform group-hover:scale-110">
                     <c.icon className="h-5 w-5 text-white" />
                   </div>
                   <h3 className="mt-4 text-sm font-semibold text-ink-950">{c.title}</h3>
@@ -301,7 +301,7 @@ export default function Landing() {
       </section>
 
       {/* ── CTA ─────────────────────────────────────────────────────── */}
-      <section className="border-t border-ink-950/10 bg-gradient-to-b from-blush-200 via-lilac-200 to-periwinkle-200">
+      <section className="border-t border-ink-950/10 bg-gradient-to-b from-blush-100 via-blue-100 to-blue-200">
         <div className="mx-auto max-w-[1400px] px-4 py-16 text-center md:px-6">
           <h2 className="text-2xl font-semibold tracking-tight text-ink-950 md:text-3xl">
             Ready to watch four hospitals train one model?

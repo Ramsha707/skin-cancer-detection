@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import {
   AlertTriangle,
   ArrowLeft,
+  Building2,
   DownloadCloud,
   PauseCircle,
   PlayCircle,
@@ -43,7 +44,7 @@ export default function AgentDetail() {
   if (error) {
     return (
       <>
-        <PageHeader title="Hospital Detail" />
+        <PageHeader title="Hospital Detail" icon={Building2} />
         <EmptyState
           variant="error"
           icon={AlertTriangle}
@@ -61,7 +62,7 @@ export default function AgentDetail() {
   if (isLoading || !agent) {
     return (
       <>
-        <PageHeader title="Hospital Detail" description="Loading agent record…" />
+        <PageHeader title="Hospital Detail" description="Loading agent record…" icon={Building2} />
         <div className="glass-panel h-64 animate-pulse" />
       </>
     );
@@ -77,6 +78,7 @@ export default function AgentDetail() {
       <PageHeader
         title={agent.name}
         description={`${agent.agent_id} · ${agent.location ?? "location not recorded"}`}
+        icon={Building2}
         actions={
           <Button asChild variant="ghost" size="sm">
             <Link to="/agents">

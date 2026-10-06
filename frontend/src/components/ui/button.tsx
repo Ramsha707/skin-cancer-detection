@@ -10,11 +10,11 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-gradient-to-r from-pink-500 via-violet-500 to-blue-500 text-white shadow-glow-btn hover:from-pink-600 hover:via-violet-600 hover:to-blue-600",
-        secondary: "bg-gradient-to-r from-violet-200 to-blue-200 text-violet-900 hover:from-violet-300 hover:to-blue-300",
+          "bg-gradient-to-r from-blush-400 via-blue-400 to-blue-500 text-white shadow-glow-btn hover:from-blush-500 hover:via-blue-500 hover:to-blue-600",
+        secondary: "bg-gradient-to-r from-blush-200 via-blue-200 to-blue-300 text-blush-900 hover:from-blush-300 hover:via-blue-300 hover:to-blue-400",
         outline:
-          "border border-lilac-300 bg-gradient-to-r from-pink-50 via-violet-50 to-blue-50 text-ink-900 shadow-soft hover:border-accent-400 hover:from-pink-100 hover:via-violet-100 hover:to-blue-100",
-        ghost: "text-accent-700 hover:bg-violet-100 hover:text-accent-800",
+          "border border-blush-300 bg-gradient-to-r from-blush-50 via-blue-50 to-blue-100 text-ink-900 shadow-soft hover:border-blush-400 hover:from-blush-100 hover:via-blue-100 hover:to-blue-200",
+        ghost: "text-accent-700 hover:bg-blue-100 hover:text-accent-800",
         destructive: "bg-gradient-to-r from-red-500 to-red-700 text-white hover:from-red-600 hover:to-red-800",
         success: "bg-gradient-to-r from-emerald-500 to-emerald-700 text-white hover:from-emerald-600 hover:to-emerald-800",
         link: "text-accent-600 underline-offset-4 hover:text-accent-800 hover:underline",

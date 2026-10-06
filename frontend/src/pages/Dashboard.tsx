@@ -38,7 +38,7 @@ export default function Dashboard() {
   if (error) {
     return (
       <>
-        <PageHeader title="Dashboard" />
+        <PageHeader title="Dashboard" icon={Activity} />
         <EmptyState
           variant="error"
           icon={AlertTriangle}
@@ -52,7 +52,7 @@ export default function Dashboard() {
   if (isLoading || !data) {
     return (
       <>
-        <PageHeader title="Dashboard" description="Loading live system state…" />
+        <PageHeader title="Dashboard" description="Loading live system state…" icon={Activity} />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {Array.from({ length: 8 }).map((_, i) => (
             <div key={i} className="glass-panel h-28 animate-pulse" />
@@ -70,6 +70,7 @@ export default function Dashboard() {
       <PageHeader
         title="Dashboard"
         description="Live federated state across four hospital agents. Every figure below is read from the backend database."
+        icon={Activity}
         actions={
           <>
             <Button asChild variant="outline" size="sm">

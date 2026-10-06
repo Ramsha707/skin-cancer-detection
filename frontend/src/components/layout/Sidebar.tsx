@@ -55,7 +55,7 @@ export function Sidebar({ collapsed, onNavigate }: { collapsed: boolean; onNavig
     >
       {/* Brand */}
       <div className={cn("flex items-center gap-3 border-b border-ink-950/10 px-4 py-5", collapsed && "justify-center px-2")}>
-        <div className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-pink-500 via-violet-500 to-blue-500 shadow-glow">
+        <div className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blush-400 via-blue-400 to-blue-500 shadow-glow">
           <Sparkles className="h-5 w-5 text-white" />
         </div>
         {!collapsed && (
@@ -82,7 +82,7 @@ export function Sidebar({ collapsed, onNavigate }: { collapsed: boolean; onNavig
                 cn(
                   "group relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-all",
                   isActive
-                    ? "bg-violet-100 font-medium text-violet-800 shadow-soft"
+                    ? "bg-blush-100 font-medium text-blush-900 shadow-soft"
                     : "text-ink-700 hover:bg-ink-950/5 hover:text-ink-950",
                   collapsed && "justify-center px-0",
                 )
@@ -93,13 +93,13 @@ export function Sidebar({ collapsed, onNavigate }: { collapsed: boolean; onNavig
                   {isActive && (
                     <motion.span
                       layoutId="nav-active"
-                      className="absolute left-0 top-1/2 h-6 w-0.5 -translate-y-1/2 rounded-r bg-gradient-to-b from-pink-500 to-violet-500"
+                      className="absolute left-0 top-1/2 h-6 w-0.5 -translate-y-1/2 rounded-r bg-gradient-to-b from-blush-400 to-blue-500"
                     />
                   )}
                   <item.icon
                     className={cn(
                       "h-4 w-4 shrink-0 transition-colors",
-                      isActive ? "text-violet-600" : "text-ink-600 group-hover:text-accent-500",
+                      isActive ? "text-blush-600" : "text-ink-600 group-hover:text-accent-500",
                     )}
                   />
                   {!collapsed && (
@@ -122,8 +122,8 @@ export function Sidebar({ collapsed, onNavigate }: { collapsed: boolean; onNavig
       {/* Footer */}
       {!collapsed && (
         <div className="border-t border-ink-950/10 p-4">
-          <div className="rounded-xl border border-violet-200 bg-violet-100/80 p-3">
-            <div className="flex items-center gap-2 text-[11px] font-medium text-violet-800">
+          <div className="rounded-xl border border-blush-200 bg-blush-100/80 p-3">
+            <div className="flex items-center gap-2 text-[11px] font-medium text-blush-900">
               <ShieldCheck className="h-3.5 w-3.5" />
               Raw images shared: 0
             </div>

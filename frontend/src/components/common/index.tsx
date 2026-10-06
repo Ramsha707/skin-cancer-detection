@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { motion } from "framer-motion";
-import { AlertTriangle, Clock, FlaskConical, type LucideIcon } from "lucide-react";
+import { AlertTriangle, CalendarDays, Clock, FlaskConical, type LucideIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn, formatMetric, formatPercent } from "@/lib/utils";
 
@@ -28,9 +28,9 @@ export function StatCard({
 }) {
   const tones: Record<string, { bg: string; text: string; bar: string }> = {
     accent: {
-      bg: "bg-gradient-to-br from-pink-500 to-violet-500",
+      bg: "bg-gradient-to-br from-blush-400 to-blue-500",
       text: "text-white",
-      bar: "from-blush-500 via-lilac-500 to-periwinkle-500",
+      bar: "from-blush-400 via-blue-400 to-blue-500",
     },
     emerald: { bg: "bg-gradient-to-br from-emerald-400 to-emerald-600", text: "text-white", bar: "from-emerald-400 to-emerald-600" },
     amber: { bg: "bg-gradient-to-br from-amber-400 to-amber-600", text: "text-white", bar: "from-amber-400 to-amber-600" },
@@ -61,6 +61,23 @@ export function StatCard({
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Page-title icon chip                                                 */
+/* ------------------------------------------------------------------ */
+
+export function TitleIcon({ icon: Icon, className }: { icon: LucideIcon; className?: string }) {
+  return (
+    <div
+      className={cn(
+        "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blush-400 to-blue-500 shadow-soft",
+        className,
+      )}
+    >
+      <Icon className="h-5 w-5 text-white" />
     </div>
   );
 }
@@ -228,12 +245,15 @@ export function ScheduledPage({
   return (
     <div className="mx-auto max-w-3xl py-10">
       <div className="glass-panel overflow-hidden">
-        <div className="border-b border-ink-950/10 bg-gradient-to-r from-blush-300/60 via-lilac-300/40 to-transparent px-6 py-5">
-          <Badge variant="warning" className="mb-2">
-            <Clock className="h-3 w-3" /> Scheduled · Week {week}
-          </Badge>
-          <h1 className="text-xl font-semibold tracking-tight text-ink-950">{title}</h1>
-          <p className="mt-1 text-sm text-ink-600">{planned}</p>
+        <div className="flex items-center gap-3 border-b border-ink-950/10 bg-gradient-to-r from-blush-200/70 via-blue-200/40 to-transparent px-6 py-5">
+          <TitleIcon icon={CalendarDays} />
+          <div>
+            <Badge variant="warning" className="mb-1">
+              <Clock className="h-3 w-3" /> Scheduled · Week {week}
+            </Badge>
+            <h1 className="text-xl font-semibold tracking-tight text-ink-950">{title}</h1>
+            <p className="mt-1 text-sm text-ink-600">{planned}</p>
+          </div>
         </div>
 
         <div className="space-y-4 px-6 py-6">

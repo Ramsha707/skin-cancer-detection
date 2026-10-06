@@ -27,7 +27,7 @@ import {
   RESEARCH_DISCLAIMER,
   type PretrainedModelInfo,
 } from "@/types";
-import { EmptyState, Section, StatCard } from "@/components/common";
+import { EmptyState, Section, StatCard, TitleIcon } from "@/components/common";
 import { PageHeader } from "@/components/layout/AppLayout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -103,10 +103,11 @@ export default function PretrainedModel() {
   if (q.isLoading) {
     return (
       <div className="space-y-5">
-        <PageHeader
-          title="Pre-trained Model"
-          description="MedSigLIP-448 architecture introspection."
-        />
+<PageHeader
+        title="Pre-trained Model"
+        description="MedSigLIP-448 architecture introspection."
+        icon={Cpu}
+      />
         <EmptyState
           title="Reading the local model header…"
           description="Summing tensor shapes from the safetensors file in the HuggingFace cache."
@@ -120,10 +121,11 @@ export default function PretrainedModel() {
     const offline = q.error instanceof ApiError && q.error.status >= 500;
     return (
       <div className="space-y-5">
-        <PageHeader
-          title="Pre-trained Model"
-          description="MedSigLIP-448 architecture introspection."
-        />
+<PageHeader
+        title="Pre-trained Model"
+        description="MedSigLIP-448 architecture introspection."
+        icon={Cpu}
+      />
         <EmptyState
           variant="error"
           title={offline ? "Backend did not respond" : "Model introspection failed"}
@@ -151,15 +153,18 @@ export default function PretrainedModel() {
     <div className="space-y-5">
       {/* ------------------------------------------------ page header */}
       <div className="flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <h1 className="text-xl font-semibold tracking-tight text-ink-950">
-            Pre-trained Model
-          </h1>
-          <p className="mt-1 max-w-3xl text-sm text-ink-600">
-            {d.model_id} — the vision-language backbone every other week builds on.
-            Parameter counts below are summed from the tensor header of the weight
-            file on this machine, not from a datasheet.
-          </p>
+        <div className="flex items-center gap-3">
+          <TitleIcon icon={Cpu} />
+          <div>
+            <h1 className="text-xl font-semibold tracking-tight text-ink-950">
+              Pre-trained Model
+            </h1>
+            <p className="mt-1 max-w-3xl text-sm text-ink-600">
+              {d.model_id} — the vision-language backbone every other week builds on.
+              Parameter counts below are summed from the tensor header of the weight
+              file on this machine, not from a datasheet.
+            </p>
+          </div>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <Badge variant={cached ? "success" : d.cache_status === "partial" ? "info" : "warning"}>

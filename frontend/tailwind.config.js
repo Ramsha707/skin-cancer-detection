@@ -107,9 +107,9 @@ export default {
         mono: ["JetBrains Mono", "SFMono-Regular", "monospace"],
       },
       boxShadow: {
-        soft: "0 1px 2px 0 rgb(43 39 63 / 0.05), 0 6px 24px -6px rgb(139 92 246 / 0.18)",
-        glow: "0 0 0 1px rgb(196 181 253 / 0.5), 0 8px 32px -8px rgb(139 92 246 / 0.5)",
-        "glow-btn": "0 2px 10px -2px rgb(139 92 246 / 0.55), 0 8px 24px -6px rgb(242 61 146 / 0.45)",
+        soft: "0 1px 2px 0 rgb(43 39 63 / 0.05), 0 6px 24px -6px rgb(96 165 250 / 0.22)",
+        glow: "0 0 0 1px rgb(191 219 254 / 0.5), 0 8px 32px -8px rgb(96 165 250 / 0.45)",
+        "glow-btn": "0 2px 10px -2px rgb(96 165 250 / 0.5), 0 8px 24px -6px rgb(251 113 133 / 0.4)",
       },
       keyframes: {
         "accordion-down": {
@@ -121,9 +121,9 @@ export default {
           to: { height: "0" },
         },
         pulseRing: {
-          "0%": { boxShadow: "0 0 0 0 rgb(139 92 246 / 0.5)" },
-          "70%": { boxShadow: "0 0 0 12px rgb(139 92 246 / 0)" },
-          "100%": { boxShadow: "0 0 0 0 rgb(139 92 246 / 0)" },
+          "0%": { boxShadow: "0 0 0 0 rgb(96 165 250 / 0.5)" },
+          "70%": { boxShadow: "0 0 0 12px rgb(96 165 250 / 0)" },
+          "100%": { boxShadow: "0 0 0 0 rgb(96 165 250 / 0)" },
         },
         dashFlow: {
           to: { strokeDashoffset: "-1000" },

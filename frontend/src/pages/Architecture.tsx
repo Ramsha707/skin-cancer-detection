@@ -86,6 +86,7 @@ export default function Architecture() {
       <PageHeader
         title="System Architecture"
         description="Six layers, from four hospital agents to explainable prediction. This is the design that the running code implements."
+        icon={Network}
       />
 
       {/* Chain header */}

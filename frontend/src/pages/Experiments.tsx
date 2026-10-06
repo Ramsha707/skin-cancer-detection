@@ -59,6 +59,7 @@ export default function Experiments() {
         <PageHeader
           title="Fine-Tuning & Experiments"
           description="Frozen backbone vs selective vs full fine-tuning."
+          icon={FlaskConical}
         />
         <EmptyState
           title="Loading registered experiments…"
@@ -75,6 +76,7 @@ export default function Experiments() {
         <PageHeader
           title="Fine-Tuning & Experiments"
           description="Frozen backbone vs selective vs full fine-tuning."
+          icon={FlaskConical}
         />
         <EmptyState
           variant="error"
@@ -104,6 +106,7 @@ export default function Experiments() {
       <PageHeader
         title="Fine-Tuning & Experiments"
         description="Three transfer-learning strategies over the MedSigLIP-448 vision tower, compared on the held-out validation split. Metrics appear only when a strategy actually runs on this host; the page never substitutes a simulated figure."
+        icon={FlaskConical}
         actions={
           <>
             <Badge variant={completed.length ? "success" : "warning"}>

@@ -1,9 +1,10 @@
 import { useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Activity, Menu, PanelLeftClose, PanelLeftOpen, X } from "lucide-react";
+import { Activity, Menu, PanelLeftClose, PanelLeftOpen, X, type LucideIcon } from "lucide-react";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Badge } from "@/components/ui/badge";
+import { TitleIcon } from "@/components/common";
 import { SystemStatusContext, useDashboard } from "@/hooks/useDashboard";
 import { RESEARCH_DISCLAIMER } from "@/types";
 import { cn } from "@/lib/utils";
@@ -152,16 +153,21 @@ export function PageHeader({
   title,
   description,
   actions,
+  icon: Icon,
 }: {
   title: string;
   description?: string;
   actions?: ReactNode;
+  icon?: LucideIcon;
 }) {
   return (
     <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-      <div>
-        <h1 className="text-xl font-semibold tracking-tight text-ink-950 md:text-2xl">{title}</h1>
-        {description && <p className="mt-1 max-w-3xl text-sm text-ink-600">{description}</p>}
+      <div className="flex items-center gap-3">
+        {Icon && <TitleIcon icon={Icon} />}
+        <div>
+          <h1 className="text-xl font-semibold tracking-tight text-ink-950 md:text-2xl">{title}</h1>
+          {description && <p className="mt-1 max-w-3xl text-sm text-ink-600">{description}</p>}
+        </div>
       </div>
       {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}
     </div>

@@ -34,6 +34,7 @@ import {
   EmptyState,
   Section,
   StatCard,
+  TitleIcon,
 } from "@/components/common";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -93,15 +94,18 @@ export default function Detection() {
     <div className="space-y-5">
       {/* ------------------------------------------------ page header */}
       <div className="flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <h1 className="text-xl font-semibold tracking-tight text-ink-950">
-            Cancer Detection
-          </h1>
-          <p className="mt-1 max-w-3xl text-sm text-ink-600">
-            Upload a dermoscopy image. MedSigLIP-448 embeds it, the 4,612-parameter
-            linear head scores the four classes, and the full probability vector is
-            returned so the result is auditable rather than a bare label.
-          </p>
+        <div className="flex items-center gap-3">
+          <TitleIcon icon={Brain} />
+          <div>
+            <h1 className="text-xl font-semibold tracking-tight text-ink-950">
+              Cancer Detection
+            </h1>
+            <p className="mt-1 max-w-3xl text-sm text-ink-600">
+              Upload a dermoscopy image. MedSigLIP-448 embeds it, the 4,612-parameter
+              linear head scores the four classes, and the full probability vector is
+              returned so the result is auditable rather than a bare label.
+            </p>
+          </div>
         </div>
         <Badge variant={ready ? "success" : "warning"}>
           {ready ? (

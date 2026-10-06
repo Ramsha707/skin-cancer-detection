@@ -59,7 +59,7 @@
 
   /* Gradient text for hero + section titles */
   .text-gradient {
-    @apply bg-gradient-to-r from-blush-500 via-lilac-500 to-periwinkle-500 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-blush-500 via-blue-500 to-blue-600 bg-clip-text text-transparent;
   }
 
   /* Animated dashed link between federated nodes */
