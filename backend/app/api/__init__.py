@@ -8,8 +8,10 @@ from app.api import (
     detection,
     evaluation,
     experiments,
+    explainability,
     federated,
     models,
+    privacy,
     system,
 )
 
@@ -19,8 +21,10 @@ api_router.include_router(agents.router)
 api_router.include_router(audit.router)
 api_router.include_router(detection.router)
 api_router.include_router(evaluation.router)
+api_router.include_router(explainability.router)
 api_router.include_router(experiments.router)
 api_router.include_router(federated.router)
 api_router.include_router(models.router)
+api_router.include_router(privacy.router)
 
 __all__ = ["api_router"]

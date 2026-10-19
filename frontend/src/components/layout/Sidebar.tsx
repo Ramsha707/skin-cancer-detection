@@ -38,7 +38,7 @@ export const NAV_ITEMS: NavItem[] = [
   { label: "Architecture", to: "/architecture", icon: GitBranch, week: 1, description: "Six-layer system design" },
   { label: "Privacy Center", to: "/privacy", icon: ShieldCheck, week: 10, description: "Zero raw-image transmission proof" },
   { label: "Experiments", to: "/experiments", icon: FlaskConical, week: 6, description: "Frozen vs selective vs full" },
-  { label: "Audit Logs", to: "/audit", icon: ScrollText, week: 10, description: "Chronological event ledger" },
+  { label: "Audit Logs", to: "/audit", icon: ScrollText, week: 11, description: "Chronological event ledger" },
     { label: "Model Registry", to: "/models", icon: Boxes, week: 12, description: "Global model versions" },
   { label: "Model Info", to: "/models/pretrained", icon: Cpu, week: 5, description: "MedSigLIP-448 introspection" },
   { label: "Timeline", to: "/timeline", icon: Waypoints, week: 12, description: "12-week delivery roadmap" },

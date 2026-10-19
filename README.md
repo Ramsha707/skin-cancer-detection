@@ -24,12 +24,20 @@ without ever sharing a raw patient image.
 | 7 | Federated learning engine | ✅ complete |
 | 8 | Federated training dashboard | ✅ complete |
 | 9 | Evaluation (ROC, confusion matrix) | ✅ complete |
-| 10 | Explainability + privacy centre | ⬜ planned |
+| 10 | Explainability + privacy centre | ✅ complete |
 | 11 | Full-system integration (WebSocket) | ⬜ planned |
 | 12 | Testing + final demo | ⬜ planned |
 
-Routes for weeks 10–12 render an explicit *"not built yet"* panel rather than placeholder
+Routes for weeks 11–12 render an explicit *"not built yet"* panel rather than placeholder
 metrics. Every number visible in this application traces to code that actually executed.
+
+Week 10 adds Grad-CAM explainability and a privacy centre. Grad-CAM runs real attention
+attribution over the MedSigLIP vision tower (`ml/explainability.py`) and is gated behind an
+availability check: without torch and the pretrained weights the API and UI return an explicit
+*"requires torch + model weights"* panel and never draw a fabricated heatmap. Explanations are
+produced only for the file in the current upload request — stored detection results carry no
+image reference, so nothing links a patient image to a result row. `GET /api/privacy/summary`
+derives every counter, invariant and ledger entry live from the audit log.
 
 ---
 
