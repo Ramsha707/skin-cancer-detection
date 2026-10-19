@@ -1,5 +1,5 @@
 import { CalendarClock } from "lucide-react";
-import { ROADMAP } from "@/types";
+import { CURRENT_IMPLEMENTED_WEEK, ROADMAP } from "@/types";
 import { PageHeader } from "@/components/layout/AppLayout";
 import { ScheduledPage } from "@/components/common";
 
@@ -8,7 +8,7 @@ export default function Timeline() {
     <div>
       <PageHeader
         title="Project Timeline"
-        description="The 12-week delivery plan. Weeks 1 to 6 are implemented in this build; the remainder are sequenced but not yet built."
+        description={`The 12-week delivery plan. Weeks 1 to ${CURRENT_IMPLEMENTED_WEEK} are implemented in this build; the remainder are sequenced but not yet built.`}
         icon={CalendarClock}
       />
       <ol className="relative space-y-3 border-l border-ink-950/10 pl-6">

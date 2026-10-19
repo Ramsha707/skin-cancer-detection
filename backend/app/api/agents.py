@@ -82,7 +82,9 @@ def sync_agent(agent_id: int, db: Session = Depends(get_db)) -> HospitalAgent:
     try:
         from app.federated.engine import get_engine
 
-        version = get_engine().current_global_version or "none"
+        # "unassigned" matches the column default: no global model exists until
+        # round 1 completes, and that is not the same as a version named "none".
+        version = get_engine().current_global_version or "unassigned"
     except (ImportError, AttributeError):
         version = "unassigned"
     agent.model_version = version

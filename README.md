@@ -21,14 +21,14 @@ without ever sharing a raw patient image.
 | 4 | Cancer detection | ✅ complete |
 | 5 | Pre-trained model integration | ✅ complete |
 | 6 | Fine-tuning + experiments | ✅ complete |
-| 7 | Federated learning engine | ⬜ planned |
+| 7 | Federated learning engine | ✅ complete |
 | 8 | Federated training dashboard | ⬜ planned |
 | 9 | Evaluation (ROC, confusion matrix) | ⬜ planned |
 | 10 | Explainability + privacy centre | ⬜ planned |
 | 11 | Full-system integration (WebSocket) | ⬜ planned |
 | 12 | Testing + final demo | ⬜ planned |
 
-Routes for weeks 6–12 render an explicit *"not built yet"* panel rather than placeholder
+Routes for weeks 8–12 render an explicit *"not built yet"* panel rather than placeholder
 metrics. Every number visible in this application traces to code that actually executed.
 
 ---
@@ -126,10 +126,14 @@ malignant lesion is far higher than the cost of a false positive.
 
 ## Demo data
 
-Until a real HAM10000 partition and trained checkpoints are present, the federated
-engine runs in **simulation mode**. Simulated numbers are labelled
-`ILLUSTRATIVE DEMO DATA` at the point of display, and every response carries an
-`is_real_inference` / `is_real_result` flag so the distinction survives into the API.
+There is no simulation mode. Federated rounds train on real embedding caches; when
+the caches are missing the API refuses the request with `503` and prints the
+`scripts/build_splits.py` / `scripts/extract_embeddings.py` commands that produce
+them, rather than inventing a round. Experiment rows stay `awaiting` until a real
+run writes metrics, gated by `is_real_result`. Where the detection path has no
+trained checkpoint it falls back to the zero-shot, prompt-initialised head and
+labels that response `is_real_inference = false`; simulated numbers, when a caller
+opts into them, are labelled `ILLUSTRATIVE DEMO DATA` at the point of display.
 
 ---
 
