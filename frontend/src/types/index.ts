@@ -546,9 +546,120 @@ export interface EvaluationSummary {
 }
 
 /* ------------------------------------------------------------------ */
-/* Week-by-week roadmap                                                */
+/* Explainability (Week 10)                                            */
 /* ------------------------------------------------------------------ */
 
+export interface RegionAttribution {
+  intensity: number;
+  column: number;
+  row: number;
+  region: string;
+}
+
+/**
+ * `GET /api/explainability/status`.
+ *
+ * `available: false` is a normal state: torch or the pretrained weights are not
+ * present in this environment, so no Grad-CAM can run. `reason` says exactly
+ * which, and the page renders that instead of a placeholder overlay.
+ */
+export interface ExplainabilityCapability {
+  available: boolean;
+  reason: string;
+  method: string;
+  model_id: string;
+  device: string | null;
+  classes: CancerClass[];
+}
+
+/**
+ * `POST /api/explainability/generate`.
+ *
+ * `grid` is the numeric attribution map (`grid_size x grid_size`), `overlay_png`
+ * is a `data:` URI blend over the uploaded image, and `top_regions` is the map in
+ * words.
+ */
+export interface ExplainabilityResult {
+  available: boolean;
+  reason: string | null;
+  method: string;
+  model_id: string;
+  head_kind: string | null;
+  model_version: string | null;
+  is_real_inference: boolean;
+  predicted_class: CancerClass | null;
+  target_class: CancerClass | null;
+  target_index: number | null;
+  confidence: number | null;
+  grid_size: number;
+  grid: number[][];
+  overlay_png: string | null;
+  top_regions: RegionAttribution[];
+  device: string | null;
+}
+
+/* ------------------------------------------------------------------ */
+/* Privacy centre (Week 10)                                            */
+/* ------------------------------------------------------------------ */
+
+export interface PrivacyInvariant {
+  key: string;
+  statement: string;
+  enforced: boolean;
+  evidence: string;
+}
+
+export interface PrivacyCounters {
+  raw_images_shared: number;
+  model_updates_shared: boolean;
+  total_update_size_kb: number;
+  transmissions_logged: number;
+  broadcasts_to_hospitals: number;
+  detections_performed: number;
+  explainability_generated: number;
+  agents_protected: number;
+  total_agents: number;
+}
+
+export interface PrivacyAgentTrace {
+  agent_id: string;
+  name: string;
+  privacy_status: PrivacyStatus;
+  rounds_participated: number;
+  dataset_size: number;
+  uploads: number;
+  downloads: number;
+  upload_kb: number;
+  download_kb: number;
+  last_activity: string | null;
+}
+
+export interface PrivacyLedgerEntry {
+  id: number;
+  timestamp: string;
+  agent_id: string | null;
+  event_type: AuditEventType;
+  label: string;
+  message: string;
+  direction: string | null;
+  payload_kb: number | null;
+  payload_type: string | null;
+  round_number: number | null;
+}
+
+/** `GET /api/privacy/summary`. */
+export interface PrivacySummaryOut {
+  counters: PrivacyCounters;
+  invariants: PrivacyInvariant[];
+  agents: PrivacyAgentTrace[];
+  ledger: PrivacyLedgerEntry[];
+  mechanism: string;
+  guarantee: string;
+}
+
+/* ------------------------------------------------------------------ */
+/* Week-by-week roadmap                                                */
+/* ------------------------------------------------------------------ */
 export interface WeekMilestone {
   week: number;
   title: string;
@@ -567,7 +678,7 @@ export const ROADMAP: WeekMilestone[] = [
   { week: 7, title: "Federated Learning Engine", summary: "FedAvg local train / aggregate / broadcast", status: "complete" },
   { week: 8, title: "Federated Dashboard", summary: "Interactive topology, controls, live rounds", status: "complete", route: "/federated-training" },
   { week: 9, title: "Evaluation", summary: "Full metric suite + ROC + confusion matrix", status: "complete", route: "/performance" },
-  { week: 10, title: "Explainability + Privacy", summary: "Grad-CAM heatmaps and privacy centre", status: "planned", route: "/explainability" },
+  { week: 10, title: "Explainability + Privacy", summary: "Grad-CAM heatmaps and privacy centre", status: "complete", route: "/explainability" },
   { week: 11, title: "Full-System Integration", summary: "WebSocket event bus across all modules", status: "planned" },
   { week: 12, title: "Testing + Final Demo", summary: "Run Judge Demo and presentation polish", status: "planned" },
 ];
@@ -575,14 +686,15 @@ export const ROADMAP: WeekMilestone[] = [
 /**
  * Highest roadmap week actually implemented in this build.
  *
- * This must be bumped as weeks land. It is 9 right now: detection (week 4),
+ * This must be bumped as weeks land. It is 10 right now: detection (week 4),
  * pretrained-model introspection (week 5), the experiments comparison (week 6),
  * the federated engine (week 7), the federated training dashboard (week 8,
- * driving `/api/federated` live) and the evaluation report (week 9, driving
- * `/api/evaluation/summary`) are all real, while the routes beyond 9 are
- * navigation shells and must stay `planned`.
+ * driving `/api/federated` live), the evaluation report (week 9, driving
+ * `/api/evaluation/summary`) and explainability + privacy (week 10, driving
+ * `/api/explainability/*` and `/api/privacy/summary`) are all real, while the
+ * routes beyond 10 are navigation shells and must stay `planned`.
  */
-export const CURRENT_IMPLEMENTED_WEEK = 9;
+export const CURRENT_IMPLEMENTED_WEEK = 10;
 
 export const RESEARCH_DISCLAIMER =
   "RESEARCH PROTOTYPE — NOT A MEDICAL DIAGNOSIS. This system is intended for academic and research demonstration only. It has not been clinically validated and must not be used to make medical decisions.";

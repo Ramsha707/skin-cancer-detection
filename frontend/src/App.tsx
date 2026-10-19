@@ -17,10 +17,10 @@ const Experiments = lazy(() => import("@/pages/Experiments"));
 const ModelRegistry = lazy(() => import("@/pages/ModelRegistry"));
 const Architecture = lazy(() => import("@/pages/Architecture"));
 const Performance = lazy(() => import("@/pages/Performance"));
+const Explainability = lazy(() => import("@/pages/Explainability"));
+const Privacy = lazy(() => import("@/pages/Privacy"));
 
-/* Week 10-12 routes are deliberately stubbed rather than faked. */
-const Explainability = lazy(() => import("@/pages/stubs/Explainability"));
-const Privacy = lazy(() => import("@/pages/stubs/Privacy"));
+/* Week 11-12 routes are deliberately stubbed rather than faked. */
 const Audit = lazy(() => import("@/pages/stubs/Audit"));
 const Timeline = lazy(() => import("@/pages/stubs/Timeline"));
 const Settings = lazy(() => import("@/pages/stubs/Settings"));

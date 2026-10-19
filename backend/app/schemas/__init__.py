@@ -492,3 +492,123 @@ class EvaluationSummary(BaseModel):
     roc: RocCurves = Field(default_factory=RocCurves)
     learning_curve: list[LearningCurvePoint] = Field(default_factory=list)
     model_history: list[ModelHistoryEntry] = Field(default_factory=list)
+
+
+# ----------------------------------------------------------- explainability --
+
+
+class RegionAttribution(BaseModel):
+    """One coarse location in the Grad-CAM grid, in words and numbers."""
+
+    intensity: float
+    column: int
+    row: int
+    region: str
+
+
+class ExplainabilityCapability(BaseModel):
+    """Whether a real Grad-CAM can run on this host, and why if not.
+
+    The UI reads this to choose between the upload panel and an explicit
+    'install torch / fetch the weights' instruction, never a placeholder overlay.
+    """
+
+    available: bool
+    reason: str = ""
+    method: str = "grad-cam"
+    model_id: str
+    device: str | None = None
+    classes: list[str] = Field(default_factory=lambda: list(CANCER_CLASSES))
+
+
+class ExplainabilityResult(BaseModel):
+    """One image explained.
+
+    `grid` is the numeric attribution map (row-major, `grid_size x grid_size`),
+    `overlay_png` is a `data:` URI blend over the uploaded image, and
+    `top_regions` is the map in words so the result is readable without the image.
+    """
+
+    available: bool
+    reason: str | None = None
+    method: str = "grad-cam"
+    model_id: str
+    head_kind: str | None = None
+    model_version: str | None = None
+    is_real_inference: bool = False
+    predicted_class: str | None = None
+    target_class: str | None = None
+    target_index: int | None = None
+    confidence: float | None = None
+    grid_size: int = 0
+    grid: list[list[float]] = Field(default_factory=list)
+    overlay_png: str | None = None
+    top_regions: list[RegionAttribution] = Field(default_factory=list)
+    device: str | None = None
+
+
+# ----------------------------------------------------------------- privacy --
+
+
+class PrivacyInvariant(BaseModel):
+    """One structural claim about what leaves a hospital, with its evidence.
+
+    `enforced` is `True` only when the check passed against the live ledger, so a
+    failed invariant is visible rather than asserted as a static statement.
+    """
+
+    key: str
+    statement: str
+    enforced: bool
+    evidence: str
+
+
+class PrivacyCounters(BaseModel):
+    raw_images_shared: int = 0
+    model_updates_shared: bool = False
+    total_update_size_kb: float = 0.0
+    transmissions_logged: int = 0
+    broadcasts_to_hospitals: int = 0
+    detections_performed: int = 0
+    explainability_generated: int = 0
+    agents_protected: int = 0
+    total_agents: int = 0
+
+
+class PrivacyAgentTrace(BaseModel):
+    """What one hospital sent and received, counted from the ledger."""
+
+    agent_id: str
+    name: str
+    privacy_status: PrivacyStatus = "protected"
+    rounds_participated: int = 0
+    dataset_size: int = 0
+    uploads: int = 0
+    downloads: int = 0
+    upload_kb: float = 0.0
+    download_kb: float = 0.0
+    last_activity: datetime | None = None
+
+
+class PrivacyLedgerEntry(BaseModel):
+    id: int
+    timestamp: datetime
+    agent_id: str | None = None
+    event_type: str
+    label: str
+    message: str
+    direction: str | None = None
+    payload_kb: float | None = None
+    payload_type: str | None = None
+    round_number: int | None = None
+
+
+class PrivacySummaryOut(BaseModel):
+    """The whole `/privacy` page payload."""
+
+    counters: PrivacyCounters = Field(default_factory=PrivacyCounters)
+    invariants: list[PrivacyInvariant] = Field(default_factory=list)
+    agents: list[PrivacyAgentTrace] = Field(default_factory=list)
+    ledger: list[PrivacyLedgerEntry] = Field(default_factory=list)
+    mechanism: str = ""
+    guarantee: str = ""
