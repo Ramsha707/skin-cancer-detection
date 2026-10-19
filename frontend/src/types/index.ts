@@ -137,9 +137,11 @@ export interface TrainingRound {
   participating_agents: number;
   global_model_version: string | null;
   global_accuracy: number | null;
-  global_loss: number | null;
-  global_f1: number | null;
+  global_precision: number | null;
   global_recall: number | null;
+  global_f1: number | null;
+  global_auc: number | null;
+  global_loss: number | null;
   duration_seconds: number | null;
   samples_processed: number | null;
 }
@@ -156,6 +158,28 @@ export interface AgentRoundState {
   weight_delta_norm: number | null;
   update_size_kb: number | null;
   phase: string | null;
+}
+
+/**
+ * `GET /api/federated/state`.
+ *
+ * `status` is the round *queue* state (`idle | running | paused | completed |
+ * error`); it lives in the worker process, not the database, so a backend
+ * restart resets it to `idle` even though the round history survives.
+ */
+export interface FederatedState {
+  status: TrainingStatus;
+  current_round: number;
+  global_model_version: string | null;
+  aggregation_status: string;
+  training_status: TrainingStatus;
+  agents: AgentRoundState[];
+}
+
+/** `GET /api/federated/rounds/{n}` — a persisted round plus its per-agent rows. */
+export interface RoundDetail {
+  round: TrainingRound;
+  agents: AgentRoundState[];
 }
 
 /* ------------------------------------------------------------------ */
@@ -440,7 +464,7 @@ export const ROADMAP: WeekMilestone[] = [
   { week: 5, title: "Pre-trained Model Integration", summary: "MedSigLIP-448 analysis + cancer adaptation", status: "complete", route: "/models/pretrained" },
   { week: 6, title: "Fine-Tuning + Experiments", summary: "Frozen vs selective vs full comparison", status: "complete", route: "/experiments" },
   { week: 7, title: "Federated Learning Engine", summary: "FedAvg local train / aggregate / broadcast", status: "complete" },
-  { week: 8, title: "Federated Dashboard", summary: "Interactive topology, controls, live rounds", status: "planned", route: "/federated-training" },
+  { week: 8, title: "Federated Dashboard", summary: "Interactive topology, controls, live rounds", status: "complete", route: "/federated-training" },
   { week: 9, title: "Evaluation", summary: "Full metric suite + ROC + confusion matrix", status: "planned", route: "/performance" },
   { week: 10, title: "Explainability + Privacy", summary: "Grad-CAM heatmaps and privacy centre", status: "planned", route: "/explainability" },
   { week: 11, title: "Full-System Integration", summary: "WebSocket event bus across all modules", status: "planned" },
@@ -450,13 +474,13 @@ export const ROADMAP: WeekMilestone[] = [
 /**
  * Highest roadmap week actually implemented in this build.
  *
- * This must be bumped as weeks land. It is 7 right now: detection (week 4),
- * pretrained-model introspection (week 5), the experiments comparison (week 6)
- * and the federated engine (week 7, REST control under `/api/federated`) read
- * live from the backend, while the routes beyond 7 are navigation shells and
- * must stay `planned`.
+ * This must be bumped as weeks land. It is 8 right now: detection (week 4),
+ * pretrained-model introspection (week 5), the experiments comparison (week 6),
+ * the federated engine (week 7) and the federated training dashboard (week 8,
+ * driving `/api/federated` live) are all real, while the routes beyond 8 are
+ * navigation shells and must stay `planned`.
  */
-export const CURRENT_IMPLEMENTED_WEEK = 7;
+export const CURRENT_IMPLEMENTED_WEEK = 8;
 
 export const RESEARCH_DISCLAIMER =
   "RESEARCH PROTOTYPE — NOT A MEDICAL DIAGNOSIS. This system is intended for academic and research demonstration only. It has not been clinically validated and must not be used to make medical decisions.";
