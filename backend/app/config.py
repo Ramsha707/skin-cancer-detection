@@ -50,6 +50,13 @@ class Settings(BaseSettings):
     learning_rate: float = 1e-3
     fedavg_learning_rate: float = 1.0
 
+    # Week 7: local training inside each hospital agent. Training the 4,612
+    # parameter head on a cached partition takes seconds, so these are real
+    # rounds, not placeholders.
+    federated_local_epochs: int = 40
+    federated_local_lr: float = 5e-2
+    federated_local_patience: int = 10
+
     # ---- detection ----
     max_upload_mb: int = 12
     confidence_threshold: float = 0.0

@@ -439,7 +439,7 @@ export const ROADMAP: WeekMilestone[] = [
   { week: 4, title: "Cancer Detection Interface", summary: "Upload, preprocess, predict, explain", status: "complete", route: "/detection" },
   { week: 5, title: "Pre-trained Model Integration", summary: "MedSigLIP-448 analysis + cancer adaptation", status: "complete", route: "/models/pretrained" },
   { week: 6, title: "Fine-Tuning + Experiments", summary: "Frozen vs selective vs full comparison", status: "complete", route: "/experiments" },
-  { week: 7, title: "Federated Learning Engine", summary: "FedAvg local train / aggregate / broadcast", status: "planned", route: "/federated-training" },
+  { week: 7, title: "Federated Learning Engine", summary: "FedAvg local train / aggregate / broadcast", status: "complete" },
   { week: 8, title: "Federated Dashboard", summary: "Interactive topology, controls, live rounds", status: "planned", route: "/federated-training" },
   { week: 9, title: "Evaluation", summary: "Full metric suite + ROC + confusion matrix", status: "planned", route: "/performance" },
   { week: 10, title: "Explainability + Privacy", summary: "Grad-CAM heatmaps and privacy centre", status: "planned", route: "/explainability" },
@@ -450,12 +450,13 @@ export const ROADMAP: WeekMilestone[] = [
 /**
  * Highest roadmap week actually implemented in this build.
  *
- * This must be bumped as weeks land. It is 6 right now: detection (week 4),
- * pretrained-model introspection (week 5) and the experiments comparison
- * (week 6) read live from the backend, while the routes beyond 6 are
- * navigation shells and must stay `planned`.
+ * This must be bumped as weeks land. It is 7 right now: detection (week 4),
+ * pretrained-model introspection (week 5), the experiments comparison (week 6)
+ * and the federated engine (week 7, REST control under `/api/federated`) read
+ * live from the backend, while the routes beyond 7 are navigation shells and
+ * must stay `planned`.
  */
-export const CURRENT_IMPLEMENTED_WEEK = 6;
+export const CURRENT_IMPLEMENTED_WEEK = 7;
 
 export const RESEARCH_DISCLAIMER =
   "RESEARCH PROTOTYPE — NOT A MEDICAL DIAGNOSIS. This system is intended for academic and research demonstration only. It has not been clinically validated and must not be used to make medical decisions.";

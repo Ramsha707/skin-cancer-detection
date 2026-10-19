@@ -102,6 +102,7 @@ def train_head(
     l2: float = 1e-4,
     patience: int = 20,
     seed: int = 0,
+    init: CancerHead | None = None,
 ) -> tuple[CancerHead, int, float]:
     """Softmax-regression head with early stopping on a carved-out holdout.
 
@@ -110,6 +111,10 @@ def train_head(
     Class weights inverse to frequency stop the 80%-benign majority from
     collapsing the head to 'always benign'. Returns `(head, epochs_run,
     best_holdout_macro_f1)`.
+
+    `init` warm-starts from an existing head instead of zeros. Week 7's
+    federated local training uses this so each agent continues from the
+    broadcast global model, which is the whole point of FedAvg.
     """
     rng = np.random.default_rng(seed)
     order = rng.permutation(len(x_train))
@@ -127,8 +132,17 @@ def train_head(
     sample_w = class_w[y_fit][:, None].astype(np.float32)
 
     n_classes = len(CANCER_CLASSES)
-    weights = np.zeros((x_fit.shape[1], n_classes), dtype=np.float32)
-    bias = np.zeros(n_classes, dtype=np.float32)
+    if init is None:
+        weights = np.zeros((x_fit.shape[1], n_classes), dtype=np.float32)
+        bias = np.zeros(n_classes, dtype=np.float32)
+    else:
+        expected = (x_fit.shape[1], n_classes)
+        if init.weights.shape != expected:
+            raise ValueError(
+                f"init head has weight shape {init.weights.shape}, expected {expected}"
+            )
+        weights = np.asarray(init.weights, dtype=np.float32).copy()
+        bias = np.asarray(init.bias, dtype=np.float32).copy()
     m_w = np.zeros_like(weights)
     v_w = np.zeros_like(weights)
     m_b = np.zeros_like(bias)

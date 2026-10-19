@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { AlertTriangle, CalendarDays, Clock, FlaskConical, type LucideIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn, formatMetric, formatPercent } from "@/lib/utils";
+import { CURRENT_IMPLEMENTED_WEEK } from "@/types";
 
 /* ------------------------------------------------------------------ */
 /* Stat card                                                           */
@@ -265,9 +266,11 @@ export function ScheduledPage({
               </p>
               <p className="mt-1 text-xs leading-relaxed text-amber-700/90">
                 The project is being delivered week by week. This build implements{" "}
-                <strong className="text-amber-900">weeks 1 through 6</strong>. Showing a
-                placeholder rather than fabricated numbers keeps every figure in this
-                application traceable to code that actually ran.
+                <strong className="text-amber-900">
+                  weeks 1 through {CURRENT_IMPLEMENTED_WEEK}
+                </strong>
+                . Showing a placeholder rather than fabricated numbers keeps every figure
+                in this application traceable to code that actually ran.
               </p>
             </div>
           </div>
