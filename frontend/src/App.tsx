@@ -16,9 +16,9 @@ const PretrainedModel = lazy(() => import("@/pages/PretrainedModel"));
 const Experiments = lazy(() => import("@/pages/Experiments"));
 const ModelRegistry = lazy(() => import("@/pages/ModelRegistry"));
 const Architecture = lazy(() => import("@/pages/Architecture"));
+const Performance = lazy(() => import("@/pages/Performance"));
 
-/* Week 9-12 routes are deliberately stubbed rather than faked. */
-const Performance = lazy(() => import("@/pages/stubs/Performance"));
+/* Week 10-12 routes are deliberately stubbed rather than faked. */
 const Explainability = lazy(() => import("@/pages/stubs/Explainability"));
 const Privacy = lazy(() => import("@/pages/stubs/Privacy"));
 const Audit = lazy(() => import("@/pages/stubs/Audit"));

@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from itertools import pairwise
+
 import numpy as np
 import pytest
 from app.services.metrics import (
@@ -8,6 +10,7 @@ from app.services.metrics import (
     evaluate,
     one_vs_rest,
     roc_auc_binary,
+    roc_curve_points,
     weighted_class_weights,
 )
 
@@ -66,6 +69,47 @@ class TestRocAuc:
 
     def test_single_class_returns_none(self):
         assert roc_auc_binary([1, 1, 1], [0.1, 0.5, 0.9]) is None
+
+
+class TestRocCurve:
+    def test_perfect_ranking_hits_top_left(self):
+        points = roc_curve_points([0, 0, 1, 1], [0.1, 0.2, 0.8, 0.9])
+        assert points is not None
+        assert (points[0]["fpr"], points[0]["tpr"]) == (0.0, 0.0)
+        assert (points[-1]["fpr"], points[-1]["tpr"]) == (1.0, 1.0)
+        # Every positive is ranked above every negative, so the sweep reaches
+        # (0, 1) before any false positive is admitted.
+        assert any(p["fpr"] == 0.0 and p["tpr"] == 1.0 for p in points)
+
+    def test_points_are_monotonic_and_bounded(self):
+        rng = np.random.default_rng(3)
+        scores = rng.random(50)
+        labels = (scores + rng.normal(scale=0.4, size=50) > 0.5).astype(int)
+        points = roc_curve_points(labels, scores)
+        assert points is not None
+        for prev, cur in pairwise(points):
+            assert cur["tpr"] >= prev["tpr"]
+            assert cur["fpr"] >= prev["fpr"]
+        assert all(0.0 <= p["fpr"] <= 1.0 and 0.0 <= p["tpr"] <= 1.0 for p in points)
+
+    def test_endpoints_have_no_threshold(self):
+        points = roc_curve_points([0, 1], [0.2, 0.8])
+        assert points is not None
+        assert points[0]["threshold"] is None
+        assert points[-1]["threshold"] is None
+
+    def test_single_class_returns_none(self):
+        assert roc_curve_points([1, 1, 1], [0.1, 0.5, 0.9]) is None
+        assert roc_curve_points([], []) is None
+
+    def test_point_count_is_capped(self):
+        rng = np.random.default_rng(11)
+        labels = rng.integers(0, 2, 1000)
+        scores = rng.random(1000)
+        points = roc_curve_points(labels, scores, max_points=25)
+        assert points is not None
+        assert len(points) == 25
+        assert points[0]["fpr"] == 0.0 and points[-1]["tpr"] == 1.0
 
 
 class TestEvaluate:

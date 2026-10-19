@@ -445,6 +445,107 @@ export interface SystemStatus {
 }
 
 /* ------------------------------------------------------------------ */
+/* Evaluation (week 9)                                                 */
+/* ------------------------------------------------------------------ */
+
+export interface RocPoint {
+  /** `null` on the two axis endpoints, which are not real thresholds. */
+  threshold: number | null;
+  fpr: number;
+  tpr: number;
+}
+
+export interface PerClassMetric {
+  tp: number;
+  fp: number;
+  fn: number;
+  tn: number;
+  precision: number;
+  recall: number;
+  specificity: number;
+  f1: number;
+  support: number;
+}
+
+/**
+ * `GET /api/evaluation/summary` → `metrics`.
+ *
+ * `recall`/`precision`/`f1` are the malignant-vs-benign headline, not a flat
+ * multi-class average; `macro_f1` and `macro_recall` are the four-class numbers.
+ */
+export interface EvaluationMetrics {
+  accuracy: number;
+  macro_f1: number;
+  macro_recall: number;
+  balanced_accuracy: number;
+  precision: number;
+  recall: number;
+  specificity: number;
+  f1: number;
+  auc: number | null;
+  malignant_auc: number | null;
+  false_negatives: number;
+  false_positives: number;
+  worst_class_recall: string | null;
+  support: number;
+}
+
+export interface RocCurves {
+  per_class: Record<string, RocPoint[]>;
+  malignant: RocPoint[] | null;
+}
+
+export interface LearningCurvePoint {
+  round_number: number;
+  /** False for a round that never finished, so the chart can break the line. */
+  evaluated: boolean;
+  accuracy: number | null;
+  f1: number | null;
+  auc: number | null;
+  loss: number | null;
+}
+
+export interface ModelHistoryEntry {
+  version: string;
+  strategy: StrategyKind | null;
+  training_round: number | null;
+  accuracy: number | null;
+  precision: number | null;
+  recall: number | null;
+  specificity: number | null;
+  f1: number | null;
+  auc: number | null;
+  loss: number | null;
+  status: ModelStatus;
+  is_recommended: boolean;
+  created_at: string;
+}
+
+/**
+ * `GET /api/evaluation/summary`.
+ *
+ * `ready: false` is a normal state, not an error: no checkpoint or no validation
+ * embeddings means there is nothing honest to report, so `metrics` is `null` and
+ * `instructions` says what to run.
+ */
+export interface EvaluationSummary {
+  ready: boolean;
+  model_version: string;
+  is_real: boolean;
+  instructions: string | null;
+  n_eval: number;
+  n_classes: number;
+  classes: string[];
+  malignant_classes: string[];
+  metrics: EvaluationMetrics | null;
+  per_class: Record<string, PerClassMetric>;
+  confusion_matrix: number[][];
+  roc: RocCurves;
+  learning_curve: LearningCurvePoint[];
+  model_history: ModelHistoryEntry[];
+}
+
+/* ------------------------------------------------------------------ */
 /* Week-by-week roadmap                                                */
 /* ------------------------------------------------------------------ */
 
@@ -465,7 +566,7 @@ export const ROADMAP: WeekMilestone[] = [
   { week: 6, title: "Fine-Tuning + Experiments", summary: "Frozen vs selective vs full comparison", status: "complete", route: "/experiments" },
   { week: 7, title: "Federated Learning Engine", summary: "FedAvg local train / aggregate / broadcast", status: "complete" },
   { week: 8, title: "Federated Dashboard", summary: "Interactive topology, controls, live rounds", status: "complete", route: "/federated-training" },
-  { week: 9, title: "Evaluation", summary: "Full metric suite + ROC + confusion matrix", status: "planned", route: "/performance" },
+  { week: 9, title: "Evaluation", summary: "Full metric suite + ROC + confusion matrix", status: "complete", route: "/performance" },
   { week: 10, title: "Explainability + Privacy", summary: "Grad-CAM heatmaps and privacy centre", status: "planned", route: "/explainability" },
   { week: 11, title: "Full-System Integration", summary: "WebSocket event bus across all modules", status: "planned" },
   { week: 12, title: "Testing + Final Demo", summary: "Run Judge Demo and presentation polish", status: "planned" },
@@ -474,13 +575,14 @@ export const ROADMAP: WeekMilestone[] = [
 /**
  * Highest roadmap week actually implemented in this build.
  *
- * This must be bumped as weeks land. It is 8 right now: detection (week 4),
+ * This must be bumped as weeks land. It is 9 right now: detection (week 4),
  * pretrained-model introspection (week 5), the experiments comparison (week 6),
- * the federated engine (week 7) and the federated training dashboard (week 8,
- * driving `/api/federated` live) are all real, while the routes beyond 8 are
+ * the federated engine (week 7), the federated training dashboard (week 8,
+ * driving `/api/federated` live) and the evaluation report (week 9, driving
+ * `/api/evaluation/summary`) are all real, while the routes beyond 9 are
  * navigation shells and must stay `planned`.
  */
-export const CURRENT_IMPLEMENTED_WEEK = 8;
+export const CURRENT_IMPLEMENTED_WEEK = 9;
 
 export const RESEARCH_DISCLAIMER =
   "RESEARCH PROTOTYPE — NOT A MEDICAL DIAGNOSIS. This system is intended for academic and research demonstration only. It has not been clinically validated and must not be used to make medical decisions.";
