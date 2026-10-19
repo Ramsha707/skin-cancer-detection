@@ -14,9 +14,11 @@ import type {
   DetectionResult,
   DetectionStatus,
   Experiment,
+  FederatedState,
   HospitalAgent,
   ModelVersion,
   PretrainedModelInfo,
+  RoundDetail,
   SystemStatus,
   TrainingRound,
 } from "@/types";
@@ -101,15 +103,7 @@ export const api = {
 
   /* ---------------- federated ---------------- */
   listRounds: () => request<TrainingRound[]>("/api/federated/rounds"),
-  currentRoundState: () =>
-    request<{
-      status: string;
-      current_round: number;
-      global_model_version: string | null;
-      aggregation_status: string;
-      agents: AgentRoundState[];
-      training_status: string;
-    }>("/api/federated/state"),
+  currentRoundState: () => request<FederatedState>("/api/federated/state"),
   startTraining: () => post<{ ok: boolean; round: number }>("/api/federated/start"),
   pauseTraining: () => post<{ ok: boolean }>("/api/federated/pause"),
   nextRound: () => post<{ ok: boolean; round: number }>("/api/federated/next-round"),
@@ -117,9 +111,7 @@ export const api = {
     post<{ ok: boolean; rounds: number }>("/api/federated/run", { rounds }),
   resetFederated: () => post<{ ok: boolean }>("/api/federated/reset"),
   roundDetail: (round: number) =>
-    request<{ round: TrainingRound; agents: AgentRoundState[] }>(
-      `/api/federated/rounds/${round}`,
-    ),
+    request<RoundDetail>(`/api/federated/rounds/${round}`),
 
   /* ---------------- models ---------------- */
   pretrainedInfo: () => request<PretrainedModelInfo>("/api/models/pretrained"),
@@ -162,9 +154,11 @@ export type {
   DetectionResult,
   DetectionStatus,
   Experiment,
+  FederatedState,
   HospitalAgent,
   ModelVersion,
   PretrainedModelInfo,
+  RoundDetail,
   SystemStatus,
   TrainingRound,
 };
