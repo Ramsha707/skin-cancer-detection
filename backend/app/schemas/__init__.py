@@ -12,6 +12,8 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from ml.models import CANCER_CLASSES, MALIGNANT_CLASSES
+
 # ---------------------------------------------------------------- literals --
 
 AgentStatus = Literal["idle", "training", "paused", "synced", "offline", "error"]
@@ -396,3 +398,97 @@ class HealthResponse(BaseModel):
     status: Literal["ok", "degraded"]
     detail: str
     components: dict[str, str] = Field(default_factory=dict)
+
+
+# -------------------------------------------------------------- evaluation --
+
+
+class RocPoint(BaseModel):
+    threshold: float | None = None
+    fpr: float
+    tpr: float
+
+
+class PerClassMetric(BaseModel):
+    tp: int
+    fp: int
+    fn: int
+    tn: int
+    precision: float
+    recall: float
+    specificity: float
+    f1: float
+    support: int
+
+
+class EvaluationMetrics(BaseModel):
+    """Macro metrics plus the clinically meaningful malignant-vs-benign headline."""
+
+    accuracy: float
+    macro_f1: float
+    macro_recall: float
+    balanced_accuracy: float
+    precision: float
+    recall: float
+    specificity: float
+    f1: float
+    auc: float | None = None
+    malignant_auc: float | None = None
+    false_negatives: int
+    false_positives: int
+    worst_class_recall: str | None = None
+    support: int
+
+
+class RocCurves(BaseModel):
+    per_class: dict[str, list[RocPoint]] = Field(default_factory=dict)
+    malignant: list[RocPoint] | None = None
+
+
+class LearningCurvePoint(BaseModel):
+    round_number: int
+    evaluated: bool
+    accuracy: float | None = None
+    f1: float | None = None
+    auc: float | None = None
+    loss: float | None = None
+
+
+class ModelHistoryEntry(BaseModel):
+    version: str
+    strategy: str | None = None
+    training_round: int | None = None
+    accuracy: float | None = None
+    precision: float | None = None
+    recall: float | None = None
+    specificity: float | None = None
+    f1: float | None = None
+    auc: float | None = None
+    loss: float | None = None
+    status: str
+    is_recommended: bool
+    created_at: datetime
+
+
+class EvaluationSummary(BaseModel):
+    """The whole `/performance` page payload.
+
+    `ready=False` is not an error: it means the artefacts the evaluation would
+    report on do not exist yet, so `metrics`/`per_class`/`confusion_matrix` are
+    empty and `instructions` tells the operator what to run.
+    """
+
+    ready: bool
+    model_version: str
+    is_real: bool
+    instructions: str | None = None
+    n_eval: int = 0
+    n_classes: int = 4
+    classes: list[str] = Field(default_factory=lambda: list(CANCER_CLASSES))
+    malignant_classes: list[str] = Field(default_factory=lambda: list(MALIGNANT_CLASSES))
+    metrics: EvaluationMetrics | None = None
+    per_class: dict[str, PerClassMetric] = Field(default_factory=dict)
+    confusion_matrix: list[list[int]] = Field(default_factory=list)
+    roc: RocCurves = Field(default_factory=RocCurves)
+    learning_curve: list[LearningCurvePoint] = Field(default_factory=list)
+    model_history: list[ModelHistoryEntry] = Field(default_factory=list)

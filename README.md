@@ -23,12 +23,12 @@ without ever sharing a raw patient image.
 | 6 | Fine-tuning + experiments | ✅ complete |
 | 7 | Federated learning engine | ✅ complete |
 | 8 | Federated training dashboard | ✅ complete |
-| 9 | Evaluation (ROC, confusion matrix) | ⬜ planned |
+| 9 | Evaluation (ROC, confusion matrix) | ✅ complete |
 | 10 | Explainability + privacy centre | ⬜ planned |
 | 11 | Full-system integration (WebSocket) | ⬜ planned |
 | 12 | Testing + final demo | ⬜ planned |
 
-Routes for weeks 9–12 render an explicit *"not built yet"* panel rather than placeholder
+Routes for weeks 10–12 render an explicit *"not built yet"* panel rather than placeholder
 metrics. Every number visible in this application traces to code that actually executed.
 
 ---

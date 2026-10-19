@@ -13,6 +13,7 @@ import type {
   DetectionClasses,
   DetectionResult,
   DetectionStatus,
+  EvaluationSummary,
   Experiment,
   FederatedState,
   HospitalAgent,
@@ -124,6 +125,9 @@ export const api = {
   runExperiment: (name: string) => post<Experiment>("/api/experiments/run", { name }),
   deleteExperiment: (id: number) => del<{ ok: boolean }>(`/api/experiments/${id}`),
 
+  /* ---------------- evaluation ---------------- */
+  evaluationSummary: () => request<EvaluationSummary>("/api/evaluation/summary"),
+
   /* ---------------- detection ---------------- */
   detectionStatus: () => request<DetectionStatus>("/api/detection/status"),
   detectionClasses: () => request<DetectionClasses>("/api/detection/classes"),
@@ -153,6 +157,7 @@ export type {
   DetectionClasses,
   DetectionResult,
   DetectionStatus,
+  EvaluationSummary,
   Experiment,
   FederatedState,
   HospitalAgent,

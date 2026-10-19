@@ -141,6 +141,46 @@ def roc_auc_binary(y_true: Sequence[int], y_score: Sequence[float]) -> float | N
     return float((rank_sum - n_pos * (n_pos + 1) / 2.0) / (n_pos * n_neg))
 
 
+def roc_curve_points(
+    y_true: Sequence[int],
+    y_score: Sequence[float],
+    *,
+    max_points: int = 200,
+) -> list[dict[str, float | None]] | None:
+    """ROC curve as a threshold sweep of `(threshold, fpr, tpr)` points.
+
+    Returns `None` when only one class is present, so a caller never plots a
+    curve that cannot exist. The two axis endpoints carry `threshold=None`
+    because they correspond to no real decision threshold. Point count is capped
+    at `max_points` (axis endpoints always kept) so the payload stays small
+    without visibly changing the curve.
+    """
+    y = np.asarray(y_true)
+    s = np.asarray(y_score, dtype=float)
+    if len(np.unique(y)) < 2:
+        return None
+    n_pos = int((y == 1).sum())
+    n_neg = int((y == 0).sum())
+    if n_pos == 0 or n_neg == 0:
+        return None
+
+    order = np.argsort(-s, kind="mergesort")
+    y_sorted = y[order]
+    s_sorted = s[order]
+    tpr = np.concatenate(([0.0], np.cumsum(y_sorted == 1) / n_pos, [1.0]))
+    fpr = np.concatenate(([0.0], np.cumsum(y_sorted == 0) / n_neg, [1.0]))
+    thr = np.concatenate(([np.nan], s_sorted, [np.nan]))
+
+    if len(tpr) > max_points:
+        idx = np.unique(np.linspace(0, len(tpr) - 1, max_points).round().astype(int))
+        tpr, fpr, thr = tpr[idx], fpr[idx], thr[idx]
+
+    return [
+        {"threshold": None if np.isnan(t) else float(t), "fpr": float(f), "tpr": float(r)}
+        for r, f, t in zip(tpr, fpr, thr, strict=True)
+    ]
+
+
 def evaluate(
     y_true: Sequence[int],
     y_pred: Sequence[int],
