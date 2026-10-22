@@ -8,6 +8,7 @@ import {
   GitBranch,
   LayoutDashboard,
   Network,
+  Presentation,
   ScrollText,
   Settings,
   ShieldCheck,
@@ -43,6 +44,7 @@ export const NAV_ITEMS: NavItem[] = [
   { label: "Model Info", to: "/models/pretrained", icon: Cpu, week: 5, description: "MedSigLIP-448 introspection" },
   { label: "Timeline", to: "/timeline", icon: Waypoints, week: 1, description: "12-week delivery roadmap" },
   { label: "Settings", to: "/settings", icon: Settings, week: 11, description: "Runtime configuration" },
+  { label: "Judge Demo", to: "/demo", icon: Presentation, week: 12, description: "Live twelve-step walkthrough" },
 ];
 
 export function Sidebar({ collapsed, onNavigate }: { collapsed: boolean; onNavigate?: () => void }) {

@@ -5,6 +5,7 @@ from fastapi import APIRouter
 from app.api import (
     agents,
     audit,
+    demo,
     detection,
     evaluation,
     experiments,
@@ -20,6 +21,7 @@ api_router = APIRouter()
 api_router.include_router(system.router)
 api_router.include_router(agents.router)
 api_router.include_router(audit.router)
+api_router.include_router(demo.router)
 api_router.include_router(detection.router)
 api_router.include_router(evaluation.router)
 api_router.include_router(explainability.router)

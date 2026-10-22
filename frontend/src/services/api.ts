@@ -10,9 +10,8 @@ import type {
   AgentRoundState,
   AuditLog,
   CancerClass,
-  IntegrationStatus,
-  LiveEventsOut,
   DashboardSummary,
+  DemoChecklist,
   DetectionClasses,
   DetectionResult,
   DetectionStatus,
@@ -22,6 +21,8 @@ import type {
   ExplainabilityResult,
   FederatedState,
   HospitalAgent,
+  IntegrationStatus,
+  LiveEventsOut,
   ModelVersion,
   PretrainedModelInfo,
   PrivacySummaryOut,
@@ -100,6 +101,9 @@ export const api = {
   integration: () => request<IntegrationStatus>("/api/system/integration"),
   systemEvents: (limit = 50) => request<LiveEventsOut>(`/api/system/events${qs({ limit })}`),
   dashboard: () => request<DashboardSummary>("/api/dashboard/summary"),
+
+  /* ---------------- judge demo ---------------- */
+  demoChecklist: () => request<DemoChecklist>("/api/demo/checklist"),
 
   /* ---------------- agents ---------------- */
   listAgents: () => request<HospitalAgent[]>("/api/agents"),
@@ -182,8 +186,7 @@ export type {
   AgentRoundState,
   AuditLog,
   DashboardSummary,
-  IntegrationStatus,
-  LiveEventsOut,
+  DemoChecklist,
   DetectionClasses,
   DetectionResult,
   DetectionStatus,
@@ -193,6 +196,8 @@ export type {
   ExplainabilityResult,
   FederatedState,
   HospitalAgent,
+  IntegrationStatus,
+  LiveEventsOut,
   ModelVersion,
   PretrainedModelInfo,
   PrivacySummaryOut,

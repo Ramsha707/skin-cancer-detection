@@ -23,6 +23,7 @@ const Privacy = lazy(() => import("@/pages/Privacy"));
 const Audit = lazy(() => import("@/pages/Audit"));
 const Timeline = lazy(() => import("@/pages/Timeline"));
 const Settings = lazy(() => import("@/pages/Settings"));
+const Demo = lazy(() => import("@/pages/Demo"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -71,6 +72,7 @@ export default function App() {
               <Route path="/audit" element={<Audit />} />
               <Route path="/timeline" element={<Timeline />} />
               <Route path="/settings" element={<Settings />} />
+              <Route path="/demo" element={<Demo />} />
             </Route>
 
             <Route path="*" element={<Navigate to="/dashboard" replace />} />

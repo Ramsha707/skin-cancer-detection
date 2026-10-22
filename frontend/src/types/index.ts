@@ -704,6 +704,32 @@ export interface IntegrationStatus {
 }
 
 /* ------------------------------------------------------------------ */
+/* Judge demo (Week 12)                                                */
+/* ------------------------------------------------------------------ */
+
+/** One step of the walkthrough, derived from live state by the backend. */
+export interface DemoStep {
+  number: number;
+  key: string;
+  title: string;
+  description: string;
+  required: boolean;
+  ready: boolean;
+  evidence: string;
+  route: string | null;
+  command: string | null;
+}
+
+export interface DemoChecklist {
+  ready: boolean;
+  completed: number;
+  total: number;
+  generated_at: string;
+  steps: DemoStep[];
+  disclaimer: string;
+}
+
+/* ------------------------------------------------------------------ */
 /* Week-by-week roadmap                                                */
 /* ------------------------------------------------------------------ */
 export interface WeekMilestone {
@@ -726,19 +752,17 @@ export const ROADMAP: WeekMilestone[] = [
   { week: 9, title: "Evaluation", summary: "Full metric suite + ROC + confusion matrix", status: "complete", route: "/performance" },
   { week: 10, title: "Explainability + Privacy", summary: "Grad-CAM heatmaps and privacy centre", status: "complete", route: "/explainability" },
   { week: 11, title: "Full-System Integration", summary: "WebSocket event bus across all modules", status: "complete", route: "/settings" },
-  { week: 12, title: "Testing + Final Demo", summary: "Run Judge Demo and presentation polish", status: "planned" },
+  { week: 12, title: "Testing + Final Demo", summary: "Derived judge checklist and presentation polish", status: "complete", route: "/demo" },
 ];
 
 /**
  * Highest roadmap week actually implemented in this build.
  *
- * This must be bumped as weeks land. It is 11 right now: all earlier modules
- * are real, and Week 11 adds the live event bus (`/ws/training`,
- * `/api/system/events`) plus the audit and settings consoles driven by it.
- * Week 12 (the judge demo) is still `planned` and must stay that way until its
- * checklist endpoint and page exist.
+ * This must be bumped as weeks land. It is 12: every module is implemented, the
+ * live event bus (`/ws/training`) connects them, and `/api/demo/checklist`
+ * derives the judge walkthrough from the same live probes the pages use.
  */
-export const CURRENT_IMPLEMENTED_WEEK = 11;
+export const CURRENT_IMPLEMENTED_WEEK = 12;
 
 export const RESEARCH_DISCLAIMER =
   "RESEARCH PROTOTYPE — NOT A MEDICAL DIAGNOSIS. This system is intended for academic and research demonstration only. It has not been clinically validated and must not be used to make medical decisions.";

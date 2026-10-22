@@ -42,7 +42,7 @@ const INVALIDATIONS: Record<LiveEventType, string[][]> = {
   audit: [["audit"], ["dashboard"], ["privacy"], ["federated"], ["rounds"]],
   training: [["federated"], ["rounds"], ["dashboard"], ["agents"]],
   agent: [["federated"], ["agents"]],
-  system: [["health"], ["integration"], ["system-events"], ["dashboard"]],
+  system: [["health"], ["integration"], ["system-events"], ["demo"], ["dashboard"]],
 };
 
 function isLiveEvent(value: unknown): value is LiveEvent {
