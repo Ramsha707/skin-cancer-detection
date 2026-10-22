@@ -25,11 +25,12 @@ without ever sharing a raw patient image.
 | 8 | Federated training dashboard | ✅ complete |
 | 9 | Evaluation (ROC, confusion matrix) | ✅ complete |
 | 10 | Explainability + privacy centre | ✅ complete |
-| 11 | Full-system integration (WebSocket) | ⬜ planned |
-| 12 | Testing + final demo | ⬜ planned |
+| 11 | Full-system integration (WebSocket) | ✅ complete |
+| 12 | Testing + final demo | ✅ complete |
 
-Routes for weeks 11–12 render an explicit *"not built yet"* panel rather than placeholder
-metrics. Every number visible in this application traces to code that actually executed.
+Every number visible in this application traces to code that actually executed. Missing
+artefacts render an explicit blocked state and the command that produces them, never a
+placeholder metric.
 
 Week 10 adds Grad-CAM explainability and a privacy centre. Grad-CAM runs real attention
 attribution over the MedSigLIP vision tower (`ml/explainability.py`) and is gated behind an
@@ -38,6 +39,34 @@ availability check: without torch and the pretrained weights the API and UI retu
 produced only for the file in the current upload request — stored detection results carry no
 image reference, so nothing links a patient image to a result row. `GET /api/privacy/summary`
 derives every counter, invariant and ledger entry live from the audit log.
+
+Week 11 connects the subsystems through a read-only event bus. `/ws/training` streams
+`audit`, `training`, `agent` and `system` notifications and sends a heartbeat every 20 s;
+each frame only invalidates the REST query that owns its data, so the socket can drop
+without producing a wrong number. `GET /api/system/integration` probes eleven subsystems
+against live state, and the Audit and Settings pages render that evidence directly.
+
+Week 12 adds `GET /api/demo/checklist` and the `/demo` page: twelve steps (API, database,
+dataset, agents, embeddings, federated round, model registry, evaluation, detection,
+explainability, privacy, audit), each with live evidence or the exact command that
+unblocks it. The checklist reuses the Week 11 probes, so it cannot disagree with the pages
+it links to.
+
+---
+
+## Judge demo
+
+1. Start the backend and frontend with the commands in **Quick start**.
+2. Open `/demo`. Required steps must read **ready**; optional explainability may be blocked
+   if this host has no torch weights.
+3. Walk the twelve cards in order, opening each linked page. Every card shows the database
+   or artefact evidence that makes it ready.
+4. Finish on `/audit` with the live ticker open, then start one federated round on
+   `/federated-training` — training, FedAvg and broadcast events appear without a refresh.
+
+If a required step is blocked, its card prints the exact command (for example
+`scripts/build_splits.py` or `scripts/extract_embeddings.py`) and the page re-checks itself
+every 15 seconds.
 
 ---
 
@@ -73,7 +102,7 @@ instead of the originally-proposed RCNN + YOLOv9 detector.
 ## Layout
 
 ```
-frontend/     React 18 + TypeScript + Vite + Tailwind + shadcn-style primitives
+frontend/     React 19 + TypeScript + Vite + Tailwind + shadcn-style primitives
 backend/      FastAPI + SQLAlchemy + SQLite + WebSocket
 ml/           PyTorch model code, preprocessing, training, inference, FedAvg
 docs/         Architecture and adaptation notes
