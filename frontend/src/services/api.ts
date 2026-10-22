@@ -10,6 +10,8 @@ import type {
   AgentRoundState,
   AuditLog,
   CancerClass,
+  IntegrationStatus,
+  LiveEventsOut,
   DashboardSummary,
   DetectionClasses,
   DetectionResult,
@@ -95,6 +97,8 @@ function qs(params: Record<string, unknown>): string {
 export const api = {
   /* ---------------- system ---------------- */
   health: () => request<SystemStatus>("/api/system/health"),
+  integration: () => request<IntegrationStatus>("/api/system/integration"),
+  systemEvents: (limit = 50) => request<LiveEventsOut>(`/api/system/events${qs({ limit })}`),
   dashboard: () => request<DashboardSummary>("/api/dashboard/summary"),
 
   /* ---------------- agents ---------------- */
@@ -145,7 +149,10 @@ export const api = {
     request<DetectionResult[]>(`/api/detection/recent${qs({ limit })}`),
 
   /* ---------------- audit ---------------- */
-  listAuditLogs: (limit = 100) => request<AuditLog[]>(`/api/audit${qs({ limit })}`),
+  listAuditLogs: (
+    limit = 100,
+    filters: { event_type?: string; round_number?: number } = {},
+  ) => request<AuditLog[]>(`/api/audit${qs({ limit, ...filters })}`),
 
   /* ---------------- explainability (week 10) ---------------- */
   explainabilityStatus: () =>
@@ -175,6 +182,8 @@ export type {
   AgentRoundState,
   AuditLog,
   DashboardSummary,
+  IntegrationStatus,
+  LiveEventsOut,
   DetectionClasses,
   DetectionResult,
   DetectionStatus,

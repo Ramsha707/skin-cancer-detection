@@ -612,3 +612,83 @@ class PrivacySummaryOut(BaseModel):
     ledger: list[PrivacyLedgerEntry] = Field(default_factory=list)
     mechanism: str = ""
     guarantee: str = ""
+
+# ------------------------------------------------------- live events/week 11 --
+
+
+LiveEventType = Literal["system", "audit", "training", "agent"]
+
+
+class LiveEvent(BaseModel):
+    """One message on the live event bus.
+
+    `payload` is intentionally open: each family carries different fields (an
+    audit row, a round transition, an agent metric). Consumers render it from
+    the family plus the authoritative REST record, never as sole state.
+    """
+
+    id: int
+    type: LiveEventType
+    source: str
+    timestamp: datetime
+    payload: dict[str, Any] = Field(default_factory=dict)
+
+
+class LiveEventsOut(BaseModel):
+    events: list[LiveEvent] = Field(default_factory=list)
+    stats: dict[str, int] = Field(default_factory=dict)
+
+
+# ------------------------------------------------- integration / demo/week 12 --
+
+
+class IntegrationModule(BaseModel):
+    """One subsystem, checked live rather than asserted in prose."""
+
+    key: str
+    label: str
+    required: bool
+    ready: bool
+    detail: str
+    route: str | None = None
+    command: str | None = None
+
+
+class IntegrationStatus(BaseModel):
+    """The whole `/settings` diagnostics payload (Week 11)."""
+
+    ready: bool
+    version: str
+    server_time: datetime
+    websocket: dict[str, int] = Field(default_factory=dict)
+    counts: dict[str, int] = Field(default_factory=dict)
+    modules: list[IntegrationModule] = Field(default_factory=list)
+
+
+class DemoStep(BaseModel):
+    """One step of the judge walkthrough, derived from live state."""
+
+    number: int
+    key: str
+    title: str
+    description: str
+    required: bool
+    ready: bool
+    evidence: str
+    route: str | None = None
+    command: str | None = None
+
+
+class DemoChecklist(BaseModel):
+    """`GET /api/demo/checklist` (Week 12).
+
+    `ready` means every required step has live evidence. Optional steps can be
+    blocked without making the demo impossible; the page labels them.
+    """
+
+    ready: bool
+    completed: int
+    total: int
+    generated_at: datetime
+    steps: list[DemoStep] = Field(default_factory=list)
+    disclaimer: str = ""

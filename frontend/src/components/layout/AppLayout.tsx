@@ -6,6 +6,7 @@ import { Sidebar } from "@/components/layout/Sidebar";
 import { Badge } from "@/components/ui/badge";
 import { TitleIcon } from "@/components/common";
 import { SystemStatusContext, useDashboard } from "@/hooks/useDashboard";
+import { useLiveEvents } from "@/hooks/useLiveEvents";
 import { RESEARCH_DISCLAIMER } from "@/types";
 import { cn } from "@/lib/utils";
 
@@ -38,7 +39,26 @@ function LiveStatusPill() {
       <Badge variant={data.demo_mode ? "warning" : "success"}>
         {data.demo_mode ? "Demo mode" : "Live data"}
       </Badge>
+      <SocketPill />
     </div>
+  );
+}
+
+function SocketPill() {
+  const { status } = useLiveEvents();
+  return (
+    <Badge
+      variant={status === "live" ? "success" : status === "reconnecting" ? "warning" : "neutral"}
+      title={`WebSocket /ws/training: ${status}`}
+    >
+      <span
+        className={cn(
+          "h-1.5 w-1.5 rounded-full",
+          status === "live" ? "bg-emerald-400" : status === "reconnecting" ? "animate-pulse bg-amber-400" : "bg-lilac-500",
+        )}
+      />
+      {status === "live" ? "Socket live" : status}
+    </Badge>
   );
 }
 

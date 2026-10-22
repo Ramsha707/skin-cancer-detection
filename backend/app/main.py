@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import logging
 from contextlib import asynccontextmanager
 
@@ -12,6 +13,7 @@ from app.api import api_router
 from app.config import settings
 from app.database.base import SessionLocal, init_db
 from app.database.seed import seed_all
+from app.websocket import TYPE_SYSTEM, get_event_bus
 
 logging.basicConfig(
     level=logging.INFO,
@@ -22,6 +24,8 @@ log = logging.getLogger("skinfl")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    bus = get_event_bus()
+    bus.attach_loop(asyncio.get_running_loop())
     init_db()
     db = SessionLocal()
     try:
@@ -32,7 +36,22 @@ async def lifespan(app: FastAPI):
         db.rollback()
     finally:
         db.close()
-    yield
+
+    bus.publish(
+        TYPE_SYSTEM,
+        {"status": "online", "version": settings.version},
+        source="api",
+    )
+    log.info("live event bus attached: %s", bus.stats())
+    try:
+        yield
+    finally:
+        bus.publish(
+            TYPE_SYSTEM,
+            {"status": "offline", "version": settings.version},
+            source="api",
+        )
+        bus.detach_loop()
 
 
 app = FastAPI(

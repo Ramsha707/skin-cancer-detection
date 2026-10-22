@@ -658,6 +658,52 @@ export interface PrivacySummaryOut {
 }
 
 /* ------------------------------------------------------------------ */
+/* Live events + integration (Week 11)                                 */
+/* ------------------------------------------------------------------ */
+
+export type LiveEventType = "system" | "audit" | "training" | "agent";
+
+/** One message on `/ws/training`, mirrored from `LiveEvent`. */
+export interface LiveEvent {
+  id: number;
+  type: LiveEventType;
+  source: string;
+  timestamp: string;
+  payload: Record<string, unknown>;
+}
+
+export interface LiveEventsOut {
+  events: LiveEvent[];
+  stats: { subscribers: number; events_seen: number; history_size: number };
+}
+
+/** One subsystem, checked live by `/api/system/integration`. */
+export interface IntegrationModule {
+  key: string;
+  label: string;
+  required: boolean;
+  ready: boolean;
+  detail: string;
+  route: string | null;
+  command: string | null;
+}
+
+export interface IntegrationStatus {
+  ready: boolean;
+  version: string;
+  server_time: string;
+  websocket: { subscribers: number; events_seen: number; history_size: number };
+  counts: {
+    agents: number;
+    rounds: number;
+    completed_rounds: number;
+    model_versions: number;
+    audit_events: number;
+  };
+  modules: IntegrationModule[];
+}
+
+/* ------------------------------------------------------------------ */
 /* Week-by-week roadmap                                                */
 /* ------------------------------------------------------------------ */
 export interface WeekMilestone {
@@ -679,22 +725,20 @@ export const ROADMAP: WeekMilestone[] = [
   { week: 8, title: "Federated Dashboard", summary: "Interactive topology, controls, live rounds", status: "complete", route: "/federated-training" },
   { week: 9, title: "Evaluation", summary: "Full metric suite + ROC + confusion matrix", status: "complete", route: "/performance" },
   { week: 10, title: "Explainability + Privacy", summary: "Grad-CAM heatmaps and privacy centre", status: "complete", route: "/explainability" },
-  { week: 11, title: "Full-System Integration", summary: "WebSocket event bus across all modules", status: "planned" },
+  { week: 11, title: "Full-System Integration", summary: "WebSocket event bus across all modules", status: "complete", route: "/settings" },
   { week: 12, title: "Testing + Final Demo", summary: "Run Judge Demo and presentation polish", status: "planned" },
 ];
 
 /**
  * Highest roadmap week actually implemented in this build.
  *
- * This must be bumped as weeks land. It is 10 right now: detection (week 4),
- * pretrained-model introspection (week 5), the experiments comparison (week 6),
- * the federated engine (week 7), the federated training dashboard (week 8,
- * driving `/api/federated` live), the evaluation report (week 9, driving
- * `/api/evaluation/summary`) and explainability + privacy (week 10, driving
- * `/api/explainability/*` and `/api/privacy/summary`) are all real, while the
- * routes beyond 10 are navigation shells and must stay `planned`.
+ * This must be bumped as weeks land. It is 11 right now: all earlier modules
+ * are real, and Week 11 adds the live event bus (`/ws/training`,
+ * `/api/system/events`) plus the audit and settings consoles driven by it.
+ * Week 12 (the judge demo) is still `planned` and must stay that way until its
+ * checklist endpoint and page exist.
  */
-export const CURRENT_IMPLEMENTED_WEEK = 10;
+export const CURRENT_IMPLEMENTED_WEEK = 11;
 
 export const RESEARCH_DISCLAIMER =
   "RESEARCH PROTOTYPE — NOT A MEDICAL DIAGNOSIS. This system is intended for academic and research demonstration only. It has not been clinically validated and must not be used to make medical decisions.";

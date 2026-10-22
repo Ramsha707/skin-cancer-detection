@@ -11,11 +11,13 @@ patient data.
 
 from __future__ import annotations
 
+from datetime import datetime, timezone
 from typing import Any
 
 from sqlalchemy.orm import Session
 
 from app.models import AuditLog
+from app.websocket import TYPE_AUDIT, get_event_bus
 
 # The complete event vocabulary used across the project.
 EVENT_LOCAL_TRAINING_STARTED = "local_training_started"
@@ -57,7 +59,12 @@ def log(
     round_number: int | None = None,
     details: dict[str, Any] | None = None,
 ) -> AuditLog:
-    """Append one event. Caller is responsible for committing."""
+    """Append one event. Caller is responsible for committing.
+
+    The live bus mirrors the append after the row is queued. The event is a
+    notification, not the record: clients refetch `/api/audit` for authoritative
+    data, so a dropped WebSocket message cannot lose history.
+    """
     entry = AuditLog(
         agent_id=agent_id,
         event_type=event_type,
@@ -65,8 +72,23 @@ def log(
         status=status,
         round_number=round_number,
         details=details or {},
+        timestamp=datetime.now(timezone.utc),
     )
     db.add(entry)
+    get_event_bus().publish(
+        TYPE_AUDIT,
+        {
+            "event_type": event_type,
+            "label": EVENT_LABELS.get(event_type, event_type),
+            "message": message,
+            "agent_id": agent_id,
+            "status": status,
+            "round_number": round_number,
+            "details": details or {},
+            "timestamp": entry.timestamp.isoformat(),
+        },
+        source="audit",
+    )
     return entry
 
 

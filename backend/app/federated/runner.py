@@ -16,6 +16,8 @@ import logging
 import threading
 from collections.abc import Callable
 
+from app.websocket import TYPE_AGENT, TYPE_TRAINING, get_event_bus
+
 log = logging.getLogger(__name__)
 
 # Statuses a round queue can be in. Mirrors the frontend's TrainingStatus.
@@ -80,7 +82,16 @@ class RoundRunner:
     def note_agent(self, agent_id: str, **fields) -> None:
         """Record live per-agent progress for `/state`. Metrics only."""
         with self._lock:
-            self._agent_live.setdefault(agent_id, {}).update(fields)
+            state = self._agent_live.setdefault(agent_id, {})
+            state.update(fields)
+            snapshot = dict(state)
+        # A live metric tick. The bus does not persist these; they exist so an
+        # open dashboard can animate a round instead of waiting for the next poll.
+        get_event_bus().publish(
+            TYPE_AGENT,
+            {"agent_id": agent_id, **snapshot},
+            source="runner",
+        )
 
     # ------------------------------------------------------------ control --
 
@@ -98,7 +109,13 @@ class RoundRunner:
                     target=self._work, name="federated-rounds", daemon=True
                 )
                 self._worker.start()
-            return self._queued
+            snapshot = self.snapshot()
+        get_event_bus().publish(
+            TYPE_TRAINING,
+            {"event": "rounds_requested", "requested": n, **snapshot},
+            source="runner",
+        )
+        return snapshot["queued"]
 
     def pause(self) -> None:
         """Drop pending rounds; the round in flight finishes at the boundary."""
@@ -107,6 +124,12 @@ class RoundRunner:
             self._queued = 0
             if self._status == STATUS_RUNNING:
                 self._status = STATUS_PAUSED
+            snapshot = self.snapshot()
+        get_event_bus().publish(
+            TYPE_TRAINING,
+            {"event": "paused", **snapshot},
+            source="runner",
+        )
 
     def reset(self, *, timeout: float = 120.0) -> None:
         """Stop the worker and clear runtime state.
@@ -131,6 +154,13 @@ class RoundRunner:
         from app.federated.engine import get_engine
 
         get_engine().reset()
+        with self._lock:
+            snapshot = self.snapshot()
+        get_event_bus().publish(
+            TYPE_TRAINING,
+            {"event": "reset", **snapshot},
+            source="runner",
+        )
 
     # ------------------------------------------------------------- worker --
 
@@ -141,9 +171,26 @@ class RoundRunner:
                     if self._status == STATUS_RUNNING:
                         self._status = STATUS_PAUSED if self._pause else STATUS_COMPLETED
                     self._aggregation_status = "idle"
-                    return
-                self._queued -= 1
-                self._aggregation_status = "running"
+                    snapshot = self.snapshot()
+                    finished = True
+                else:
+                    self._queued -= 1
+                    self._aggregation_status = "running"
+                    snapshot = self.snapshot()
+                    finished = False
+            if finished:
+                get_event_bus().publish(
+                    TYPE_TRAINING,
+                    {"event": "queue_finished", **snapshot},
+                    source="runner",
+                )
+                return
+
+            get_event_bus().publish(
+                TYPE_TRAINING,
+                {"event": "round_started", **snapshot},
+                source="runner",
+            )
             try:
                 self._run_one()
             except Exception as exc:
@@ -153,7 +200,20 @@ class RoundRunner:
                     self._error = str(exc)
                     self._queued = 0
                     self._aggregation_status = "idle"
+                    snapshot = self.snapshot()
+                get_event_bus().publish(
+                    TYPE_TRAINING,
+                    {"event": "error", "error": str(exc), **snapshot},
+                    source="runner",
+                )
                 return
+            with self._lock:
+                snapshot = self.snapshot()
+            get_event_bus().publish(
+                TYPE_TRAINING,
+                {"event": "round_finished", **snapshot},
+                source="runner",
+            )
 
     def _run_one(self) -> None:
         if self._execute_round is not None:
