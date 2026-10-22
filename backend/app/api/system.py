@@ -5,7 +5,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from pathlib import Path
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy import func, select
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
@@ -13,9 +13,18 @@ from sqlalchemy.orm import Session
 from app.config import settings
 from app.database.base import get_db
 from app.models import AuditLog, HospitalAgent, ModelVersion, TrainingRound
-from app.schemas import DashboardSummary, DatasetInfo, PrivacySummary, SystemStatus
+from app.schemas import (
+    DashboardSummary,
+    DatasetInfo,
+    IntegrationStatus,
+    LiveEventsOut,
+    PrivacySummary,
+    SystemStatus,
+)
 from app.services import audit as audit_service
 from app.services import dataset as dataset_service
+from app.services import integration as integration_service
+from app.websocket import get_event_bus
 
 router = APIRouter(prefix="/api", tags=["system"])
 
@@ -187,3 +196,19 @@ def _dataset_info(manifest: dataset_service.DatasetManifest) -> DatasetInfo:
         source_path=str(manifest.root) if manifest.root else None,
         message=manifest.message,
     )
+
+
+# ------------------------------------------------------- integration / live --
+
+
+@router.get("/system/integration", response_model=IntegrationStatus)
+def integration(db: Session = Depends(get_db)) -> dict:
+    """Every subsystem checked against live state, not declared in prose."""
+    return integration_service.build_integration(db)
+
+
+@router.get("/system/events", response_model=LiveEventsOut)
+def recent_events(limit: int = Query(default=50, ge=1, le=200)) -> dict:
+    """The WebSocket ring buffer, for a client that has not connected yet."""
+    bus = get_event_bus()
+    return {"events": bus.recent(limit), "stats": bus.stats()}
