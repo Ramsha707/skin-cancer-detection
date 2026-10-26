@@ -71,12 +71,6 @@ export default function Landing() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
               >
-                <Badge variant="default" className="mb-6 gap-1.5 py-1 pl-1.5 pr-3">
-                  <span className="rounded-full bg-accent-500 px-2 py-0.5 text-[9px] font-bold text-white">
-                    WEEK 1–6
-                  </span>
-                  End-to-end federated prototype
-                </Badge>
 
                 <h1 className="text-balance text-4xl font-bold leading-[1.08] tracking-tight text-ink-950 md:text-6xl">
                   Privacy-Preserving AI for

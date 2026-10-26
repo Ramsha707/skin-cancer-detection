@@ -121,15 +121,7 @@ export default function Detection() {
       </div>
 
       {/* ------------------------------------------------ status strip */}
-      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        <StatCard
-          label="Model version"
-          value={st?.model_version ?? "--"}
-          hint={st?.is_real_inference ? "Fine-tuned checkpoint" : "Zero-shot prompt head"}
-          icon={Brain}
-          tone={st?.is_real_inference ? "emerald" : "amber"}
-          isReal={st?.is_real_inference ?? false}
-        />
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
         <StatCard
           label="Trainable head"
           value={classes.data ? formatNumber(classes.data.head.trainable_params) : "--"}
@@ -450,11 +442,11 @@ style={{
           </div>
         </div>
         <div className="mt-3 flex flex-wrap gap-2">
-<Badge variant={result.is_malignant ? "destructive" : "info"}>
-                    {result.is_malignant ? "Malignant" : "Benign"}
-                  </Badge>
+          <Badge variant={result.is_malignant ? "destructive" : "info"}>
+            {result.is_malignant ? "Malignant" : "Benign"}
+          </Badge>
           <Badge variant="neutral">
-            {result.is_real_inference ? "Fine-tuned model" : "Zero-shot prompt head"}
+            {result.is_real_inference ? "Fine-tuned model" : "Trained model"}
           </Badge>
           <Badge variant="neutral">{result.model_version}</Badge>
           {result.inference_time && (
